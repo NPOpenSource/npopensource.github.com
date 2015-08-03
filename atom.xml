@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[温杰的博客]]></title>
+  <link href="http://yoursite.com/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2015-08-03T15:36:47+08:00</updated>
+  <id>http://yoursite.com/</id>
+  <author>
+    <name><![CDATA[温杰]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[‘我的博客在这安家啦’]]></title>
+    <link href="http://yoursite.com/blog/2015/08/03/wo-de-bo-ke-zai-zhe-an-jia-la/"/>
+    <updated>2015-08-03T15:36:34+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/03/wo-de-bo-ke-zai-zhe-an-jia-la</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+</feed>
