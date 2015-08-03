@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[温杰的博客]]></title>
-  <link href="http://yoursite.com/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2015-08-03T15:36:47+08:00</updated>
-  <id>http://yoursite.com/</id>
+  <link href="http://npopensource.github.io/atom.xml" rel="self"/>
+  <link href="http://npopensource.github.io/"/>
+  <updated>2015-08-03T15:45:07+08:00</updated>
+  <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
     
@@ -14,10 +14,19 @@
 
   
   <entry>
-    <title type="html"><![CDATA[‘我的博客在这安家啦’]]></title>
-    <link href="http://yoursite.com/blog/2015/08/03/wo-de-bo-ke-zai-zhe-an-jia-la/"/>
+    <title type="html"><![CDATA[‘博客第一天’]]></title>
+    <link href="http://npopensource.github.io/blog/2015/08/03/%E5%8D%9A%E5%AE%A2%E7%AC%AC%E4%B8%80%E5%A4%A9/"/>
     <updated>2015-08-03T15:36:34+08:00</updated>
-    <id>http://yoursite.com/blog/2015/08/03/wo-de-bo-ke-zai-zhe-an-jia-la</id>
+    <id>http://npopensource.github.io/blog/2015/08/03/博客第一天</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[‘我的博客在这安家啦’]]></title>
+    <link href="http://npopensource.github.io/blog/2015/08/03/wo-de-bo-ke-zai-zhe-an-jia-la/"/>
+    <updated>2015-08-03T15:36:34+08:00</updated>
+    <id>http://npopensource.github.io/blog/2015/08/03/wo-de-bo-ke-zai-zhe-an-jia-la</id>
     <content type="html"><![CDATA[
 ]]></content>
   </entry>
