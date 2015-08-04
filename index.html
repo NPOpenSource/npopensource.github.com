@@ -109,7 +109,42 @@
 
 <p>区块引用则使用 email 形式的 &lsquo;>&rsquo; 角括号</p>
 
-<p>常用语法：</p>
+<p>常用语法：
+    <table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>     <br/>
+    </tr>
+    <tr>
+        <td>H1  </td>
+        <td># Heading   </td>
+        <td>    </td>
+        <td>    </td>
+    </tr>
+      <tr>
+        <td>H2  </td>
+        <td>## Heading  </td>
+        <td>Ctrl/⌘ + H    </td>
+        <td>不好用   </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>H3  </td>
+        <td>### Heading </td>
+        <td>Ctrl/⌘ + H (x2)   </td>
+        <td>不好用   </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Blockquote</td>
+        <td>> quote</td>
+        <td>Ctrl + Q    </td>
+        <td>好用  </td>
+    </tr>
+     </tr>
+    </table></p>
 
 <p>Markdown 语法:</p>
 
@@ -154,6 +189,42 @@ The quick brown fox jumped over the lazy dog's back.
 
 <p>Markdown 使用星号和底线来标记需要强调的区段。</p>
 
+<p>  常用语法：
+    <table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>     <br/>
+    </tr>
+    <tr>
+        <td>Bold    </td>
+        <td><strong>text</strong>    </td>
+        <td>⌘ + B（mac）</td>
+        <td>好用  </td>     <br/>
+    </tr>
+      <tr>
+        <td>Emphasize   </td>
+        <td><em>text</em>  </td>
+        <td>⌘ + I（mac）    </td>
+        <td>好用  </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Strike-through  </td>
+        <td>#<del>text</del>   </td>
+        <td>Ctrl + Alt + U</td>
+        <td>不好用</td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Blockquote</td>
+        <td>> quote</td>
+        <td>Ctrl + Q    </td>
+    </tr>
+     </tr>
+    </table></p>
+
 <p>   Markdown 语法:</p>
 
 <pre><code>Some of these words *are emphasized*.
@@ -173,6 +244,42 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
 <h4>列表</h4>
 
 <p>无序列表使用星号、加号和减号来做为列表的项目标记，这些符号是都可以使用的.</p>
+
+<p>常用语法：</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>       
+    </tr>
+    <tr>
+        <td>List    </td>
+        <td>* item  </td>
+        <td>Ctrl + L</td>
+        <td>好用  </td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>+ item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>- item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>1 item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+    </table>
+
 
 <p>星号</p>
 
@@ -224,6 +331,22 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
 
 <p>Markdown 支援两种形式的链接语法： 行内 和 参考 两种形式，两种都是使用角括号来把文字转成连结。</p>
 
+<p>常用语法</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>       
+    </tr>
+    <tr>
+        <td>Link    </td>
+        <td>[title](http://)    </td>
+        <td></td>
+    <tr>
+    </table>
+
+
 <p>行内形式是直接在后面用括号直接接上链接：</p>
 
 <pre><code>This is an [example link](http://example.com/).
@@ -272,6 +395,24 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
 
 <h4>代码</h4>
 
+<p>常用语法</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>               
+    </tr>
+    <tr>
+        <td>Inline Code     </td>
+        <td>`code`  </td>
+        <td>⌘ + K</td>
+        <td>好用</td>
+    <tr>
+    </table>
+
+
 <p>在一般的段落文字中，你可以使用反引号 ` 来标记代码区段，区段内的 &amp;、&lt; 和 > 都会被自动的转换成 HTML 实体，这项特性让你可以很容易的在代码区段内插入 HTML 码：</p>
 
 <pre><code>I strongly recommend against using any `&lt;blink&gt;` tags.I wish SmartyPants used named entities like `&amp;mdash;`instead of decimal-encoded entites like `&amp;#8212;`.
@@ -314,9 +455,27 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
     </table>
 
 
+<h4>文本样式</h4>
+
+<ul>
+<li>链接 :<a href="URL">Title</a></li>
+<li>加粗 :<strong>Bold</strong></li>
+<li>斜体字 :<em>Italics</em></li>
+<li>删除线 :<del>text</del></li>
+<li>高亮 :==text==</li>
+<li>段落 : 段落之间空一行</li>
+<li>换行符 : 一行结束时输入两个空格</li>
+<li>列表 :* 添加星号成为一个新的列表项。</li>
+<li>引用 :> 引用内容</li>
+<li>内嵌代码 : <code>alert('Hello World');</code></li>
+<li>画水平线 (HR) :&mdash;&mdash;&ndash;</li>
+</ul>
+
+
 <h5>参考链接：</h5>
 
-<p><a href="http://wowubuntu.com/markdown/basic.html">http://wowubuntu.com/markdown/basic.html</a></p>
+<p><a href="http://wowubuntu.com/markdown/basic.html">http://wowubuntu.com/markdown/basic.html</a>
+<a href="http://baike.baidu.com/link?url=tyTi8BEbR9O32Af2md0WHPGdFwH_ZGSU0oVORrowucw1Nw8OWiuEJOoGeihjIcy5DH9tJCD-8s0RLPIaZKfeaa">markdown百度百科</a></p>
 </div>
   
   
