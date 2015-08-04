@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-04T16:58:13+08:00</updated>
+  <updated>2015-08-04T17:06:12+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -20,7 +20,7 @@
     <id>http://npopensource.github.io/blog/2015/08/04/gitpages-plus-octopressda-jian-bo-ke-(zhuan-)</id>
     <content type="html"><![CDATA[<h1>直接转兄弟的链接</h1>
 
-<p>[GitPages + Octopress 搭建博客]（<a href="http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/%EF%BC%89">http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/%EF%BC%89</a></p>
+<p><a href="http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/">GitPages + Octopress 搭建博客</a></p>
 
 <h2>我在创建中遇到的问题</h2>
 
