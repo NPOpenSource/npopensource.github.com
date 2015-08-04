@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-04T16:33:45+08:00</updated>
+  <updated>2015-08-04T16:40:55+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[GitPages + Octopress搭建博客（转）]]></title>
+    <link href="http://npopensource.github.io/blog/2015/08/04/gitpages-plus-octopressda-jian-bo-ke-(zhuan-)/"/>
+    <updated>2015-08-04T16:39:04+08:00</updated>
+    <id>http://npopensource.github.io/blog/2015/08/04/gitpages-plus-octopressda-jian-bo-ke-(zhuan-)</id>
+    <content type="html"><![CDATA[<h1>直接转兄弟的链接</h1>
+
+<p>[GitPages + Octopress 搭建博客]（<a href="http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/%EF%BC%89">http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/%EF%BC%89</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Git的学习使用]]></title>
