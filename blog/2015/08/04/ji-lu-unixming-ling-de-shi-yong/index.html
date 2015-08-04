@@ -5,12 +5,15 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>GitPages + Octopress搭建博客（转） - 温杰的博客</title>
+  <title>记录unix命令的使用 - 温杰的博客</title>
   <meta name="author" content="温杰">
 
   
-  <meta name="description" content="直接转兄弟的链接 GitPages + Octopress 搭建博客 我在创建中遇到的问题 主要问题是输入命令rake deploy 的时候报下面的错误 ## Pushing generated _deploy website
-To git@github.com:NPOpenSource/ &hellip;">
+  <meta name="description" content="经常为在mac 终端操作，所以不得不学习一些终端命令并做下记录，方便以后查询。 命令查询 其实所有的命令参数都是可以通过man 来查询的。 eg：
+man cd
+man rm
+man ls
+man open 都有命令的详细使用情况 命令介绍 rm -rf xxx 删除文件夹xxx（包括里面的内容 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +22,7 @@ To git@github.com:NPOpenSource/ &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://npopensource.github.io/blog/2015/08/04/gitpages-plus-octopressda-jian-bo-ke-(zhuan-)/">
+  <link rel="canonical" href="http://npopensource.github.io/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="温杰的博客" type="application/atom+xml">
@@ -69,7 +72,7 @@ To git@github.com:NPOpenSource/ &hellip;">
   
   <header>
     
-      <h1 class="entry-title">GitPages + Octopress搭建博客（转）</h1>
+      <h1 class="entry-title">记录unix命令的使用</h1>
     
     
       <p class="meta">
@@ -78,55 +81,45 @@ To git@github.com:NPOpenSource/ &hellip;">
 
 
 
-<time class='entry-date' datetime='2015-08-04T16:39:04+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:39 pm</span></time>
+<time class='entry-date' datetime='2015-08-04T18:07:24+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:07 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h1>直接转兄弟的链接</h1>
+<div class="entry-content"><p>经常为在mac 终端操作，所以不得不学习一些终端命令并做下记录，方便以后查询。</p>
 
-<p><a href="http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/">GitPages + Octopress 搭建博客</a></p>
+<h2>命令查询</h2>
 
-<h2>我在创建中遇到的问题</h2>
+<p>其实所有的命令参数都是可以通过man 来查询的。</p>
 
-<p>主要问题是输入命令rake deploy 的时候报下面的错误</p>
-
-<pre><code>## Pushing generated _deploy website
-To git@github.com:NPOpenSource/npopensource.github.com.git
-! [rejected]        master -&gt; master (non-fast-forward)
-error: failed to push some refs to 'git@github.com:NPOpenSource/    npopensource.github.com.git'
-hint: Updates were rejected because the tip of your current branch is   behind
-hint: its remote counterpart. Integrate the remote changes (e.g.
-hint: 'git pull ...') before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+<pre><code>eg：
+man cd
+man rm
+man ls
+man open
 </code></pre>
 
-<p>这个原因的产生是因为在目录 /octopress/_deploy/ 下面的文件和远程有冲突导致的。</p>
+<p>都有命令的详细使用情况</p>
 
-<p>解决办法是 在 /octopress  输入命令git pull origin master</p>
+<h2>命令介绍</h2>
 
-<p> cd _deploy/
-进入该文件夹 git remote -v<br/>
-查看当前文件下 有冲突的文件  将有冲突的文件解决掉就行了 并提交</p>
+<ul>
+<li>rm -rf xxx 删除文件夹xxx（包括里面的内容）</li>
+<li>mkdir xxx 新建xxx文件夹</li>
+<li>cd xxx 进入xxx文件夹，xxx可以是个路径</li>
+<li>open . 使用Finder打开当前目录</li>
+<li>open ./source 使用Finder打开当前目录下的source文件夹</li>
+<li>ls 查看当面文件夹中的目录列表</li>
+<li>cd .. 返回上已目录</li>
+<li>rm xxx 删除文件</li>
+<li>vi xxx 打开文件
+  进入vi文件之后，q键是功能切换
+                a键是插入操作
+                shift+q 进入退出模式。wq 写入并保存 q! 强制退出不保存</li>
+</ul>
 
-<p>保证 git status 结果为</p>
-
-<pre><code> On branch master
-nothing to commit, working directory clean
-</code></pre>
-
-<p>之后cd .. 退出到 /octopress</p>
-
-<p>查看 git remote -v  将修改的文件也提交
- 保证 git status  结果为</p>
-
-<pre><code>On branch master
-nothing to commit, working directory clean
-</code></pre>
-
-<p>最后再次运行 rake deploy 就行了。</p>
 </div>
 
 
@@ -142,7 +135,7 @@ nothing to commit, working directory clean
 
 
 
-<time class='entry-date' datetime='2015-08-04T16:39:04+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:39 pm</span></time>
+<time class='entry-date' datetime='2015-08-04T18:07:24+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:07 pm</span></time>
       
 
 
@@ -157,10 +150,8 @@ nothing to commit, working directory clean
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/08/04/gitde-xue-xi-shi-yong/" title="Previous Post: git的学习使用">&laquo; git的学习使用</a>
+        <a class="basic-alignment left" href="/blog/2015/08/04/gitpages-plus-octopressda-jian-bo-ke-(zhuan-)/" title="Previous Post: GitPages + Octopress搭建博客（转）">&laquo; GitPages + Octopress搭建博客（转）</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong/" title="Next Post: 记录unix命令的使用">记录unix命令的使用 &raquo;</a>
       
     </p>
   </footer>
