@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-04T16:21:08+08:00</updated>
+  <updated>2015-08-04T16:33:45+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Git的学习使用]]></title>
+    <link href="http://npopensource.github.io/blog/2015/08/04/gitde-xue-xi-shi-yong/"/>
+    <updated>2015-08-04T16:33:09+08:00</updated>
+    <id>http://npopensource.github.io/blog/2015/08/04/gitde-xue-xi-shi-yong</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rake在octopress中的使用命令介绍]]></title>
+    <link href="http://npopensource.github.io/blog/2015/08/04/rakezai-octopresszhong-de-shi-yong-ming-ling-jie-shao/"/>
+    <updated>2015-08-04T16:23:23+08:00</updated>
+    <id>http://npopensource.github.io/blog/2015/08/04/rakezai-octopresszhong-de-shi-yong-ming-ling-jie-shao</id>
+    <content type="html"><![CDATA[<p>刚开始接触octopress ，对rake命令使用的较少，特在此记录，记录每个命令的作用。</p>
+
+<h2>命令</h2>
+
+<ul>
+<li>rake generate 将 /octopress/source/_posts 目录下的 .markdown 文件 翻译成html网页</li>
+<li>rake preview 生成本地网页服务器，端口号4000   <a href="http://localhost:4000">http://localhost:4000</a></li>
+<li>rake deploy  将本地的_deploy 修改的文件提交到 github上面去。</li>
+<li>rake new_post[&lsquo;新的博客名字&rsquo;] 在 octopress/source/_posts 目录下创建博客，名字为《新的博客名字》</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Makedown的简单使用]]></title>
