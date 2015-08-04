@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-04T16:40:55+08:00</updated>
+  <updated>2015-08-04T16:58:13+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -21,6 +21,45 @@
     <content type="html"><![CDATA[<h1>直接转兄弟的链接</h1>
 
 <p>[GitPages + Octopress 搭建博客]（<a href="http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/%EF%BC%89">http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/%EF%BC%89</a></p>
+
+<h2>我在创建中遇到的问题</h2>
+
+<p>主要问题是输入命令rake deploy 的时候报下面的错误</p>
+
+<pre><code>## Pushing generated _deploy website
+To git@github.com:NPOpenSource/npopensource.github.com.git
+! [rejected]        master -&gt; master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:NPOpenSource/    npopensource.github.com.git'
+hint: Updates were rejected because the tip of your current branch is   behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+</code></pre>
+
+<p>这个原因的产生是因为在目录 /octopress/_deploy/ 下面的文件和远程有冲突导致的。</p>
+
+<p>解决办法是 在 /octopress  输入命令git pull origin master</p>
+
+<p> cd _deploy/
+进入该文件夹 git remote -v<br/>
+查看当前文件下 有冲突的文件  将有冲突的文件解决掉就行了 并提交</p>
+
+<p>保证 git status 结果为</p>
+
+<pre><code> On branch master
+nothing to commit, working directory clean
+</code></pre>
+
+<p>之后cd .. 退出到 /octopress</p>
+
+<p>查看 git remote -v  将修改的文件也提交
+ 保证 git status  结果为</p>
+
+<pre><code>On branch master
+nothing to commit, working directory clean
+</code></pre>
+
+<p>最后再次运行 rake deploy 就行了。</p>
 ]]></content>
   </entry>
   
