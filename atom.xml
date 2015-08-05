@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-05T10:46:13+08:00</updated>
+  <updated>2015-08-05T11:13:52+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -112,13 +112,18 @@ nothing to commit, working directory clean
 
 <h2>git原理</h2>
 
-<p><img src="http://npopensource.github.io/images/git-yuanli.png" alt="alt text" /></p>
-
 <h3>原理图</h3>
 
-<h3>本地原理</h3>
+<p><img src="http://npopensource.github.io/images/git-yuanli.png" alt="alt text" />
+这张图能比较直观的看出git 的工作原理和简单关键命令。</p>
 
-<h3>远程操作</h3>
+<h3>git 目录</h3>
+
+<p><img src="http://npopensource.github.io/images/git-mulu.png" alt="alt text" /></p>
+
+<h3>原理</h3>
+
+<h3>git命令</h3>
 
 <h5>参考链接：</h5>
 
