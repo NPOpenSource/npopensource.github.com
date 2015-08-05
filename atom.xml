@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-04T18:23:07+08:00</updated>
+  <updated>2015-08-05T10:46:13+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -108,10 +108,23 @@ nothing to commit, working directory clean
     <link href="http://npopensource.github.io/blog/2015/08/04/gitde-xue-xi-shi-yong/"/>
     <updated>2015-08-04T16:33:09+08:00</updated>
     <id>http://npopensource.github.io/blog/2015/08/04/gitde-xue-xi-shi-yong</id>
-    <content type="html"><![CDATA[<h4>参考链接：</h4>
+    <content type="html"><![CDATA[<blockquote><p>用github 不得不学习下 git 命令行。 要想学好git ，我认为，首先要弄懂git 原理，接着熟练掌握git 命令行。</p></blockquote>
+
+<h2>git原理</h2>
+
+<p><img src="http://npopensource.github.io/images/git-yuanli.png" alt="alt text" /></p>
+
+<h3>原理图</h3>
+
+<h3>本地原理</h3>
+
+<h3>远程操作</h3>
+
+<h5>参考链接：</h5>
 
 <ul>
 <li><a href="http://www.bootcss.com/p/git-guide/">git - 简易指南</a></li>
+<li><a href="http://my.oschina.net/sunchp/blog/346076">git - 原理比较清晰</a></li>
 </ul>
 
 ]]></content>
@@ -477,6 +490,31 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
 <pre><code>&lt;p&gt;I strongly recommend against using any&lt;code&gt;&amp;lt;blink&amp;gt;&lt;/code&gt; tags.&lt;/p&gt;&lt;p&gt;I wish SmartyPants used named entities like&lt;code&gt;&amp;amp;mdash;&lt;/code&gt; instead of decimal-encodedentites like &lt;code&gt;&amp;amp;#8212;&lt;/code&gt;.&lt;/p&gt;
 </code></pre>
 
+<h3>图片</h3>
+
+<blockquote><p>图片的语法和链接很像。</p></blockquote>
+
+<p>行内形式（title 是选择性的）：</p>
+
+<pre><code>![alt text](/images/email.png "Title")
+</code></pre>
+
+<p>结果</p>
+
+<p><img src="http://npopensource.github.io/images/email.png" title="Title" alt="alt text" /></p>
+
+<p>参考形式：</p>
+
+<pre><code>![alt text][id]
+[id]: /images/email.png "Title" 
+</code></pre>
+
+<p>结果</p>
+
+<p><img src="http://npopensource.github.io/images/email.png" title="Title" alt="alt text" /></p>
+
+<blockquote><p>  提示：github引用图片资源应该放在octopress/source/images/</p></blockquote>
+
 <h4>table</h4>
 
 <p>markdown 生成table 可以直接用html标签 相对比较麻烦 （github 不支持表格）</p>
@@ -528,8 +566,11 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
 
 <h5>参考链接：</h5>
 
-<p><a href="http://wowubuntu.com/markdown/basic.html">http://wowubuntu.com/markdown/basic.html</a>
-<a href="http://baike.baidu.com/link?url=tyTi8BEbR9O32Af2md0WHPGdFwH_ZGSU0oVORrowucw1Nw8OWiuEJOoGeihjIcy5DH9tJCD-8s0RLPIaZKfeaa">markdown百度百科</a></p>
+<ul>
+<li><a href="http://wowubuntu.com/markdown/basic.html">http://wowubuntu.com/markdown/basic.html</a></li>
+<li><a href="http://baike.baidu.com/link?url=tyTi8BEbR9O32Af2md0WHPGdFwH_ZGSU0oVORrowucw1Nw8OWiuEJOoGeihjIcy5DH9tJCD-8s0RLPIaZKfeaa">markdown百度百科</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
