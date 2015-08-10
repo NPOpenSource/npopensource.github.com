@@ -9,11 +9,9 @@
   <meta name="author" content="温杰">
 
   
-  <meta name="description" content="经常为在mac 终端操作，所以不得不学习一些终端命令并做下记录，方便以后查询。 命令查询 其实所有的命令参数都是可以通过man 来查询的。 eg：
-man cd
-man rm
-man ls
-man open 都有命令的详细使用情况 命令介绍 rm -rf xxx 删除文件夹xxx（包括里面的内容 &hellip;">
+  <meta name="description" content="第一次写ios相关技术博客，所以先写个简单的，写的不好大家多多提意见。 想学好这个类，我感觉最好还是从理论上弄明白什么二维图形到底是怎么变换的。 矩阵及其运算 一．数学概念
+定义1.1 由个数 排成m行n列的数表 称为m行n列的矩阵，简称 矩阵，记作 二．原理，公式和法则 1．矩阵的加法
+(1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +67,157 @@ man open 都有命令的详细使用情况 命令介绍 rm -rf xxx 删除文件�
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/10/cgaffinetransform-dot-hlei-de-xue-xi-he-yuan-li-jiang-jie/">CGAffineTransform.h类的学习和原理讲解</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-10T15:25:44+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:25 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p> 第一次写ios相关技术博客，所以先写个简单的，写的不好大家多多提意见。
+ 想学好这个类，我感觉最好还是从理论上弄明白什么二维图形到底是怎么变换的。</p>
+
+<h2>矩阵及其运算</h2>
+
+<blockquote><p>一．数学概念
+定义1.1 由<img src="/images/juzhen1.gif" alt="image" />个数<img src="/images/juzhen2.gif" alt="image" />   排成m行n列的数表
+<img src="/images/juzhen3.gif" alt="image" /></p></blockquote>
+
+<p>称为m行n列的矩阵，简称   矩阵，记作</p>
+
+<p><img src="/images/juzhen4.gif" alt="image" /></p>
+
+<blockquote><p>二．原理，公式和法则</p></blockquote>
+
+<p>1．矩阵的加法
+(1) 公式</p>
+
+<p> <img src="/images/juzhen5.gif" alt="image" /></p>
+
+<p>  (2) 运算律</p>
+
+<p> <img src="/images/juzhen6.gif" alt="image" /></p>
+
+<p> 2．数乘矩阵
+ (1) 公式</p>
+
+<p>  <img src="/images/juzhen7.gif" alt="image" /></p>
+
+<p>(2) 运算律
+  <img src="/images/juzhen8.gif" alt="image" /></p>
+
+<p> 3．矩阵与矩阵相乘
+ (1) 设 <img src="/images/juzhen9.gif" alt="image" />  ,
+ 则 <img src="/images/juzhen10.gif" alt="image" />  其中 <img src="/images/juzhen11.gif" alt="image" />  ，且</p>
+
+<p><img src="/images/juzhen12.gif" alt="image" /></p>
+
+<p>（2）　运算符(假设运算都是可行的)：</p>
+
+<p><img src="/images/juzhen13.gif" alt="image" /></p>
+
+<p>(3)　方阵的运算</p>
+
+<p><img src="/images/juzhen14.gif" alt="image" /></p>
+
+<p>注意：①矩阵乘法一般不满足交换律。
+②一般 <img src="/images/juzhen15.gif" alt="image" /></p>
+
+<p>4.矩阵的转置
+(1)　公式</p>
+
+<p><img src="/images/juzhen16.png" alt="image" /></p>
+
+<p><img src="/images/juzhen17.png" alt="image" /></p>
+
+<p> (2)　运算律</p>
+
+<p> <img src="/images/juzhen18.gif" alt="image" /></p>
+
+<p> 5.方阵的行列式</p>
+
+<p><img src="/images/juzhen19.png" alt="image" /></p>
+
+<p>6.共轭矩阵</p>
+
+<p><img src="/images/juzhen20.png" alt="image" /></p>
+
+<p>上面一定要看懂矩阵的乘法是怎么运算的才行。</p>
+
+<h2>数学原理</h2>
+
+<blockquote><p>1、基本几何变换及变换矩阵</p></blockquote>
+
+<p>基本几何变换都是相对于坐标原点和坐标轴进行的几何变换，有平移、比例、旋转、反射和错切等</p>
+
+<p><strong>1.1 平移变换</strong></p>
+
+<p>是指将p点沿直线路径从一个坐标位置移到另一个坐标位置的重定位过程。他是一种不产生变形而移动物体的刚体变换（rigid-body transformation），如下图所示。</p>
+
+<p><img src="/images/juzhen21.png" alt="image" /></p>
+
+<p> 推导：</p>
+
+<p> <img src="/images/juzhen22.png" alt="image" /></p>
+
+<pre><code>    解释(个人理解)
+    x'=x+Tx  相当于x'= x*1 + y*0 +  1 * Tx
+    y'=y+Ty  相当于y'= x*0 + y*1 +  1 * Ty
+
+    所以 A 矩阵  [x  y 1]
+         C 矩阵要和A矩阵格式一样 [x' y' 1]
+        c矩阵的1 怎么来。只能添加一行了
+
+        1=x*0+y*0+ 1*1
+
+所以b矩阵为 上面如图
+</code></pre>
+
+<p><strong>1.2 缩放变换</strong>
+缩放变换是指对p点相对于坐标原点沿x方向放缩Sx倍，沿y方向放缩Sy倍。其中Sx和Sy称为缩放系数。</p>
+
+<p><img src="/images/juzhen23.png" alt="image" />
+推导：</p>
+
+<p><img src="/images/juzhen24.png" alt="image" /></p>
+
+<p>  矩阵
+<img src="/images/juzhen25.png" alt="image" /></p>
+
+<p>缩放变换可改变物体的大小，如下图所示。当Sx=Sy >1时，图形沿两个坐标轴方向等比例放大；当Sx=Sy&lt;1，图形沿两个坐标轴方向等比例缩小；当Sx≠Sy，图形沿两个坐标轴方向作非均匀的比例变换。</p>
+
+<p><img src="/images/juzhen26.png" alt="image" /></p>
+
+<h2>CGAffineTransform.h 函数介绍</h2>
+
+<h5>参考文章：</h5>
+
+<p><a href="http://dec3.jlu.edu.cn/webcourse/t000022/teach/chapter2/2_1.htm">矩阵定义</a></p>
+
+<p><a href="http://blog.csdn.net/wcyoot/article/details/33310329">变换原理</a></p>
+
+<p><a href="https://developer.apple.com/library/prerelease/watchos/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_affine/dq_affine.html">苹果官方文档</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1065,7 +1214,7 @@ please contact us at support@github.com
 <ul>
 <li>git config &ndash;list  要检查已有的配置信息</li>
 <li>git config &ndash;global user.name &ldquo;John Doe&rdquo;  配置用户名</li>
-<li>git config &ndash;global user.email <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#x6a;&#x6f;&#x68;&#110;&#100;&#x6f;&#x65;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#x63;&#111;&#109;">&#106;&#111;&#x68;&#x6e;&#100;&#x6f;&#101;&#x40;&#101;&#x78;&#97;&#109;&#112;&#108;&#x65;&#x2e;&#99;&#111;&#109;</a> 配置邮件</li>
+<li>git config &ndash;global user.email <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6a;&#111;&#104;&#x6e;&#100;&#111;&#x65;&#64;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#109;">&#106;&#111;&#x68;&#110;&#100;&#x6f;&#101;&#64;&#x65;&#x78;&#97;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#111;&#x6d;</a> 配置邮件</li>
 <li>git config &ndash;global core.editor emacs   文本编辑器</li>
 <li>git config &ndash;global merge.tool vimdiff  配置差异性分析工具（Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。）</li>
 <li>git config user.name   查看用户名</li>
@@ -1756,6 +1905,10 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/10/cgaffinetransform-dot-hlei-de-xue-xi-he-yuan-li-jiang-jie/">CGAffineTransform.h类的学习和原理讲解</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong/">记录unix命令的使用</a>
       </li>
     
@@ -1769,10 +1922,6 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
     
       <li class="post">
         <a href="/blog/2015/08/04/rakezai-octopresszhong-de-shi-yong-ming-ling-jie-shao/">Rake在octopress中的使用命令介绍</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/03/markdown/">Makedown的简单使用</a>
       </li>
     
   </ul>
