@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-11T17:40:53+08:00</updated>
+  <updated>2015-08-11T18:30:57+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[进军二维码，从零开始学习二维码]]></title>
+    <link href="http://npopensource.github.io/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma/"/>
+    <updated>2015-08-11T18:30:03+08:00</updated>
+    <id>http://npopensource.github.io/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CGAffineTransform.h类的学习和原理讲解]]></title>
@@ -1329,7 +1338,7 @@ please contact us at support@github.com
 <ul>
 <li>git config &ndash;list  要检查已有的配置信息</li>
 <li>git config &ndash;global user.name &ldquo;John Doe&rdquo;  配置用户名</li>
-<li>git config &ndash;global user.email <a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#58;&#x6a;&#x6f;&#x68;&#x6e;&#100;&#111;&#101;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#x63;&#111;&#109;">&#x6a;&#111;&#x68;&#x6e;&#100;&#111;&#x65;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a> 配置邮件</li>
+<li>git config &ndash;global user.email <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#106;&#111;&#104;&#110;&#x64;&#x6f;&#101;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#x6a;&#x6f;&#104;&#x6e;&#100;&#111;&#x65;&#x40;&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 配置邮件</li>
 <li>git config &ndash;global core.editor emacs   文本编辑器</li>
 <li>git config &ndash;global merge.tool vimdiff  配置差异性分析工具（Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。）</li>
 <li>git config user.name   查看用户名</li>
