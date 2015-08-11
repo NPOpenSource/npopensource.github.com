@@ -335,6 +335,122 @@ y'=x*0+y*(-1)+0*0;
 
 <h2>CGAffineTransform.h 函数介绍</h2>
 
+<p>说了半天，不来点代码怎么行。</p>
+
+<pre><code>在CGAffineTransform.h 文件中
+
+typedef struct CGAffineTransform CGAffineTransform;
+
+struct CGAffineTransform {
+    CGFloat a, b, c, d;
+     CGFloat tx, ty;
+};
+
+矩阵数学模型是[a  b]
+             c  d
+            tx  ty
+省略了  [a  b  0]  中的最后一列
+        c  d  0
+        tx ty 1
+</code></pre>
+
+<p> 函数介绍代码</p>
+
+<pre><code>///获取一个标准矩阵。没有变化的矩阵
+CGAffineTransform transform=  CGAffineTransformIdentity;
+NSLog(@"CGAffineTransformIdentity 数值%@" ,   NSStringFromCGAffineTransform(transform));
+
+///获取一个变幻矩阵 这个函数可以平移旋转和缩放
+/* Return the transform [ a b c d tx ty ]. */
+</code></pre>
+
+<p>  transform=  CGAffineTransformMake(a, b, c, d,x,y);</p>
+
+<pre><code>///获取一个只做平移的矩阵
+//        t' = [ 1 0 0 1 tx ty ]
+</code></pre>
+
+<p> transform=   CGAffineTransformMakeTranslation(x, y);</p>
+
+<pre><code>///获取一个缩放矩阵
+//         t' = [ sx 0 0 sy 0 0 ] 
+</code></pre>
+
+<p>  transform=  CGAffineTransformMakeScale(a,c);</p>
+
+<pre><code>//获取一个旋转矩阵
+/* Return a transform which rotates by `angle' radians:
+ t' = [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] */
+</code></pre>
+
+<p>  transform=  CGAffineTransformMakeRotation(3);</p>
+
+<pre><code>///验证是否是标准矩阵
+</code></pre>
+
+<p>  BOOL isTrue =  CGAffineTransformIsIdentity(transform);</p>
+
+<pre><code>///这个是矩阵之间的换算了
+/* Translate `t' by `(tx, ty)' and return the result:
+ t' = [ 1 0 0 1 tx ty ] * t */
+/// 说的很明确 用只有平移的矩阵和 t 矩阵相乘 t*t' 意思是在t'的基础上做t 变幻（例如平移旋转等等）
+transform=   CGAffineTransformTranslate(transform,x,y);
+
+///矩阵先缩放再transform
+/* Scale `t' by `(sx, sy)' and return the result:
+ t' = [ sx 0 0 sy 0 0 ] * t */
+</code></pre>
+
+<p>  transform=  CGAffineTransformScale(transform,a,c);</p>
+
+<pre><code>///矩阵先旋转再transform
+/* Rotate `t' by `angle' radians and return the result:
+ t' =  [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] * t */
+transform = CGAffineTransformRotate(transform,3);
+
+
+NSLog(@"CGAffineTransformInvert前 数值%@" , NSStringFromCGAffineTransform(transform));
+/// 获取 反转矩阵  看不出效果。做图看看  可以仔细研究下
+///我看着就是沿着y轴做了一个对称变换 （不见得对）
+transform =   CGAffineTransformInvert(transform);
+NSLog(@"CGAffineTransformInvert后 数值%@" , NSStringFromCGAffineTransform(transform));
+
+
+///矩阵相乘
+/* Concatenate `t2' to `t1' and return the result:
+ t' = t1 * t2 */
+</code></pre>
+
+<p>   transform = CGAffineTransformConcat(transform,transform);</p>
+
+<pre><code>///判断两个矩阵是否相等
+/* Return true if `t1' and `t2' are equal, false otherwise. */
+isTrue =CGAffineTransformEqualToTransform(transform,transform);
+
+///获取一个点矩阵变幻另一个点的位置
+/* Transform `point' by `t' and return the result:
+ p' = p * t
+ where p = [ x y 1 ]. */
+</code></pre>
+
+<p>  CGPoint point=  CGPointApplyAffineTransform(CGPointMake(30, 30), transform);</p>
+
+<pre><code>///获取一个矩形矩形变换的大小
+/* Transform `size' by `t' and return the result:
+ s' = s * t
+ where s = [ width height 0 ]. */
+CGSize size= CGSizeApplyAffineTransform(CGSizeMake(30, 30),transform);
+
+///获取矩形位置变幻后的位置
+ CGRect rect=CGRectApplyAffineTransform(CGRectMake(0, 0, 30, 30),transform);
+</code></pre>
+
+<p>项目中有每个函数的具体用法。</p>
+
+<p><img src="/images/transformNew.gif" alt="image" /></p>
+
+<p>项目托管在<a href="https://github.com/NPOpenSource/transform.github.com.git">github</a></p>
+
 <h5>参考文章：</h5>
 
 <p><a href="http://dec3.jlu.edu.cn/webcourse/t000022/teach/chapter2/2_1.htm">矩阵定义</a></p>
@@ -1344,7 +1460,7 @@ please contact us at support@github.com
 <ul>
 <li>git config &ndash;list  要检查已有的配置信息</li>
 <li>git config &ndash;global user.name &ldquo;John Doe&rdquo;  配置用户名</li>
-<li>git config &ndash;global user.email <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x6a;&#111;&#x68;&#110;&#x64;&#111;&#101;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#x65;&#46;&#x63;&#x6f;&#109;">&#106;&#111;&#104;&#x6e;&#100;&#111;&#x65;&#x40;&#x65;&#x78;&#97;&#109;&#112;&#108;&#101;&#46;&#x63;&#111;&#109;</a> 配置邮件</li>
+<li>git config &ndash;global user.email <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x6a;&#x6f;&#x68;&#110;&#x64;&#x6f;&#x65;&#x40;&#101;&#120;&#x61;&#x6d;&#112;&#x6c;&#101;&#x2e;&#99;&#111;&#109;">&#x6a;&#111;&#104;&#x6e;&#100;&#111;&#101;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;</a> 配置邮件</li>
 <li>git config &ndash;global core.editor emacs   文本编辑器</li>
 <li>git config &ndash;global merge.tool vimdiff  配置差异性分析工具（Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。）</li>
 <li>git config user.name   查看用户名</li>
