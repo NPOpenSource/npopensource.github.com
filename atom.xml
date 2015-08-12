@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-11T18:30:57+08:00</updated>
+  <updated>2015-08-12T11:31:21+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -14,11 +14,33 @@
 
   
   <entry>
+    <title type="html"><![CDATA[自定义相机]]></title>
+    <link href="http://npopensource.github.io/blog/2015/08/12/zi-ding-yi-xiang-ji/"/>
+    <updated>2015-08-12T11:31:08+08:00</updated>
+    <id>http://npopensource.github.io/blog/2015/08/12/zi-ding-yi-xiang-ji</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[进军二维码，从零开始学习二维码]]></title>
     <link href="http://npopensource.github.io/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma/"/>
     <updated>2015-08-11T18:30:03+08:00</updated>
     <id>http://npopensource.github.io/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<p>做项目挺久的了，但是二维码这块总是用别人写好的，自己从来没有操过刀，内心有点小不爽啊，今天索性就写个博客，自己给自己定定需要，学学学习二维码。</p>
+
+<pre><code>二维条码/二维码（2-dimensional bar code）是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的；在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对应的几何形体来表示文字数值信息，通过图象输入设备或光电扫描设备自动识读以实现信息自动处理：它具有条码技术的一些共性：每种码制有其特定的字符集；每个字符占有一定的宽度；具有一定的校验功能等。同时还具有对不同行的信息自动识别功能、及处理图形旋转变化点。
+</code></pre>
+
+<h2>二维码扫描</h2>
+
+<p>现在都是2015年了。就不研究ZBar和ZXing了。今天要介绍的是iOS7.0后AVFoundation框架提供的原生二维码扫描。</p>
+
+<h2>二维码生成</h2>
+
+<h5>参考链接</h5>
+
+<p><a href="http://">二维码百度百科</a></p>
 ]]></content>
   </entry>
   
@@ -1338,7 +1360,7 @@ please contact us at support@github.com
 <ul>
 <li>git config &ndash;list  要检查已有的配置信息</li>
 <li>git config &ndash;global user.name &ldquo;John Doe&rdquo;  配置用户名</li>
-<li>git config &ndash;global user.email <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#106;&#111;&#104;&#110;&#x64;&#x6f;&#101;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#x6a;&#x6f;&#104;&#x6e;&#100;&#111;&#x65;&#x40;&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 配置邮件</li>
+<li>git config &ndash;global user.email <a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x6a;&#111;&#104;&#110;&#100;&#111;&#x65;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#109;">&#106;&#x6f;&#104;&#x6e;&#100;&#x6f;&#101;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 配置邮件</li>
 <li>git config &ndash;global core.editor emacs   文本编辑器</li>
 <li>git config &ndash;global merge.tool vimdiff  配置差异性分析工具（Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。）</li>
 <li>git config user.name   查看用户名</li>
