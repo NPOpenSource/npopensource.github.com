@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-12T11:31:21+08:00</updated>
+  <updated>2015-08-12T17:17:47+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -18,7 +18,74 @@
     <link href="http://npopensource.github.io/blog/2015/08/12/zi-ding-yi-xiang-ji/"/>
     <updated>2015-08-12T11:31:08+08:00</updated>
     <id>http://npopensource.github.io/blog/2015/08/12/zi-ding-yi-xiang-ji</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<h2>调用系统相机</h2>
+
+<p>调用系统相机一般的功能是可以满足的，如果没有特殊的要求要求，可以直接用系统相机。</p>
+
+<p>代码如下：</p>
+
+<pre><code>调用照相机
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+
+    UIImagePickerController * picker = [[UIImagePickerController alloc]init];
+    picker.delegate = self;
+    block(picker);
+    //摄像头
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:picker animated:YES completion:^{
+
+    }];
+}else{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"你没有摄像头" delegate:nil cancelButtonTitle:@"Drat!" otherButtonTitles:nil];
+    [alert show];
+
+}
+</code></pre>
+
+<p>获取图片或者取消图片实现代理</p>
+
+<pre><code>- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+
+UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+if ([self respondsToSelector:@selector(getCameraImage:)]) {
+    [self getCameraImage:image];
+}
+[self dismissViewControllerAnimated:YES completion:^{
+
+}];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+[self dismissViewControllerAnimated:YES completion:^{
+
+}];
+}
+</code></pre>
+
+<p>以上代码只是简单的调用下系统相机。并没有对相机进行相关设置。</p>
+
+<p>配置前</p>
+
+<p><img src="http://npopensource.github.io/images/comera1.jpg" alt="image" /></p>
+
+<pre><code>注意将系统相机配置成中文 ，在工程文件plist 中添加下面一项即可。
+</code></pre>
+
+<p><img src="http://npopensource.github.io/images/camerasytemChinese.png" alt="image" /></p>
+
+<p>配置后</p>
+
+<p><img src="http://npopensource.github.io/images/comera2.jpg" alt="image" /></p>
+
+<h2>自定义相机</h2>
+
+<pre><code>我个人偏向用自定义相机，个人理由只有一条，可以高度定制。（虽然有点麻烦）
+</code></pre>
+
+<h5>参考连接</h5>
 ]]></content>
   </entry>
   
@@ -1360,7 +1427,7 @@ please contact us at support@github.com
 <ul>
 <li>git config &ndash;list  要检查已有的配置信息</li>
 <li>git config &ndash;global user.name &ldquo;John Doe&rdquo;  配置用户名</li>
-<li>git config &ndash;global user.email <a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x6a;&#111;&#104;&#110;&#100;&#111;&#x65;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#109;">&#106;&#x6f;&#104;&#x6e;&#100;&#x6f;&#101;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 配置邮件</li>
+<li>git config &ndash;global user.email <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#x6a;&#x6f;&#104;&#110;&#100;&#x6f;&#101;&#x40;&#x65;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#x6d;">&#x6a;&#111;&#x68;&#110;&#x64;&#111;&#x65;&#64;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> 配置邮件</li>
 <li>git config &ndash;global core.editor emacs   文本编辑器</li>
 <li>git config &ndash;global merge.tool vimdiff  配置差异性分析工具（Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。）</li>
 <li>git config user.name   查看用户名</li>

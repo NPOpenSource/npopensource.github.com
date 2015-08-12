@@ -9,8 +9,7 @@
   <meta name="author" content="温杰">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="调用系统相机 调用系统相机一般的功能是可以满足的，如果没有特殊的要求要求，可以直接用系统相机。 代码如下： 调用照相机 if ([UIImagePickerController isSourceTypeAvailable: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,7 +84,74 @@
   </header>
 
 
-<div class="entry-content">
+<div class="entry-content"><h2>调用系统相机</h2>
+
+<p>调用系统相机一般的功能是可以满足的，如果没有特殊的要求要求，可以直接用系统相机。</p>
+
+<p>代码如下：</p>
+
+<pre><code>调用照相机
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+
+    UIImagePickerController * picker = [[UIImagePickerController alloc]init];
+    picker.delegate = self;
+    block(picker);
+    //摄像头
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:picker animated:YES completion:^{
+
+    }];
+}else{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"你没有摄像头" delegate:nil cancelButtonTitle:@"Drat!" otherButtonTitles:nil];
+    [alert show];
+
+}
+</code></pre>
+
+<p>获取图片或者取消图片实现代理</p>
+
+<pre><code>- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+
+UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+if ([self respondsToSelector:@selector(getCameraImage:)]) {
+    [self getCameraImage:image];
+}
+[self dismissViewControllerAnimated:YES completion:^{
+
+}];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+[self dismissViewControllerAnimated:YES completion:^{
+
+}];
+}
+</code></pre>
+
+<p>以上代码只是简单的调用下系统相机。并没有对相机进行相关设置。</p>
+
+<p>配置前</p>
+
+<p><img src="/images/comera1.jpg" alt="image" /></p>
+
+<pre><code>注意将系统相机配置成中文 ，在工程文件plist 中添加下面一项即可。
+</code></pre>
+
+<p><img src="/images/camerasytemChinese.png" alt="image" /></p>
+
+<p>配置后</p>
+
+<p><img src="/images/comera2.jpg" alt="image" /></p>
+
+<h2>自定义相机</h2>
+
+<pre><code>我个人偏向用自定义相机，个人理由只有一条，可以高度定制。（虽然有点麻烦）
+</code></pre>
+
+<h5>参考连接</h5>
 </div>
 
 
