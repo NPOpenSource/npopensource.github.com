@@ -9,8 +9,7 @@
   <meta name="author" content="温杰">
 
   
-  <meta name="description" content="新的一天新的开始。只有不断的学习不断的积累才能强大自己。加油。
-">
+  <meta name="description" content="纪要 由于要用markdown写博客并进行排版，所以暂时先简单的学习使用下。 编辑软件 Mou link markdown语言编辑软件. 语法纪要 段落、标题、区块代码 一个段落是由一个以上的连接的行句组成，而一个以上的空行则会划分出不同的段落（空行的定义是显示上看起来像是空行，就被视为空行， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +71,451 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/08/03/markdown/">Makedown的简单使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-03T11:52:07+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>11:52 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>纪要</h2>
+
+<pre><code> 由于要用markdown写博客并进行排版，所以暂时先简单的学习使用下。
+</code></pre>
+
+<h2>编辑软件</h2>
+
+<p>   <a href="http://pan.baidu.com/s/1qW9RRBI">Mou link</a></p>
+
+<pre><code>markdown语言编辑软件.
+</code></pre>
+
+<h2>语法纪要</h2>
+
+<h4>段落、标题、区块代码</h4>
+
+<p>一个段落是由一个以上的连接的行句组成，而一个以上的空行则会划分出不同的段落（空行的定义是显示上看起来像是空行，就被视为空行，例如有一行只有空白和 tab，那该行也会被视为空行），一般的段落不需要用空白或换行缩进。</p>
+
+<p>Markdown 支持两种标题的语法，Setext 和 atx 形式。Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），Atx 形式在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶。</p>
+
+<p>区块引用则使用 email 形式的 &lsquo;>&rsquo; 角括号</p>
+
+<p>常用语法：
+    <table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>     <br/>
+    </tr>
+    <tr>
+        <td>H1  </td>
+        <td># Heading   </td>
+        <td>    </td>
+        <td>    </td>
+    </tr>
+      <tr>
+        <td>H2  </td>
+        <td>## Heading  </td>
+        <td>Ctrl/⌘ + H    </td>
+        <td>不好用   </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>H3  </td>
+        <td>### Heading </td>
+        <td>Ctrl/⌘ + H (x2)   </td>
+        <td>不好用   </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Blockquote</td>
+        <td>> quote</td>
+        <td>Ctrl + Q    </td>
+        <td>好用  </td>
+    </tr>
+     </tr>
+    </table></p>
+
+<p>Markdown 语法:</p>
+
+<pre><code>A First Level Header
+====================
+A Second Level Header
+---------------------
+
+Now is the time for all good men to come to the aid of their country. This is just a regular paragraph.
+
+The quick brown fox jumped over the lazy dog's back.
+### Header 3
+
+&gt; This is a blockquote.
+&gt; 
+&gt; This is the second paragraph in the blockquote.
+&gt;
+&gt; ## This is an H2 in a blockquote
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;h1&gt;A First Level Header&lt;/h1&gt;
+&lt;h2&gt;A Second Level Header&lt;/h2&gt;
+&lt;p&gt;Now is the time for all good men to come to the aid of their country. This is just a regular paragraph.&lt;/p&gt;
+&lt;p&gt;The quick brown fox jumped over the lazy dog's back.&lt;/p&gt;
+&lt;h3&gt;Header 3&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a blockquote.&lt;/p&gt;
+&lt;p&gt;This is the second paragraph in the blockquote.&lt;/p&gt;
+&lt;h2&gt;This is an H2 in a blockquote&lt;/h2&gt;
+&lt;/blockquote&gt;
+</code></pre>
+
+<p>注释：</p>
+
+<pre><code>如果你在项目之间插入空行，那项目的内容会用 &lt;p&gt; 包起来，你也可以在一个项目内放上多个段落，只要在它前面缩排 4 个空白或 1 个 tab 。
+如果要建立一个已经格式化好的代码区块，只要每行都缩进 4 个空格或是一个 tab 就可以了，而 &amp;、&lt; 和 &gt; 也一样会自动转成 HTML 实体
+</code></pre>
+
+<h4>修辞和强调</h4>
+
+<p>Markdown 使用星号和底线来标记需要强调的区段。</p>
+
+<p>  常用语法：
+    <table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>     <br/>
+    </tr>
+    <tr>
+        <td>Bold    </td>
+        <td><strong>text</strong>    </td>
+        <td>⌘ + B（mac）</td>
+        <td>好用  </td>     <br/>
+    </tr>
+      <tr>
+        <td>Emphasize   </td>
+        <td><em>text</em>  </td>
+        <td>⌘ + I（mac）    </td>
+        <td>好用  </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Strike-through  </td>
+        <td>#<del>text</del>   </td>
+        <td>Ctrl + Alt + U</td>
+        <td>不好用</td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Blockquote</td>
+        <td>> quote</td>
+        <td>Ctrl + Q    </td>
+    </tr>
+     </tr>
+    </table></p>
+
+<p>   Markdown 语法:</p>
+
+<pre><code>Some of these words *are emphasized*.
+Some of these words _are emphasized also_.
+Use two asterisks for **strong emphasis**.
+Or, if you prefer, __use two underscores instead__.
+</code></pre>
+
+<p>输出 HTML 为:</p>
+
+<pre><code>&lt;p&gt;Some of these words &lt;em&gt;are emphasized&lt;/em&gt;.
+Some of these words &lt;em&gt;are emphasized also&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Use two asterisks for &lt;strong&gt;strong emphasis&lt;/strong&gt;.
+Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;/p&gt;
+</code></pre>
+
+<h4>列表</h4>
+
+<p>无序列表使用星号、加号和减号来做为列表的项目标记，这些符号是都可以使用的.</p>
+
+<p>常用语法：</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>       
+    </tr>
+    <tr>
+        <td>List    </td>
+        <td>* item  </td>
+        <td>Ctrl + L</td>
+        <td>好用  </td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>+ item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>- item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>1 item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+    </table>
+
+
+<p>星号</p>
+
+<pre><code>* Candy.
+* Gum.
+* Booze.    
+</code></pre>
+
+<p>加号</p>
+
+<pre><code>+ Candy.
++ Gum.
++ Booze.    
+</code></pre>
+
+<p>和减号</p>
+
+<pre><code>- Candy.
+- Gum.
+- Booze.
+</code></pre>
+
+<p>都会输出 HTML 为：</p>
+
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;Candy.&lt;/li&gt;
+    &lt;li&gt;Gum.&lt;/li&gt;
+    &lt;li&gt;Booze.&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<p>有序的列表则是使用一般的数字接着一个英文句点作为项目标记</p>
+
+<pre><code>1. Red
+2. Green
+3. Blue
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;ol&gt;
+&lt;li&gt;Red&lt;/li&gt;
+&lt;li&gt;Green&lt;/li&gt;
+&lt;li&gt;Blue&lt;/li&gt;
+&lt;/ol&gt;
+</code></pre>
+
+<h4>链接</h4>
+
+<p>Markdown 支援两种形式的链接语法： 行内 和 参考 两种形式，两种都是使用角括号来把文字转成连结。</p>
+
+<p>常用语法</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>       
+    </tr>
+    <tr>
+        <td>Link    </td>
+        <td>[title](http://)    </td>
+        <td></td>
+    <tr>
+    </table>
+
+
+<p>行内形式是直接在后面用括号直接接上链接：</p>
+
+<pre><code>This is an [example link](http://example.com/).
+</code></pre>
+
+<p>输出 HTML 为</p>
+
+<pre><code>&lt;p&gt;This is an &lt;a href="http://example.com/"&gt;example link&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+
+<p>你也可以选择性的加上 title 属性：</p>
+
+<pre><code>This is an [example link](http://example.com/ "With a Title").
+</code></pre>
+
+<p>输出 HTML 为</p>
+
+<pre><code>&lt;p&gt;This is an &lt;a href="http://example.com/" title="With a Title"&gt;example link&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+
+<p>参考形式的链接让你可以为链接定一个名称，之后你可以在文件的其他地方定义该链接的内容：</p>
+
+<pre><code>I get 10 times more traffic from [Google][1] than from[Yahoo][2] or [MSN][3].
+
+[1]: http://google.com/ "Google"
+[2]: http://search.yahoo.com/ "Yahoo Search"
+[3]: http://search.msn.com/ "MSN Search"
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;p&gt;I get 10 times more traffic from &lt;a href="http://google.com/"title="Google"&gt;Google&lt;/a&gt; than from &lt;a href="http://search.yahoo.com/"title="Yahoo Search"&gt;Yahoo&lt;/a&gt; or &lt;a href="http://search.msn.com/"title="MSN Search"&gt;MSN&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+
+<p>title 属性是选择性的，链接名称可以用字母、数字和空格，但是<strong>不分大小写</strong>：</p>
+
+<pre><code>I start my morning with a cup of coffee and [The New York Times][NY Times].
+
+[ny times]: http://www.nytimes.com/
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;p&gt;I start my morning with a cup of coffee and&lt;a href="http://www.nytimes.com/"&gt;The New York Times&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+
+<h4>代码</h4>
+
+<p>常用语法</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>               
+    </tr>
+    <tr>
+        <td>Inline Code     </td>
+        <td>`code`  </td>
+        <td>⌘ + K</td>
+        <td>好用</td>
+    <tr>
+    </table>
+
+
+<p>在一般的段落文字中，你可以使用反引号 ` 来标记代码区段，区段内的 &amp;、&lt; 和 > 都会被自动的转换成 HTML 实体，这项特性让你可以很容易的在代码区段内插入 HTML 码：</p>
+
+<pre><code>I strongly recommend against using any `&lt;blink&gt;` tags.I wish SmartyPants used named entities like `&amp;mdash;`instead of decimal-encoded entites like `&amp;#8212;`.
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;p&gt;I strongly recommend against using any&lt;code&gt;&amp;lt;blink&amp;gt;&lt;/code&gt; tags.&lt;/p&gt;&lt;p&gt;I wish SmartyPants used named entities like&lt;code&gt;&amp;amp;mdash;&lt;/code&gt; instead of decimal-encodedentites like &lt;code&gt;&amp;amp;#8212;&lt;/code&gt;.&lt;/p&gt;
+</code></pre>
+
+<h3>图片</h3>
+
+<blockquote><p>图片的语法和链接很像。</p></blockquote>
+
+<p>行内形式（title 是选择性的）：</p>
+
+<pre><code>![alt text](/images/email.png "Title")
+</code></pre>
+
+<p>结果</p>
+
+<p><img src="/images/email.png" title="Title" alt="alt text" /></p>
+
+<p>参考形式：</p>
+
+<pre><code>![alt text][id]
+[id]: /images/email.png "Title" 
+</code></pre>
+
+<p>结果</p>
+
+<p><img src="/images/email.png" title="Title" alt="alt text" /></p>
+
+<blockquote><p>  提示：github引用图片资源应该放在octopress/source/images/</p></blockquote>
+
+<h4>table</h4>
+
+<p>markdown 生成table 可以直接用html标签 相对比较麻烦 （github 不支持表格）</p>
+
+<pre><code>&lt;table border=4 width=250 align=center bordercolor=red&gt;
+&lt;tr&gt;
+    &lt;td&gt;北京  &lt;/td&gt;
+    &lt;td&gt;雾霾  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;深圳  &lt;/td&gt;
+    &lt;td&gt;暴雨  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+只有width 起作用
+</code></pre>
+
+<p>响应的效果</p>
+
+<table border=4 width=250 align=center bordercolor=red>
+    <tr>
+        <td>北京  </td>
+        <td>雾霾  </td>
+    </tr>
+    <tr>
+        <td>深圳  </td>
+        <td>暴雨  </td>
+    </tr>
+    </table>
+
+
+<h4>文本样式</h4>
+
+<ul>
+<li>链接 :<a href="URL">Title</a></li>
+<li>加粗 :<strong>Bold</strong></li>
+<li>斜体字 :<em>Italics</em></li>
+<li>删除线 :<del>text</del></li>
+<li>高亮 :==text==</li>
+<li>段落 : 段落之间空一行</li>
+<li>换行符 : 一行结束时输入两个空格</li>
+<li>列表 :* 添加星号成为一个新的列表项。</li>
+<li>引用 :> 引用内容</li>
+<li>内嵌代码 : <code>alert('Hello World');</code></li>
+<li>画水平线 (HR) :&mdash;&mdash;&ndash;</li>
+</ul>
+
+
+<h5>参考链接：</h5>
+
+<ul>
+<li><a href="http://wowubuntu.com/markdown/basic.html">http://wowubuntu.com/markdown/basic.html</a></li>
+<li><a href="http://baike.baidu.com/link?url=tyTi8BEbR9O32Af2md0WHPGdFwH_ZGSU0oVORrowucw1Nw8OWiuEJOoGeihjIcy5DH9tJCD-8s0RLPIaZKfeaa">markdown百度百科</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/07/31/%E5%8D%9A%E5%AE%A2%E7%AC%AC%E4%B8%80%E5%A4%A9/">博客的第一天</a></h1>
     
     
@@ -111,11 +555,15 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/08/17/avfoundation-dot-fromworkde-xue-xi/">AVFoundation.fromwork的学习</a>
+        <a href="/blog/2015/08/17/avfoundation-dot-fromworkde-xue-xi/">AVFoundation.framework的学习</a>
       </li>
     
       <li class="post">
@@ -124,10 +572,6 @@
     
       <li class="post">
         <a href="/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma/">进军二维码，从零开始学习二维码</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/10/cgaffinetransform-dot-hlei-de-xue-xi-he-yuan-li-jiang-jie/">CGAffineTransform.h类的学习和原理讲解</a>
       </li>
     
   </ul>
