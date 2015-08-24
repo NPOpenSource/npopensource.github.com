@@ -4,7 +4,7 @@
   <title><![CDATA[温杰的博客]]></title>
   <link href="http://npopensource.github.io/atom.xml" rel="self"/>
   <link href="http://npopensource.github.io/"/>
-  <updated>2015-08-18T17:01:07+08:00</updated>
+  <updated>2015-08-24T11:47:49+08:00</updated>
   <id>http://npopensource.github.io/</id>
   <author>
     <name><![CDATA[温杰]]></name>
@@ -12,6 +12,96 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dsym文件分析]]></title>
+    <link href="http://npopensource.github.io/blog/2015/08/24/dsymwen-jian-fen-xi/"/>
+    <updated>2015-08-24T11:14:42+08:00</updated>
+    <id>http://npopensource.github.io/blog/2015/08/24/dsymwen-jian-fen-xi</id>
+    <content type="html"><![CDATA[<p>今天查看线上app友盟崩溃日志，发现好多内存地址没有反编译出来，无法查找崩溃点在哪。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-[NSDecimalNumber length]: unrecognized selector sent to instance 0x1df192c0
+</span><span class='line'>(null)
+</span><span class='line'>(
+</span><span class='line'>  0   CoreFoundation                      0x29f1c007  + 150
+</span><span class='line'>  1   libobjc.A.dylib                     0x3885fc8b objc_exception_throw + 38
+</span><span class='line'>  2   CoreFoundation                      0x29f21409  + 0
+</span><span class='line'>  3   CoreFoundation                      0x29f1f327  + 714
+</span><span class='line'>  4   CoreFoundation                      0x29e4ee78 _CF_forwarding_prep_0 + 24
+</span><span class='line'>  5   ETCP                                0x5d555 ETCP + 365909
+</span><span class='line'>  6   UIKit                               0x2d612dad  + 464
+</span><span class='line'>  7   UIKit                               0x2d804215  + 1704
+</span><span class='line'>  8   UIKit                               0x2d7fbcfb  + 106
+</span><span class='line'>  9   FrontBoardServices                  0x30afaec9  + 16
+</span><span class='line'>  10  CoreFoundation                      0x29ee1fd5  + 12
+</span><span class='line'>  11  CoreFoundation                      0x29ee1299  + 216
+</span><span class='line'>  12  CoreFoundation                      0x29edfa37  + 790
+</span><span class='line'>  13  CoreFoundation                      0x29e2c201 CFRunLoopRunSpecific + 476
+</span><span class='line'>  14  CoreFoundation                      0x29e2c013 CFRunLoopRunInMode + 106
+</span><span class='line'>  15  GraphicsServices                    0x318fd201 GSEventRunModal + 136
+</span><span class='line'>  16  UIKit                               0x2d5f8a09 UIApplicationMain + 1440
+</span><span class='line'>  17  ETCP                                0xa52f7 ETCP + 660215
+</span><span class='line'>  18  libdyld.dylib                       0x38e11aaf  + 2
+</span><span class='line'>)
+</span><span class='line'>dSYM UUID: 429DD54C-BACF-3CFB-8C0D-D40526224C4F
+</span><span class='line'>CPU Type: armv7
+</span><span class='line'>Slide Address: 0x00004000
+</span><span class='line'>Binary Image: xx
+</span><span class='line'>Base Address: 0x0005e000
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所以上网查找方法解析改内存地址，了解到需要到上线app 的release版本的 dsym文件。</p>
+
+<h3>具体操作</h3>
+
+<p>1.找到该app release 版本的dsym文件
+2.打开终端 cd 进入改 dsym文件所在文件夹
+3.用atos 命令 进行地址解析</p>
+
+<pre><code>atos -o xx.app.dSYM/Contents/Resources/DWARF/xx 0x5d555
+
+结果
+-[AppDelegate applicationDidBecomeActive:] (in ETCP) (AppDelegate.mm:508)
+</code></pre>
+
+<p>问题出在那一目了然。</p>
+
+<h3>软件</h3>
+
+<p>这样用终端不太爽啊，找了个免费软件，上传自己的云盘。<a href="http://pan.baidu.com/s/1o6N4Chs">下载链接</a></p>
+
+<p>用法可参考<a href="http://www.cocoachina.com/ios/20141219/10694.html">link</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[目前常用第三方插件]]></title>
@@ -80,7 +170,33 @@ defaults delete com.apple.dt.Xcode DVTPlugInManagerNonApplePlugIns-Xcode-6.4
     <id>http://npopensource.github.io/blog/2015/08/17/avfoundation-dot-fromworkde-xue-xi</id>
     <content type="html"><![CDATA[<p>最近学习自定义相机的相关知识，可以自定义相机成功，但是对AVFoundation不是很了解，这里有必要对这个AVFoundation.framework。</p>
 
-<h2>介绍</h2>
+<p>（感觉写点东西咋这么困难）</p>
+
+<h2>学习类对象</h2>
+
+<blockquote><p>AVCaptureSession、AVCaptureInput 和 AVCaptureOutput 的学习</p></blockquote>
+
+<pre><code>    AVCaptureInput is an abstract base-class describing an input data source to an AVCaptureSession object. 
+
+    AVCaptureOutput is an abstract base class describing an output destination of an AVCaptureSession object
+
+    You use an AVCaptureSession object to coordinate the flow of data from AV input devices to outputs
+</code></pre>
+
+<p><img src="http://npopensource.github.io/iamges/AVCaptureOne.png" alt="image" /></p>
+
+<p>从图可以看出我们是用 session 管理输入输出设备的。session 就类似管理中心</p>
+
+<p>我们怎么用呢。
+1首先我们要获取一个输入对象（AVCaptureInput）
+2我们还需要获取一个输出对象（AVCaptureOutput）
+3还需要一个管理中心对象（AVCaptureSession）</p>
+
+<p><img src="http://npopensource.github.io/images/AVCaptureTwo.png" alt="image" /></p>
+
+<p>4.将他们组合安装。</p>
+
+<p>5.启动设备就可以了。</p>
 
 <h5>参考连接</h5>
 
@@ -654,6 +770,8 @@ nothing to commit, working directory clean
 </code></pre>
 
 <p>最后再次运行 rake deploy 就行了。</p>
+
+<p>个性化设置<a href="http://www.tuicool.com/articles/3muYJj">参考链接</a></p>
 ]]></content>
   </entry>
   
@@ -1506,7 +1624,7 @@ please contact us at support@github.com
 <ul>
 <li>git config &ndash;list  要检查已有的配置信息</li>
 <li>git config &ndash;global user.name &ldquo;John Doe&rdquo;  配置用户名</li>
-<li>git config &ndash;global user.email <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#x6a;&#111;&#104;&#110;&#100;&#111;&#101;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#x6f;&#x6d;">&#106;&#x6f;&#104;&#x6e;&#x64;&#x6f;&#x65;&#64;&#101;&#x78;&#97;&#109;&#112;&#108;&#101;&#x2e;&#99;&#111;&#x6d;</a> 配置邮件</li>
+<li>git config &ndash;global user.email <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x6a;&#111;&#x68;&#x6e;&#x64;&#111;&#x65;&#x40;&#101;&#120;&#97;&#x6d;&#112;&#x6c;&#101;&#46;&#99;&#x6f;&#109;">&#x6a;&#x6f;&#x68;&#110;&#100;&#x6f;&#101;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;</a> 配置邮件</li>
 <li>git config &ndash;global core.editor emacs   文本编辑器</li>
 <li>git config &ndash;global merge.tool vimdiff  配置差异性分析工具（Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。）</li>
 <li>git config user.name   查看用户名</li>

@@ -9,7 +9,8 @@
   <meta name="author" content="温杰">
 
   
-  <meta name="description" content="纪要 由于要用markdown写博客并进行排版，所以暂时先简单的学习使用下。 编辑软件 Mou link markdown语言编辑软件. 语法纪要 段落、标题、区块代码 一个段落是由一个以上的连接的行句组成，而一个以上的空行则会划分出不同的段落（空行的定义是显示上看起来像是空行，就被视为空行， &hellip;">
+  <meta name="description" content="刚开始接触octopress ，对rake命令使用的较少，特在此记录，记录每个命令的作用。 命令 rake generate 将 /octopress/source/_posts 目录下的 .markdown 文件 翻译成html网页
+rake preview 生成本地网页服务器，端口号4000 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +66,45 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/04/rakezai-octopresszhong-de-shi-yong-ming-ling-jie-shao/">Rake在octopress中的使用命令介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-04T16:23:23+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:23 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>刚开始接触octopress ，对rake命令使用的较少，特在此记录，记录每个命令的作用。</p>
+
+<h2>命令</h2>
+
+<ul>
+<li>rake generate 将 /octopress/source/_posts 目录下的 .markdown 文件 翻译成html网页</li>
+<li>rake preview 生成本地网页服务器，端口号4000   <a href="http://localhost:4000">http://localhost:4000</a></li>
+<li>rake deploy  将本地的_deploy 修改的文件提交到 github上面去。</li>
+<li>rake new_post[&lsquo;新的博客名字&rsquo;] 在 octopress/source/_posts 目录下创建博客，名字为《新的博客名字》</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -555,6 +595,10 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/24/dsymwen-jian-fen-xi/">Dsym文件分析</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
       </li>
     
@@ -568,10 +612,6 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
     
       <li class="post">
         <a href="/blog/2015/08/12/zi-ding-yi-xiang-ji/">自定义相机</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma/">进军二维码，从零开始学习二维码</a>
       </li>
     
   </ul>

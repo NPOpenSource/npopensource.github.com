@@ -9,8 +9,7 @@
   <meta name="author" content="温杰">
 
   
-  <meta name="description" content="最近学习自定义相机的相关知识，可以自定义相机成功，但是对AVFoundation不是很了解，这里有必要对这个AVFoundation.framework。 介绍 参考连接 苹果AVFoundation ref 苹果AVFoundation Programming Guide
-">
+  <meta name="description" content="最近学习自定义相机的相关知识，可以自定义相机成功，但是对AVFoundation不是很了解，这里有必要对这个AVFoundation.framework。 （感觉写点东西咋这么困难） 学习类对象 AVCaptureSession、AVCaptureInput 和 AVCaptureOutput &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,7 +86,33 @@
 
 <div class="entry-content"><p>最近学习自定义相机的相关知识，可以自定义相机成功，但是对AVFoundation不是很了解，这里有必要对这个AVFoundation.framework。</p>
 
-<h2>介绍</h2>
+<p>（感觉写点东西咋这么困难）</p>
+
+<h2>学习类对象</h2>
+
+<blockquote><p>AVCaptureSession、AVCaptureInput 和 AVCaptureOutput 的学习</p></blockquote>
+
+<pre><code>    AVCaptureInput is an abstract base-class describing an input data source to an AVCaptureSession object. 
+
+    AVCaptureOutput is an abstract base class describing an output destination of an AVCaptureSession object
+
+    You use an AVCaptureSession object to coordinate the flow of data from AV input devices to outputs
+</code></pre>
+
+<p><img src="/iamges/AVCaptureOne.png" alt="image" /></p>
+
+<p>从图可以看出我们是用 session 管理输入输出设备的。session 就类似管理中心</p>
+
+<p>我们怎么用呢。
+1首先我们要获取一个输入对象（AVCaptureInput）
+2我们还需要获取一个输出对象（AVCaptureOutput）
+3还需要一个管理中心对象（AVCaptureSession）</p>
+
+<p><img src="/images/AVCaptureTwo.png" alt="image" /></p>
+
+<p>4.将他们组合安装。</p>
+
+<p>5.启动设备就可以了。</p>
 
 <h5>参考连接</h5>
 
@@ -142,6 +167,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/24/dsymwen-jian-fen-xi/">Dsym文件分析</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
       </li>
     
@@ -155,10 +184,6 @@
     
       <li class="post">
         <a href="/blog/2015/08/12/zi-ding-yi-xiang-ji/">自定义相机</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma/">进军二维码，从零开始学习二维码</a>
       </li>
     
   </ul>
