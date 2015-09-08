@@ -1,0 +1,587 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ios7旋转屏学习总结和遇到的问题 - 温杰的博客</title>
+  <meta name="author" content="温杰">
+
+  
+  <meta name="description" content="今天测试人员反馈一个bug 说是 iPhone6 Plus（可以横屏显示icon），横屏启动应用的时候，咱们的app（只支持竖屏） 显示混乱。 window 的 bounds {0, 0}, {736, 414} 状态栏也是横屏的（但是应用设置的竖屏的）。 解决办法是 将导航栏 [[ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://npopensource.github.io/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="温杰的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">温杰的博客</a></h1>
+  
+    <h2>不积跬步无以至千里,不积小流无以成江海</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="npopensource.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">ios相关</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ios7旋转屏学习总结和遇到的问题</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-28T15:55:36+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>今天测试人员反馈一个bug 说是 iPhone6 Plus（可以横屏显示icon），横屏启动应用的时候，咱们的app（只支持竖屏） 显示混乱。</p>
+
+<p><img src="/images/xuanzhuanOne.png" alt="image" /></p>
+
+<p>window 的</p>
+
+<pre><code>bounds {0, 0}, {736, 414}
+</code></pre>
+
+<p> 状态栏也是横屏的（但是应用设置的竖屏的）。</p>
+
+<p>解决办法是 将导航栏</p>
+
+<pre><code>    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+</code></pre>
+
+<p>结果是</p>
+
+<p><img src="/images/xuanzhuanTwo.png" alt="image" /></p>
+
+<p>貌似看上去好了。单实际不然 现在window 的bounds 还是</p>
+
+<pre><code> {0, 0}, {736, 414}
+</code></pre>
+
+<p><img src="/iamges/xuanzhuanThree.jpeg" alt="image" /></p>
+
+<p>如图位置是不能进行点击的。</p>
+
+<pre><code>（屏幕实际bounds {0, 0}, {414, 736}  ）
+</code></pre>
+
+<p>再检测工程代码 显示如下</p>
+
+<pre><code>#define MAINSCREEN [UIScreen mainScreen].bounds 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{
+
+    NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+  self.window = [[UIWindow alloc]initWithFrame:MAINSCREEN];
+[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+    NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+.....
+
+}
+</code></pre>
+
+<p>实际上时window 生成frame的时候出错了。</p>
+
+<p>在 调用之前</p>
+
+<pre><code>    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+</code></pre>
+
+<p>的时候 MAINSCREEN  的</p>
+
+<pre><code>bounds  {0, 0}, {736, 414}
+</code></pre>
+
+<p>导致window初始化错误</p>
+
+<p>调用之后 MAINSCREEN 的</p>
+
+<pre><code>bounds 为 {0, 0}, {414, 736}
+</code></pre>
+
+<p> 恢复正常</p>
+
+<p>所以修改代码为</p>
+
+<pre><code>#define MAINSCREEN [UIScreen mainScreen].bounds 
+
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+self.window = [[UIWindow alloc]initWithFrame:MAINSCREEN];
+NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+    。。。
+}
+</code></pre>
+
+<p> iPhone6 Plus 横屏问题得以解决。</p>
+
+<pre><code>总结：
+    1.状态栏（status bar）控制屏幕显示文本的方向。
+    2.window 控制app显示的区域范围。
+</code></pre>
+
+<h3>基础知识</h3>
+
+<blockquote><p>UIDeviceOrientation 和 UIInterfaceOrientation 设备旋转的用法</p></blockquote>
+
+<p>UIDeviceOrientation      是机器硬件的当前旋转方向   这个你只能取值 不能设置</p>
+
+<p>UIInterfaceOrientation   是你程序界面的当前旋转方向   这个可以设置</p>
+
+<pre><code>判断设备现在的方向：
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+</code></pre>
+
+<p>{
+    //宣告一個UIDevice指標，並取得目前Device的狀況
+    UIDevice *device = [UIDevice currentDevice] ;</p>
+
+<pre><code>//取得當前Device的方向，來當作判斷敘述。（Device的方向型態為Integer）
+switch (device.orientation) {
+    case UIDeviceOrientationFaceUp:
+    NSLog(@"螢幕朝上平躺");
+        break;
+
+    case UIDeviceOrientationFaceDown:
+    NSLog(@"螢幕朝下平躺");
+        break;
+
+    //系統無法判斷目前Device的方向，有可能是斜置 
+    case UIDeviceOrientationUnknown:
+    NSLog(@"未知方向");
+        break;
+
+    case UIDeviceOrientationLandscapeLeft:
+    NSLog(@"螢幕向左橫置");
+        break;
+
+    case UIDeviceOrientationLandscapeRight:
+    NSLog(@"螢幕向右橫置");
+        break;
+
+    case UIDeviceOrientationPortrait:
+    NSLog(@"螢幕直立");
+        break;
+
+    case UIDeviceOrientationPortraitUpsideDown:
+    NSLog(@"螢幕直立，上下顛倒");
+        break;
+
+    default:
+    NSLog(@"無法辨識");
+        break;
+}
+
+// Return YES for supported orientations
+ return (interfaceOrientation ==        UIInterfaceOrientationLandscapeLeft); // 只支持向左横向, YES 表示支持所有方向
+}
+</code></pre>
+
+<p>或者</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+</span><span class='line'>{
+</span><span class='line'>UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+</span><span class='line'>if (UIDeviceOrientationIsLandscape(deviceOrientation)) NSLog(@"横向");    
+</span><span class='line'>else if(UIDeviceOrientationIsPortrait(deviceOrientation)) NSLog(@"纵向");
+</span><span class='line'>
+</span><span class='line'>// // Return YES for supported orientations
+</span><span class='line'>return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft); // 只支持向左横向, YES 表示支持所有方向
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> Portrait 表示 纵向，Landscape 表示 横向。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef enum {
+</span><span class='line'>    UIDeviceOrientationUnknown,
+</span><span class='line'>    UIDeviceOrientationPortrait,            // Device oriented vertically, home button on the bottom
+</span><span class='line'>    UIDeviceOrientationPortraitUpsideDown,  // Device oriented vertically, home button on the top
+</span><span class='line'>    UIDeviceOrientationLandscapeLeft,       // Device oriented horizontally, home button on the right
+</span><span class='line'>    UIDeviceOrientationLandscapeRight,      // Device oriented horizontally, home button on the left
+</span><span class='line'>    UIDeviceOrientationFaceUp,              // Device oriented flat, face up
+</span><span class='line'>    UIDeviceOrientationFaceDown             // Device oriented flat, face down
+</span><span class='line'>} UIDeviceOrientation;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>而对于UIInterfaceOrientation</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef NS_ENUM(NSInteger, UIInterfaceOrientation) {
+</span><span class='line'>    UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
+</span><span class='line'>    UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
+</span><span class='line'>    UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
+</span><span class='line'>    UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
+</span><span class='line'>    UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft
+</span><span class='line'>};</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>屏幕旋转屏幕（ios6以后版本）</h3>
+
+<blockquote><p> UIKit处理屏幕旋转的流程</p></blockquote>
+
+<p> 当加速计检测到方向变化的时候，会发出 UIDeviceOrientationDidChangeNotification 通知，这样任何关心方向变化的view都可以通过注册该通知，在设备方向变化的时候做出相应的响应。上一篇博客中，我们已经提到了在屏幕旋转的时候，UIKit帮助我们做了很多事情，方便我们完成屏幕旋转。</p>
+
+<p>　　UIKit的相应屏幕旋转的流程如下：</p>
+
+<p>1、设备旋转的时候，UIKit接收到旋转事件。</p>
+
+<p>2、UIKit通过AppDelegate通知当前程序的window。</p>
+
+<p>3、Window会知会它的rootViewController，判断该view controller所支持的旋转方向，完成旋转。</p>
+
+<p>4、如果存在弹出的view controller的话，系统则会根据弹出的view controller，来判断是否要进行旋转。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>When UIKit receives an orientation notification, it uses the UIApplication object and the root view controller to determine whether the new orientation is allowed. If both objects agree that the new orientation is supported, then the user interface is rotated to the new orientation. Otherwise the device orientation is ignored.
+</span><span class='line'>
+</span><span class='line'>When a view controller is presented over the root view controller, the system behavior changes in two ways. First, the presented view controller is used instead of the root view controller when determining whether an orientation is supported. Second, the presented view controller can also provide a preferred orientation. If the view controller is presented full screen, the user interface is presented in the preferred orientation. The user is expected to see that the orientation is different from the device orientation and rotate the device. A preferred orientation is most often used when the content must be presented in the new orientation.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>`</p>
+
+<blockquote><p>UIViewController实现屏幕旋转</p></blockquote>
+
+<p>在响应设备旋转时，我们可以通过UIViewController的方法实现更细粒度的控制，当view controller接收到window传来的方向变化的时候，流程如下：</p>
+
+<p>1、首先判断当前viewController是否支持旋转到目标方向，如果支持的话进入流程2，否则此次旋转流程直接结束。</p>
+
+<p>2、调用 willRotateToInterfaceOrientation:duration: 方法，通知view controller将要旋转到目标方向。如果该viewController是一个container view controller的话，它会继续调用其content view controller的该方法。这个时候我们也可以暂时将一些view隐藏掉，等旋转结束以后在现实出来。</p>
+
+<p>3、window调整显示的view controller的bounds，由于view controller的bounds发生变化，将会触发 viewWillLayoutSubviews 方法。这个时候self.interfaceOrientation和statusBarOrientation方向还是原来的方向。</p>
+
+<p>4、接着当前view controller的 willAnimateRotationToInterfaceOrientation:duration: 方法将会被调用。系统将会把该方法中执行的所有属性变化放到动animation block中。</p>
+
+<p>5、执行方向旋转的动画。</p>
+
+<p>6、最后调用 didRotateFromInterfaceOrientation: 方法，通知view controller旋转动画执行完毕。这个时候我们可以将第二部隐藏的view再显示出来。</p>
+
+<p>　　整个响应过程如下图所示：
+　　
+　　<img src="/images/xuanzhuanThree.png" alt="image" />
+　　</p>
+
+<blockquote><p>注意事项和建议</p></blockquote>
+
+<p>　　1）注意事项</p>
+
+<p>　　当我们的view controller隐藏的时候，设备方向也可能发生变化。例如view Controller A弹出一个全屏的view controller B的时候，由于A完全不可见，所以就接收不到屏幕旋转消息。这个时候如果屏幕方向发生变化，再dismiss B的时候，A的方向就会不正确。我们可以通过在view controller A的viewWillAppear中更新方向来修正这个问题。</p>
+
+<p>　　2）屏幕旋转时的一些建议</p>
+
+<p>在旋转过程中，暂时界面操作的响应。
+旋转前后，尽量当前显示的位置不变。
+对于view层级比较复杂的时候，为了提高效率在旋转开始前使用截图替换当前的view层级，旋转结束后再将原view层级替换回来。
+在旋转后最好强制reload tableview，保证在方向变化以后，新的row能够充满全屏。例如对于有些照片展示界面，竖屏只显示一列，但是横屏的时候显示列表界面，这个时候一个界面就会显示更多的元素，此时reload内容就是很有必要的。</p>
+
+<blockquote><p> 通知</p></blockquote>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIApplicationDidChangeStatusBarOrientationNotification
+</span><span class='line'>
+</span><span class='line'>注意这种方式监听的是StatusBar也就是状态栏的方向，所以这个是跟你的布局有关的，你的布局转了，才会接到这个通知，而不是设备旋转的通知。
+</span><span class='line'>当我们关注的东西和布局相关而不是纯粹设备旋转，关注这个通知。
+</span><span class='line'>  
+</span><span class='line'>UIDeviceOrientationDidChangeNotification
+</span><span class='line'>当我们关注的只是物理朝向时，我们通常需要注册该通知来解决问题。
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>处理UINavigationViewController 旋转策略</h3>
+
+<p>子类化UINavigationController，增加方法</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>return self.topViewController.shouldAutorotate;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>- (NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>return self.topViewController.supportedInterfaceOrientations;  
+</span><span class='line'>}  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>并且设定其为程序入口，或指定为 self.window.rootViewController</p>
+
+<p>随后添加自己的view controller，如果想禁止某个view controller的旋屏：（支持全部版本的控制）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation  
+</span><span class='line'>{  
+</span><span class='line'>    return (interfaceOrientation == UIInterfaceOrientationPortrait);  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>    return NO;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>    return UIInterfaceOrientationMaskPortrait;  
+</span><span class='line'>}  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果想又开启某个view controller的全部方向旋屏支持：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation  
+</span><span class='line'>{  
+</span><span class='line'>    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>    return UIInterfaceOrientationMaskAllButUpsideDown;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>    return YES;  
+</span><span class='line'>}  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>顺便提一下，如果整个应用所有view controller都不支持旋屏，那么干脆：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window  
+</span><span class='line'>{  
+</span><span class='line'>     return UIInterfaceOrientationMaskPortrait;  
+</span><span class='line'>} </span></code></pre></td></tr></table></div></figure>
+
+
+<h5>参考文章</h5>
+
+<p><a href="https://developer.apple.com/library/ios/featuredarticles/ViewControllerPGforiPhoneOS/RespondingtoDeviceOrientationChanges/RespondingtoDeviceOrientationChanges.html#//apple_ref/doc/uid/TP40007457-CH7-SW1">苹果文档</a></p>
+
+<p><a href="http://www.cnblogs.com/smileEvday/archive/2013/04/24/Rotate2.html">http://www.cnblogs.com/smileEvday/archive/2013/04/24/Rotate2.html</a></p>
+
+<p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/8035014">iOS6的旋屏控制技巧</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">温杰</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-08-28T15:55:36+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:55 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/24/dsymwen-jian-fen-xi/" title="Previous Post: dsym文件分析">&laquo; dsym文件分析</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/">Ios7旋转屏学习总结和遇到的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/24/dsymwen-jian-fen-xi/">Dsym文件分析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/17/avfoundation-dot-fromworkde-xue-xi/">AVFoundation.framework的学习</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - 温杰 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
