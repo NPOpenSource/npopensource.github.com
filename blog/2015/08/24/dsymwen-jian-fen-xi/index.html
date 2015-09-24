@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Dsym文件分析 - 温杰的博客</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="今天查看线上app友盟崩溃日志，发现好多内存地址没有反编译出来，无法查找崩溃点在哪。 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+-[NSDecimalNumber length]: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yoursite.com/blog/2015/08/24/dsymwen-jian-fen-xi/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="温杰的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">温杰的博客</a></h1>
+  
+    <h2>不积跬步无以至千里，不积小流无以成江海。</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yoursite.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Dsym文件分析</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-24T11:14:42+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:14 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>今天查看线上app友盟崩溃日志，发现好多内存地址没有反编译出来，无法查找崩溃点在哪。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-[NSDecimalNumber length]: unrecognized selector sent to instance 0x1df192c0
+</span><span class='line'>(null)
+</span><span class='line'>(
+</span><span class='line'>  0   CoreFoundation                      0x29f1c007  + 150
+</span><span class='line'>  1   libobjc.A.dylib                     0x3885fc8b objc_exception_throw + 38
+</span><span class='line'>  2   CoreFoundation                      0x29f21409  + 0
+</span><span class='line'>  3   CoreFoundation                      0x29f1f327  + 714
+</span><span class='line'>  4   CoreFoundation                      0x29e4ee78 _CF_forwarding_prep_0 + 24
+</span><span class='line'>  5   ETCP                                0x5d555 ETCP + 365909
+</span><span class='line'>  6   UIKit                               0x2d612dad  + 464
+</span><span class='line'>  7   UIKit                               0x2d804215  + 1704
+</span><span class='line'>  8   UIKit                               0x2d7fbcfb  + 106
+</span><span class='line'>  9   FrontBoardServices                  0x30afaec9  + 16
+</span><span class='line'>  10  CoreFoundation                      0x29ee1fd5  + 12
+</span><span class='line'>  11  CoreFoundation                      0x29ee1299  + 216
+</span><span class='line'>  12  CoreFoundation                      0x29edfa37  + 790
+</span><span class='line'>  13  CoreFoundation                      0x29e2c201 CFRunLoopRunSpecific + 476
+</span><span class='line'>  14  CoreFoundation                      0x29e2c013 CFRunLoopRunInMode + 106
+</span><span class='line'>  15  GraphicsServices                    0x318fd201 GSEventRunModal + 136
+</span><span class='line'>  16  UIKit                               0x2d5f8a09 UIApplicationMain + 1440
+</span><span class='line'>  17  ETCP                                0xa52f7 ETCP + 660215
+</span><span class='line'>  18  libdyld.dylib                       0x38e11aaf  + 2
+</span><span class='line'>)
+</span><span class='line'>dSYM UUID: 429DD54C-BACF-3CFB-8C0D-D40526224C4F
+</span><span class='line'>CPU Type: armv7
+</span><span class='line'>Slide Address: 0x00004000
+</span><span class='line'>Binary Image: xx
+</span><span class='line'>Base Address: 0x0005e000
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所以上网查找方法解析改内存地址，了解到需要到上线app 的release版本的 dsym文件。</p>
+
+<h3>具体操作</h3>
+
+<p>1.找到该app release 版本的dsym文件
+2.打开终端 cd 进入改 dsym文件所在文件夹
+3.用atos 命令 进行地址解析</p>
+
+<pre><code>atos -o xx.app.dSYM/Contents/Resources/DWARF/xx 0x5d555
+
+结果
+-[AppDelegate applicationDidBecomeActive:] (in ETCP) (AppDelegate.mm:508)
+</code></pre>
+
+<p>问题出在那一目了然。</p>
+
+<h3>软件</h3>
+
+<p>这样用终端不太爽啊，找了个免费软件，上传自己的云盘。<a href="http://pan.baidu.com/s/1o6N4Chs">下载链接</a></p>
+
+<p>用法可参考<a href="http://www.cocoachina.com/ios/20141219/10694.html">link</a></p>
+
+<p><a href="https://github.com/answer-huang/dSYMTools">工具源码</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-08-24T11:14:42+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:14 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/" title="Previous Post: 目前常用第三方插件">&laquo; 目前常用第三方插件</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/" title="Next Post: ios7旋转屏学习总结和遇到的问题">ios7旋转屏学习总结和遇到的问题 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/">coreImage.framework的学习</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/">Ios7旋转屏学习总结和遇到的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/24/dsymwen-jian-fen-xi/">Dsym文件分析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

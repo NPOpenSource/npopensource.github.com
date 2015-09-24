@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>coreImage.framework的学习 - 温杰的博客</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="关于 core Image CoreImage是一个图像框架，它基于OpenGL顶层创建，底层则用着色器来处理图像，这意味着它利用了GPU基于硬件加速来处理图像。CoreImage中有很多滤镜，它们能够一次给予一张图像或者视频帧多种视觉效果。而且滤镜可以连接起来组成一个滤镜链， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yoursite.com/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="温杰的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">温杰的博客</a></h1>
+  
+    <h2>不积跬步无以至千里，不积小流无以成江海。</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yoursite.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">coreImage.framework的学习</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-11T14:16:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:16 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>关于 core Image</h3>
+
+<p>CoreImage是一个图像框架，它基于OpenGL顶层创建，底层则用着色器来处理图像，这意味着它利用了GPU基于硬件加速来处理图像。CoreImage中有很多滤镜，它们能够一次给予一张图像或者视频帧多种视觉效果。而且滤镜可以连接起来组成一个滤镜链，把滤镜效果叠加起来处理图像。</p>
+
+<p><img src="/images/coreImage.jpg" alt="image" /></p>
+
+<p><img src="/images/coreImage1.png" alt="image" /></p>
+
+<h3>关于core image 类</h3>
+
+<ul>
+<li>CIFlilter 是代表滤片对象。一个滤片至少要有一个输入参数 能输出一张图片。</li>
+<li>CIImage 代表可以变的图片。</li>
+<li>CIContext 相当于画笔吧。</li>
+</ul>
+
+
+<h3>使用基本步骤</h3>
+
+<p>1 创建 CIContext 对象
+2 创建 CIImage 对象
+3 创建 CIFilter 对象设置输入参数
+4 获取 CIFilter 对象结果
+5 用 CIcontext 对象 进行绘制。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>首先引入coreImage.framework 
+</span><span class='line'>
+</span><span class='line'>///1 创建 CIContext 对象
+</span><span class='line'>CIContext *context = [CIContext contextWithOptions:nil];
+</span><span class='line'>//2 创建 CIImage 对象    CIImage *image = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>//3 创建 CIFilter 对象设置输入参数    CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];    [filter setValue:image forKey:kCIInputImageKey];    [filter setValue:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>
+</span><span class='line'>//4 获取 CIFilter 对象结果    CIImage *result = [filter valueForKey:kCIOutputImageKey];    
+</span><span class='line'>///5 用 CIcontext 对象 进行绘制。    CGRect extent = [result extent];    CGImageRef cgImage = [context createCGImage:result fromRect:extent];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>效果 如图</p>
+
+<p> <img src="/images/coreImage2.png" alt="image" /></p>
+
+<h3>core image 所有类 及每个类函数用法</h3>
+
+<ul>
+<li>CIColor</li>
+<li>CIContext</li>
+<li>CIDetector</li>
+<li>CIFeature</li>
+<li>CIFilter</li>
+<li>CIImage</li>
+<li>CIKernel</li>
+<li>CIVector</li>
+<li>CoreImage</li>
+<li>CoreImageDefines</li>
+</ul>
+
+
+<h4>CIContext 用法</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)CIContextTest
+</span><span class='line'>{
+</span><span class='line'>    
+</span><span class='line'>    ///mac 使用的方法
+</span><span class='line'>    {
+</span><span class='line'>//#if !TARGET_OS_IPHONE
+</span><span class='line'>//    + (CIContext *)contextWithCGLContext:(CGLContextObj)ctx
+</span><span class='line'>//pixelFormat:(CGLPixelFormatObj)pf
+</span><span class='line'>//colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>//options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_NA);
+</span><span class='line'>//#endif
+</span><span class='line'>        
+</span><span class='line'>//#if !TARGET_OS_IPHONE
+</span><span class='line'>//        + (CIContext *)contextWithCGLContext:(CGLContextObj)ctx
+</span><span class='line'>//    pixelFormat:(CGLPixelFormatObj)pf
+</span><span class='line'>//    options:(NSDictionary *)dict
+</span><span class='line'>//        __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_4,__MAC_10_6,__IPHONE_NA,__IPHONE_NA);
+</span><span class='line'>//#endif
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        + (CIContext *)contextWithCGContext:(CGContextRef)ctx
+</span><span class='line'>//    options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_NA);
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    CIContext *context =nil;
+</span><span class='line'>    ///cpu 渲染
+</span><span class='line'>//    context = [CIContext contextWithOptions:nil];
+</span><span class='line'>    
+</span><span class='line'>    ///gpu 渲染  优势是直到渲染完成才会复制到cpu中。
+</span><span class='line'>   
+</span><span class='line'>    EAGLContext  * eagl = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
+</span><span class='line'>//    context  = [CIContext contextWithEAGLContext:eagl];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    /// 如果不关心颜色 应该关闭颜色空间 不关闭会慢些。
+</span><span class='line'>    NSDictionary *options = @{ kCIContextWorkingColorSpace : [NSNull null] };
+</span><span class='line'>    context = [CIContext contextWithEAGLContext:eagl options:options];
+</span><span class='line'>    
+</span><span class='line'>    CIImage *image = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>    
+</span><span class='line'>    CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];    [filter setValue:image forKey:kCIInputImageKey];    [filter setValue:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    CIImage *result = [filter valueForKey:kCIOutputImageKey];    
+</span><span class='line'>    ///获取输入context尺寸 输入的图片尺寸不能大于size
+</span><span class='line'>   CGSize size= [context inputImageMaximumSize];
+</span><span class='line'>    NSLog(@"inputImageMaximumSize %@", NSStringFromCGSize(size));
+</span><span class='line'>    
+</span><span class='line'>    CGRect extent = [result extent];
+</span><span class='line'>    
+</span><span class='line'>    ///ios5 到ios6 才能使用 过时了。不做说明
+</span><span class='line'>    {
+</span><span class='line'>//        - (void)drawImage:(CIImage *)im atPoint:(CGPoint)p fromRect:(CGRect)src __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_4, __MAC_10_8, __IPHONE_5_0, __IPHONE_6_0);
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>
+</span><span class='line'>    ///这个函数使用是有限制的必须是contextWithEAGLContext 渲染的内容，也就是GPU 才能使用 并且渲染到CAEAGLayer 上
+</span><span class='line'>//    [context drawImage:result inRect:extent fromRect:CGRectMake(0, 0, 500, 250)];
+</span><span class='line'>    //    CGImageRef cgImage = [context createCGImage:result fromRect:extent];
+</span><span class='line'>    
+</span><span class='line'>    /// CIFormat 和 CGColorSpaceRef 空间配对使用才行 具体配对规则不懂颜色空间，暂时不做过多说明。
+</span><span class='line'>    CGImageRef cgImage =[context createCGImage:result fromRect:extent format:kCIFormatARGB8 colorSpace:CGColorSpaceCreateDeviceRGB()];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    ///mac 使用
+</span><span class='line'>    {
+</span><span class='line'>       //    - (CGLayerRef)createCGLayerWithSize:(CGSize)size info:(CFDictionaryRef)d __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_NA);
+</span><span class='line'>
+</span><span class='line'>//        - (void)render:(CIImage *)im
+</span><span class='line'>//    toIOSurface:(IOSurfaceRef)surface
+</span><span class='line'>//    bounds:(CGRect)r
+</span><span class='line'>//    colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_NA);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    ///不会使用的
+</span><span class='line'>    {
+</span><span class='line'>//        - (void)render:(CIImage *)im
+</span><span class='line'>//    toBitmap:(void *)data
+</span><span class='line'>//    rowBytes:(ptrdiff_t)rb
+</span><span class='line'>//    bounds:(CGRect)r
+</span><span class='line'>//    format:(CIFormat)f
+</span><span class='line'>//    colorSpace:(CGColorSpaceRef)cs;
+</span><span class='line'>//        - (void)render:(CIImage *)image
+</span><span class='line'>//    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>//        
+</span><span class='line'>//
+</span><span class='line'>        //    - (void)render:(CIImage *)image
+</span><span class='line'>        //    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>        //    bounds:(CGRect)r
+</span><span class='line'>        //    colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>        //        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>
+</span><span class='line'>//        - (void)render:(CIImage *)image
+</span><span class='line'>//    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>        
+</span><span class='line'>//        reclaimResources
+</span><span class='line'>//        clearCaches
+</span><span class='line'>        
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    [context render:result toCVPixelBuffer:nil];
+</span><span class='line'>    
+</span><span class='line'>    ///获取输出最大图片尺寸  意思是输出的图片的大小不可能大于size的大小
+</span><span class='line'>     size= [context outputImageMaximumSize];
+</span><span class='line'>    NSLog(@"outputImageMaximumSize %@", NSStringFromCGSize(size));
+</span><span class='line'>
+</span><span class='line'>    [self createImageFrame:CGRectMake(0,220, 200, 100) image:[UIImage imageWithCGImage:cgImage]];
+</span><span class='line'>    
+</span><span class='line'>}
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIImage 的学习</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>-(void)CIImageTest{
+</span><span class='line'>    
+</span><span class='line'>    ///创建一张图片
+</span><span class='line'>    {
+</span><span class='line'>        ///创建一个空的image
+</span><span class='line'>//        CIImage * IMAGE=[CIImage emptyImage];
+</span><span class='line'>        
+</span><span class='line'>        /// 创建 一个颜色图片。但是没有颜色。奇怪啊.
+</span><span class='line'>     const  CGFloat floatCom[4]={1.0,0,0,1};
+</span><span class='line'>      CIImage *  IMAGE =[CIImage imageWithColor:[CIColor colorWithCGColor:CGColorCreate(CGColorSpaceCreateDeviceRGB(), floatCom)]];
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        不会使用抱歉
+</span><span class='line'>//        - (id)initWithBitmapData:(NSData *)d bytesPerRow:(size_t)bpr size:(CGSize)size
+</span><span class='line'>//    format:(CIFormat)f colorSpace:(CGColorSpaceRef)c;
+</span><span class='line'>        
+</span><span class='line'>        IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSMutableDictionary * dic =[[NSMutableDictionary alloc]init];
+</span><span class='line'>        [dic setObject:[NSNull null] forKey:kCIImageColorSpace];
+</span><span class='line'>        IMAGE=[CIImage imageWithCGImage:imageUI.CGImage options:dic];
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///这个函数测试是同步卡线程的。要单独开线程进行下载。
+</span><span class='line'>//        IMAGE =[CIImage imageWithContentsOfURL:[NSURL URLWithString:@"http://f.hiphotos.baidu.com/image/pic/item/adaf2edda3cc7cd938c2c3283b01213fb90e9150.jpg"]];
+</span><span class='line'>//        
+</span><span class='line'>//   
+</span><span class='line'>//        IMAGE =[CIImage imageWithContentsOfURL:[NSURL URLWithString:@"http://f.hiphotos.baidu.com/image/pic/item/adaf2edda3cc7cd938c2c3283b01213fb90e9150.jpg"] options:dic];
+</span><span class='line'>        
+</span><span class='line'>        ///操作图片源还不是很会。暂时不研究不好意思
+</span><span class='line'>//        + (CIImage *)imageWithCVPixelBuffer:(CVPixelBufferRef)buffer __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>//        + (CIImage *)imageWithCVPixelBuffer:(CVPixelBufferRef)buffer options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>        
+</span><span class='line'>        NSData * data=UIImageJPEGRepresentation(imageUI, 1);
+</span><span class='line'>        IMAGE =[CIImage imageWithData:data];
+</span><span class='line'>    
+</span><span class='line'>        IMAGE = [CIImage imageWithData:data options:dic];
+</span><span class='line'>        
+</span><span class='line'>//        + (CIImage *)imageWithTexture:(unsigned int)name size:(CGSize)size
+</span><span class='line'>//    flipped:(BOOL)flag colorSpace:(CGColorSpaceRef)cs __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_6_0);
+</span><span class='line'>        
+</span><span class='line'>       [self createImageFrame:CGRectMake(0,330, 200, 100) image:[UIImage imageWithCIImage:IMAGE]];
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    /// init 一个图片
+</span><span class='line'>    {
+</span><span class='line'>        ///只是类方法的变形而已。所以不做详细描述
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///修改已经创建的图片获取新图片。
+</span><span class='line'>    {
+</span><span class='line'>        
+</span><span class='line'>     CIImage * IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+</span><span class='line'>        [dic setObject:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>        ///用 一个filter 过滤图片 还是有局限性的。只能用一种滤片
+</span><span class='line'>   CIImage * newImage=  [IMAGE imageByApplyingFilter:@"CISepiaTone" withInputParameters:dic];
+</span><span class='line'>     
+</span><span class='line'>        ///图片矩阵变换
+</span><span class='line'>        newImage =[IMAGE imageByApplyingTransform:CGAffineTransformMakeRotation(M_1_PI)];
+</span><span class='line'>        
+</span><span class='line'>        ///裁剪图片像素区域  图片的坐标零点是左下角 真正裁剪要做矩阵变换
+</span><span class='line'>        newImage = [IMAGE imageByCroppingToRect:CGRectMake(0, IMAGE.extent.size.height/2, IMAGE.extent.size.width/2,IMAGE.extent.size.height/2)];
+</span><span class='line'>        
+</span><span class='line'>        ///这个是ios8 之后的api 图片反转
+</span><span class='line'>        /*
+</span><span class='line'>         1  Top, left
+</span><span class='line'>         2  Top, right
+</span><span class='line'>         3  Bottom, right
+</span><span class='line'>         4  Bottom, left
+</span><span class='line'>         5  Left, top
+</span><span class='line'>         6  Right, top
+</span><span class='line'>         7  Right, bottom
+</span><span class='line'>         8  Left, bottom
+</span><span class='line'>         */
+</span><span class='line'>        newImage = [IMAGE imageByApplyingOrientation:2];
+</span><span class='line'>        
+</span><span class='line'>        ///ios 8 以后使用  这个要CIAffineClamp 滤片创建的图片 没效果
+</span><span class='line'>        newImage = [IMAGE imageByClampingToExtent];
+</span><span class='line'>        
+</span><span class='line'>        ///ios 8 以后使用  要用这个 CISourceOverCompositing 没看到效果
+</span><span class='line'>      newImage =   [IMAGE imageByCompositingOverImage:IMAGE];
+</span><span class='line'>        
+</span><span class='line'>    [self createImageFrame:CGRectMake(0,440, 200, 100) image:[UIImage imageWithCIImage:newImage]];
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    /// 获取图片的相关属性
+</span><span class='line'>    {
+</span><span class='line'>        CIImage * IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取图片大小像素 %@",NSStringFromCGRect(IMAGE.extent));
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取图片属性 %@",IMAGE.properties);
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取矩阵变换的矩阵 %@", NSStringFromCGAffineTransform([IMAGE imageTransformForOrientation:4]));
+</span><span class='line'>        
+</span><span class='line'>        NSArray * array=   [IMAGE autoAdjustmentFilters];
+</span><span class='line'>        NSLog(@"获取应用在图片的滤片 %@",array);
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///key 值是
+</span><span class='line'>        /*
+</span><span class='line'>         NSString *kCIImageAutoAdjustEnhance;
+</span><span class='line'>         NSString *kCIImageAutoAdjustRedEye;
+</span><span class='line'>         NSString *kCIImageAutoAdjustFeatures;
+</span><span class='line'>         NSString *kCIImageAutoAdjustCrop;
+</span><span class='line'>         NSString *kCIImageAutoAdjustLevel;
+</span><span class='line'>         
+</span><span class='line'>         ///这个特殊。
+</span><span class='line'>          CIDetectorImageOrientation;
+</span><span class='line'>         */
+</span><span class='line'>        array =[IMAGE autoAdjustmentFiltersWithOptions:nil];
+</span><span class='line'>        
+</span><span class='line'>        ///没看出效果 不知道怎么用
+</span><span class='line'>        CIImage * otherImage=[CIImage imageWithCGImage:[UIImage imageNamed:@"3.jpg"].CGImage];
+</span><span class='line'>        [IMAGE regionOfInterestForImage:otherImage inRect:CGRectMake(0, 0, 300,300)];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    {
+</span><span class='line'>        
+</span><span class='line'>        //Pixel Formats 像素形式。
+</span><span class='line'>        /// 部件排列顺序
+</span><span class='line'>        kCIFormatARGB8;  ///排列顺序透明度（A)红(R)绿(G)蓝(B)
+</span><span class='line'>        kCIFormatBGRA8;///排列顺序蓝(B)绿(G)红(R)透明度（A)
+</span><span class='line'>        kCIFormatRGBA8;///排列顺序是红(R)绿(G)蓝(B)透明度A)
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///图片option字典的key  暂时没研究懂什么意思
+</span><span class='line'>        kCIImageColorSpace;///
+</span><span class='line'>        kCIImageProperties;///
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        Autoadjustment Keys
+</span><span class='line'>        NSString *kCIImageAutoAdjustEnhance;
+</span><span class='line'>        NSString *kCIImageAutoAdjustRedEye;
+</span><span class='line'>        NSString *kCIImageAutoAdjustFeatures;
+</span><span class='line'>        NSString *kCIImageAutoAdjustCrop;
+</span><span class='line'>        NSString *kCIImageAutoAdjustLevel;
+</span><span class='line'>    }
+</span><span class='line'>  
+</span><span class='line'>}
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIColor 的学习</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)CIColorTest
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    UIView  * allView=nil;
+</span><span class='line'>    CIColor* colorStr=nil;
+</span><span class='line'>    ///初始化一个ciColor
+</span><span class='line'>    {
+</span><span class='line'>        CGFloat components[2] = {.5,1};
+</span><span class='line'>        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
+</span><span class='line'>        CGColorRef color = (CGColorRef)CGColorCreate(colorSpace, components);
+</span><span class='line'>        CIColor * colorCI =[[CIColor alloc]initWithCGColor:color];
+</span><span class='line'>        [self createViewFrame:CGRectMake(0, 330, 100, 50) color:colorCI];
+</span><span class='line'>        
+</span><span class='line'>        CIColor * colorNew=[[CIColor alloc]initWithColor:[UIColor redColor]];
+</span><span class='line'>        [self createViewFrame:CGRectMake(110, 330, 100, 50) color:colorNew];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///类方法创建color
+</span><span class='line'>    {
+</span><span class='line'>        CGFloat components[4] = {.5,0,0,1};
+</span><span class='line'>        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+</span><span class='line'>        CGColorRef color = (CGColorRef)CGColorCreate(colorSpace, components);
+</span><span class='line'>        CIColor * colorCI=[CIColor colorWithCGColor:color];
+</span><span class='line'>        [self createViewFrame:CGRectMake(220, 330, 100, 50) color:colorCI];
+</span><span class='line'>  
+</span><span class='line'>        CIColor * colorRGB=[CIColor colorWithRed:1.0 green:0 blue:0];
+</span><span class='line'>        [self createViewFrame:CGRectMake(0, 390, 100,50)  color:colorRGB];
+</span><span class='line'>        
+</span><span class='line'>        CIColor * colorRGBA=[CIColor colorWithRed:0 green:1 blue:1 alpha:0.5];
+</span><span class='line'>        [self createViewFrame:CGRectMake(110, 390, 100,50)  color:colorRGBA];
+</span><span class='line'>        
+</span><span class='line'>        /// 这种方式总用的rgba
+</span><span class='line'>        colorStr=[CIColor colorWithString:@"0.5 0.7 0.3 1.0"];
+</span><span class='line'>    allView =  [self createViewFrame:CGRectMake(220, 390, 100,50)  color:colorStr];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///获取颜色相关信息
+</span><span class='line'>    {
+</span><span class='line'>        NSLog(@"获取CIColor 透明度 %f",colorStr.alpha);
+</span><span class='line'>        NSLog(@"获取红绿蓝 %f  %f  %f",colorStr.red, colorStr.green,colorStr.blue );
+</span><span class='line'>        NSLog(@"获取颜色空间 %@",colorStr.colorSpace);
+</span><span class='line'>        NSLog(@"颜色空间部件数量 %zu",colorStr.numberOfComponents);
+</span><span class='line'>        for (int i=0; i&lt;colorStr.numberOfComponents; i++) {
+</span><span class='line'>            NSLog(@"部件第%d 个 值 %f\n",i,colorStr.components[i]);
+</span><span class='line'>        }
+</span><span class='line'>        
+</span><span class='line'>        ///不管你用的颜色空间设gray 还是其他。都返回rgb 颜色空间string 0.5 0.5 0.5 1
+</span><span class='line'>        NSLog(@"stringRepresentation %@",colorStr.stringRepresentation);
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIFilter 的学习</h4>
+
+<h5>参考文档</h5>
+
+<p><a href="https://developer.apple.com/library/prerelease/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_intro/ci_intro.html">苹果文档</a></p>
+
+<p><a href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/QuartzCoreFramework/Classes/CIImage_Class/index.html">苹果文档</a></p>
+
+<p><a href="http://www.tuicool.com/articles/nEFBru">简单介绍</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-09-11T14:16:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:16 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/" title="Previous Post: ios7旋转屏学习总结和遇到的问题">&laquo; ios7旋转屏学习总结和遇到的问题</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/">coreImage.framework的学习</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/">Ios7旋转屏学习总结和遇到的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/24/dsymwen-jian-fen-xi/">Dsym文件分析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,1 +1,2178 @@
-My Octopress Page is coming soon &hellip;
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>温杰的博客</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="关于 core Image CoreImage是一个图像框架，它基于OpenGL顶层创建，底层则用着色器来处理图像，这意味着它利用了GPU基于硬件加速来处理图像。CoreImage中有很多滤镜，它们能够一次给予一张图像或者视频帧多种视觉效果。而且滤镜可以连接起来组成一个滤镜链， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yoursite.com/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="温杰的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">温杰的博客</a></h1>
+  
+    <h2>不积跬步无以至千里，不积小流无以成江海。</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yoursite.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/">coreImage.framework的学习</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-11T14:16:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:16 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>关于 core Image</h3>
+
+<p>CoreImage是一个图像框架，它基于OpenGL顶层创建，底层则用着色器来处理图像，这意味着它利用了GPU基于硬件加速来处理图像。CoreImage中有很多滤镜，它们能够一次给予一张图像或者视频帧多种视觉效果。而且滤镜可以连接起来组成一个滤镜链，把滤镜效果叠加起来处理图像。</p>
+
+<p><img src="/images/coreImage.jpg" alt="image" /></p>
+
+<p><img src="/images/coreImage1.png" alt="image" /></p>
+
+<h3>关于core image 类</h3>
+
+<ul>
+<li>CIFlilter 是代表滤片对象。一个滤片至少要有一个输入参数 能输出一张图片。</li>
+<li>CIImage 代表可以变的图片。</li>
+<li>CIContext 相当于画笔吧。</li>
+</ul>
+
+
+<h3>使用基本步骤</h3>
+
+<p>1 创建 CIContext 对象
+2 创建 CIImage 对象
+3 创建 CIFilter 对象设置输入参数
+4 获取 CIFilter 对象结果
+5 用 CIcontext 对象 进行绘制。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>首先引入coreImage.framework 
+</span><span class='line'>
+</span><span class='line'>///1 创建 CIContext 对象
+</span><span class='line'>CIContext *context = [CIContext contextWithOptions:nil];
+</span><span class='line'>//2 创建 CIImage 对象    CIImage *image = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>//3 创建 CIFilter 对象设置输入参数    CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];    [filter setValue:image forKey:kCIInputImageKey];    [filter setValue:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>
+</span><span class='line'>//4 获取 CIFilter 对象结果    CIImage *result = [filter valueForKey:kCIOutputImageKey];    
+</span><span class='line'>///5 用 CIcontext 对象 进行绘制。    CGRect extent = [result extent];    CGImageRef cgImage = [context createCGImage:result fromRect:extent];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>效果 如图</p>
+
+<p> <img src="/images/coreImage2.png" alt="image" /></p>
+
+<h3>core image 所有类 及每个类函数用法</h3>
+
+<ul>
+<li>CIColor</li>
+<li>CIContext</li>
+<li>CIDetector</li>
+<li>CIFeature</li>
+<li>CIFilter</li>
+<li>CIImage</li>
+<li>CIKernel</li>
+<li>CIVector</li>
+<li>CoreImage</li>
+<li>CoreImageDefines</li>
+</ul>
+
+
+<h4>CIContext 用法</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)CIContextTest
+</span><span class='line'>{
+</span><span class='line'>    
+</span><span class='line'>    ///mac 使用的方法
+</span><span class='line'>    {
+</span><span class='line'>//#if !TARGET_OS_IPHONE
+</span><span class='line'>//    + (CIContext *)contextWithCGLContext:(CGLContextObj)ctx
+</span><span class='line'>//pixelFormat:(CGLPixelFormatObj)pf
+</span><span class='line'>//colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>//options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_NA);
+</span><span class='line'>//#endif
+</span><span class='line'>        
+</span><span class='line'>//#if !TARGET_OS_IPHONE
+</span><span class='line'>//        + (CIContext *)contextWithCGLContext:(CGLContextObj)ctx
+</span><span class='line'>//    pixelFormat:(CGLPixelFormatObj)pf
+</span><span class='line'>//    options:(NSDictionary *)dict
+</span><span class='line'>//        __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_4,__MAC_10_6,__IPHONE_NA,__IPHONE_NA);
+</span><span class='line'>//#endif
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        + (CIContext *)contextWithCGContext:(CGContextRef)ctx
+</span><span class='line'>//    options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_NA);
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    CIContext *context =nil;
+</span><span class='line'>    ///cpu 渲染
+</span><span class='line'>//    context = [CIContext contextWithOptions:nil];
+</span><span class='line'>    
+</span><span class='line'>    ///gpu 渲染  优势是直到渲染完成才会复制到cpu中。
+</span><span class='line'>   
+</span><span class='line'>    EAGLContext  * eagl = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
+</span><span class='line'>//    context  = [CIContext contextWithEAGLContext:eagl];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    /// 如果不关心颜色 应该关闭颜色空间 不关闭会慢些。
+</span><span class='line'>    NSDictionary *options = @{ kCIContextWorkingColorSpace : [NSNull null] };
+</span><span class='line'>    context = [CIContext contextWithEAGLContext:eagl options:options];
+</span><span class='line'>    
+</span><span class='line'>    CIImage *image = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>    
+</span><span class='line'>    CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];    [filter setValue:image forKey:kCIInputImageKey];    [filter setValue:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    CIImage *result = [filter valueForKey:kCIOutputImageKey];    
+</span><span class='line'>    ///获取输入context尺寸 输入的图片尺寸不能大于size
+</span><span class='line'>   CGSize size= [context inputImageMaximumSize];
+</span><span class='line'>    NSLog(@"inputImageMaximumSize %@", NSStringFromCGSize(size));
+</span><span class='line'>    
+</span><span class='line'>    CGRect extent = [result extent];
+</span><span class='line'>    
+</span><span class='line'>    ///ios5 到ios6 才能使用 过时了。不做说明
+</span><span class='line'>    {
+</span><span class='line'>//        - (void)drawImage:(CIImage *)im atPoint:(CGPoint)p fromRect:(CGRect)src __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_4, __MAC_10_8, __IPHONE_5_0, __IPHONE_6_0);
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>
+</span><span class='line'>    ///这个函数使用是有限制的必须是contextWithEAGLContext 渲染的内容，也就是GPU 才能使用 并且渲染到CAEAGLayer 上
+</span><span class='line'>//    [context drawImage:result inRect:extent fromRect:CGRectMake(0, 0, 500, 250)];
+</span><span class='line'>    //    CGImageRef cgImage = [context createCGImage:result fromRect:extent];
+</span><span class='line'>    
+</span><span class='line'>    /// CIFormat 和 CGColorSpaceRef 空间配对使用才行 具体配对规则不懂颜色空间，暂时不做过多说明。
+</span><span class='line'>    CGImageRef cgImage =[context createCGImage:result fromRect:extent format:kCIFormatARGB8 colorSpace:CGColorSpaceCreateDeviceRGB()];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    ///mac 使用
+</span><span class='line'>    {
+</span><span class='line'>       //    - (CGLayerRef)createCGLayerWithSize:(CGSize)size info:(CFDictionaryRef)d __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_NA);
+</span><span class='line'>
+</span><span class='line'>//        - (void)render:(CIImage *)im
+</span><span class='line'>//    toIOSurface:(IOSurfaceRef)surface
+</span><span class='line'>//    bounds:(CGRect)r
+</span><span class='line'>//    colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_NA);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    ///不会使用的
+</span><span class='line'>    {
+</span><span class='line'>//        - (void)render:(CIImage *)im
+</span><span class='line'>//    toBitmap:(void *)data
+</span><span class='line'>//    rowBytes:(ptrdiff_t)rb
+</span><span class='line'>//    bounds:(CGRect)r
+</span><span class='line'>//    format:(CIFormat)f
+</span><span class='line'>//    colorSpace:(CGColorSpaceRef)cs;
+</span><span class='line'>//        - (void)render:(CIImage *)image
+</span><span class='line'>//    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>//        
+</span><span class='line'>//
+</span><span class='line'>        //    - (void)render:(CIImage *)image
+</span><span class='line'>        //    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>        //    bounds:(CGRect)r
+</span><span class='line'>        //    colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>        //        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>
+</span><span class='line'>//        - (void)render:(CIImage *)image
+</span><span class='line'>//    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>        
+</span><span class='line'>//        reclaimResources
+</span><span class='line'>//        clearCaches
+</span><span class='line'>        
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    [context render:result toCVPixelBuffer:nil];
+</span><span class='line'>    
+</span><span class='line'>    ///获取输出最大图片尺寸  意思是输出的图片的大小不可能大于size的大小
+</span><span class='line'>     size= [context outputImageMaximumSize];
+</span><span class='line'>    NSLog(@"outputImageMaximumSize %@", NSStringFromCGSize(size));
+</span><span class='line'>
+</span><span class='line'>    [self createImageFrame:CGRectMake(0,220, 200, 100) image:[UIImage imageWithCGImage:cgImage]];
+</span><span class='line'>    
+</span><span class='line'>}
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIImage 的学习</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>-(void)CIImageTest{
+</span><span class='line'>    
+</span><span class='line'>    ///创建一张图片
+</span><span class='line'>    {
+</span><span class='line'>        ///创建一个空的image
+</span><span class='line'>//        CIImage * IMAGE=[CIImage emptyImage];
+</span><span class='line'>        
+</span><span class='line'>        /// 创建 一个颜色图片。但是没有颜色。奇怪啊.
+</span><span class='line'>     const  CGFloat floatCom[4]={1.0,0,0,1};
+</span><span class='line'>      CIImage *  IMAGE =[CIImage imageWithColor:[CIColor colorWithCGColor:CGColorCreate(CGColorSpaceCreateDeviceRGB(), floatCom)]];
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        不会使用抱歉
+</span><span class='line'>//        - (id)initWithBitmapData:(NSData *)d bytesPerRow:(size_t)bpr size:(CGSize)size
+</span><span class='line'>//    format:(CIFormat)f colorSpace:(CGColorSpaceRef)c;
+</span><span class='line'>        
+</span><span class='line'>        IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSMutableDictionary * dic =[[NSMutableDictionary alloc]init];
+</span><span class='line'>        [dic setObject:[NSNull null] forKey:kCIImageColorSpace];
+</span><span class='line'>        IMAGE=[CIImage imageWithCGImage:imageUI.CGImage options:dic];
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///这个函数测试是同步卡线程的。要单独开线程进行下载。
+</span><span class='line'>//        IMAGE =[CIImage imageWithContentsOfURL:[NSURL URLWithString:@"http://f.hiphotos.baidu.com/image/pic/item/adaf2edda3cc7cd938c2c3283b01213fb90e9150.jpg"]];
+</span><span class='line'>//        
+</span><span class='line'>//   
+</span><span class='line'>//        IMAGE =[CIImage imageWithContentsOfURL:[NSURL URLWithString:@"http://f.hiphotos.baidu.com/image/pic/item/adaf2edda3cc7cd938c2c3283b01213fb90e9150.jpg"] options:dic];
+</span><span class='line'>        
+</span><span class='line'>        ///操作图片源还不是很会。暂时不研究不好意思
+</span><span class='line'>//        + (CIImage *)imageWithCVPixelBuffer:(CVPixelBufferRef)buffer __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>//        + (CIImage *)imageWithCVPixelBuffer:(CVPixelBufferRef)buffer options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>        
+</span><span class='line'>        NSData * data=UIImageJPEGRepresentation(imageUI, 1);
+</span><span class='line'>        IMAGE =[CIImage imageWithData:data];
+</span><span class='line'>    
+</span><span class='line'>        IMAGE = [CIImage imageWithData:data options:dic];
+</span><span class='line'>        
+</span><span class='line'>//        + (CIImage *)imageWithTexture:(unsigned int)name size:(CGSize)size
+</span><span class='line'>//    flipped:(BOOL)flag colorSpace:(CGColorSpaceRef)cs __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_6_0);
+</span><span class='line'>        
+</span><span class='line'>       [self createImageFrame:CGRectMake(0,330, 200, 100) image:[UIImage imageWithCIImage:IMAGE]];
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    /// init 一个图片
+</span><span class='line'>    {
+</span><span class='line'>        ///只是类方法的变形而已。所以不做详细描述
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///修改已经创建的图片获取新图片。
+</span><span class='line'>    {
+</span><span class='line'>        
+</span><span class='line'>     CIImage * IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+</span><span class='line'>        [dic setObject:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>        ///用 一个filter 过滤图片 还是有局限性的。只能用一种滤片
+</span><span class='line'>   CIImage * newImage=  [IMAGE imageByApplyingFilter:@"CISepiaTone" withInputParameters:dic];
+</span><span class='line'>     
+</span><span class='line'>        ///图片矩阵变换
+</span><span class='line'>        newImage =[IMAGE imageByApplyingTransform:CGAffineTransformMakeRotation(M_1_PI)];
+</span><span class='line'>        
+</span><span class='line'>        ///裁剪图片像素区域  图片的坐标零点是左下角 真正裁剪要做矩阵变换
+</span><span class='line'>        newImage = [IMAGE imageByCroppingToRect:CGRectMake(0, IMAGE.extent.size.height/2, IMAGE.extent.size.width/2,IMAGE.extent.size.height/2)];
+</span><span class='line'>        
+</span><span class='line'>        ///这个是ios8 之后的api 图片反转
+</span><span class='line'>        /*
+</span><span class='line'>         1  Top, left
+</span><span class='line'>         2  Top, right
+</span><span class='line'>         3  Bottom, right
+</span><span class='line'>         4  Bottom, left
+</span><span class='line'>         5  Left, top
+</span><span class='line'>         6  Right, top
+</span><span class='line'>         7  Right, bottom
+</span><span class='line'>         8  Left, bottom
+</span><span class='line'>         */
+</span><span class='line'>        newImage = [IMAGE imageByApplyingOrientation:2];
+</span><span class='line'>        
+</span><span class='line'>        ///ios 8 以后使用  这个要CIAffineClamp 滤片创建的图片 没效果
+</span><span class='line'>        newImage = [IMAGE imageByClampingToExtent];
+</span><span class='line'>        
+</span><span class='line'>        ///ios 8 以后使用  要用这个 CISourceOverCompositing 没看到效果
+</span><span class='line'>      newImage =   [IMAGE imageByCompositingOverImage:IMAGE];
+</span><span class='line'>        
+</span><span class='line'>    [self createImageFrame:CGRectMake(0,440, 200, 100) image:[UIImage imageWithCIImage:newImage]];
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    /// 获取图片的相关属性
+</span><span class='line'>    {
+</span><span class='line'>        CIImage * IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取图片大小像素 %@",NSStringFromCGRect(IMAGE.extent));
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取图片属性 %@",IMAGE.properties);
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取矩阵变换的矩阵 %@", NSStringFromCGAffineTransform([IMAGE imageTransformForOrientation:4]));
+</span><span class='line'>        
+</span><span class='line'>        NSArray * array=   [IMAGE autoAdjustmentFilters];
+</span><span class='line'>        NSLog(@"获取应用在图片的滤片 %@",array);
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///key 值是
+</span><span class='line'>        /*
+</span><span class='line'>         NSString *kCIImageAutoAdjustEnhance;
+</span><span class='line'>         NSString *kCIImageAutoAdjustRedEye;
+</span><span class='line'>         NSString *kCIImageAutoAdjustFeatures;
+</span><span class='line'>         NSString *kCIImageAutoAdjustCrop;
+</span><span class='line'>         NSString *kCIImageAutoAdjustLevel;
+</span><span class='line'>         
+</span><span class='line'>         ///这个特殊。
+</span><span class='line'>          CIDetectorImageOrientation;
+</span><span class='line'>         */
+</span><span class='line'>        array =[IMAGE autoAdjustmentFiltersWithOptions:nil];
+</span><span class='line'>        
+</span><span class='line'>        ///没看出效果 不知道怎么用
+</span><span class='line'>        CIImage * otherImage=[CIImage imageWithCGImage:[UIImage imageNamed:@"3.jpg"].CGImage];
+</span><span class='line'>        [IMAGE regionOfInterestForImage:otherImage inRect:CGRectMake(0, 0, 300,300)];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    {
+</span><span class='line'>        
+</span><span class='line'>        //Pixel Formats 像素形式。
+</span><span class='line'>        /// 部件排列顺序
+</span><span class='line'>        kCIFormatARGB8;  ///排列顺序透明度（A)红(R)绿(G)蓝(B)
+</span><span class='line'>        kCIFormatBGRA8;///排列顺序蓝(B)绿(G)红(R)透明度（A)
+</span><span class='line'>        kCIFormatRGBA8;///排列顺序是红(R)绿(G)蓝(B)透明度A)
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///图片option字典的key  暂时没研究懂什么意思
+</span><span class='line'>        kCIImageColorSpace;///
+</span><span class='line'>        kCIImageProperties;///
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        Autoadjustment Keys
+</span><span class='line'>        NSString *kCIImageAutoAdjustEnhance;
+</span><span class='line'>        NSString *kCIImageAutoAdjustRedEye;
+</span><span class='line'>        NSString *kCIImageAutoAdjustFeatures;
+</span><span class='line'>        NSString *kCIImageAutoAdjustCrop;
+</span><span class='line'>        NSString *kCIImageAutoAdjustLevel;
+</span><span class='line'>    }
+</span><span class='line'>  
+</span><span class='line'>}
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIColor 的学习</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)CIColorTest
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    UIView  * allView=nil;
+</span><span class='line'>    CIColor* colorStr=nil;
+</span><span class='line'>    ///初始化一个ciColor
+</span><span class='line'>    {
+</span><span class='line'>        CGFloat components[2] = {.5,1};
+</span><span class='line'>        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
+</span><span class='line'>        CGColorRef color = (CGColorRef)CGColorCreate(colorSpace, components);
+</span><span class='line'>        CIColor * colorCI =[[CIColor alloc]initWithCGColor:color];
+</span><span class='line'>        [self createViewFrame:CGRectMake(0, 330, 100, 50) color:colorCI];
+</span><span class='line'>        
+</span><span class='line'>        CIColor * colorNew=[[CIColor alloc]initWithColor:[UIColor redColor]];
+</span><span class='line'>        [self createViewFrame:CGRectMake(110, 330, 100, 50) color:colorNew];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///类方法创建color
+</span><span class='line'>    {
+</span><span class='line'>        CGFloat components[4] = {.5,0,0,1};
+</span><span class='line'>        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+</span><span class='line'>        CGColorRef color = (CGColorRef)CGColorCreate(colorSpace, components);
+</span><span class='line'>        CIColor * colorCI=[CIColor colorWithCGColor:color];
+</span><span class='line'>        [self createViewFrame:CGRectMake(220, 330, 100, 50) color:colorCI];
+</span><span class='line'>  
+</span><span class='line'>        CIColor * colorRGB=[CIColor colorWithRed:1.0 green:0 blue:0];
+</span><span class='line'>        [self createViewFrame:CGRectMake(0, 390, 100,50)  color:colorRGB];
+</span><span class='line'>        
+</span><span class='line'>        CIColor * colorRGBA=[CIColor colorWithRed:0 green:1 blue:1 alpha:0.5];
+</span><span class='line'>        [self createViewFrame:CGRectMake(110, 390, 100,50)  color:colorRGBA];
+</span><span class='line'>        
+</span><span class='line'>        /// 这种方式总用的rgba
+</span><span class='line'>        colorStr=[CIColor colorWithString:@"0.5 0.7 0.3 1.0"];
+</span><span class='line'>    allView =  [self createViewFrame:CGRectMake(220, 390, 100,50)  color:colorStr];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///获取颜色相关信息
+</span><span class='line'>    {
+</span><span class='line'>        NSLog(@"获取CIColor 透明度 %f",colorStr.alpha);
+</span><span class='line'>        NSLog(@"获取红绿蓝 %f  %f  %f",colorStr.red, colorStr.green,colorStr.blue );
+</span><span class='line'>        NSLog(@"获取颜色空间 %@",colorStr.colorSpace);
+</span><span class='line'>        NSLog(@"颜色空间部件数量 %zu",colorStr.numberOfComponents);
+</span><span class='line'>        for (int i=0; i&lt;colorStr.numberOfComponents; i++) {
+</span><span class='line'>            NSLog(@"部件第%d 个 值 %f\n",i,colorStr.components[i]);
+</span><span class='line'>        }
+</span><span class='line'>        
+</span><span class='line'>        ///不管你用的颜色空间设gray 还是其他。都返回rgb 颜色空间string 0.5 0.5 0.5 1
+</span><span class='line'>        NSLog(@"stringRepresentation %@",colorStr.stringRepresentation);
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIFilter 的学习</h4>
+
+<h5>参考文档</h5>
+
+<p><a href="https://developer.apple.com/library/prerelease/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_intro/ci_intro.html">苹果文档</a></p>
+
+<p><a href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/QuartzCoreFramework/Classes/CIImage_Class/index.html">苹果文档</a></p>
+
+<p><a href="http://www.tuicool.com/articles/nEFBru">简单介绍</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/">Ios7旋转屏学习总结和遇到的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-28T15:55:36+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天测试人员反馈一个bug 说是 iPhone6 Plus（可以横屏显示icon），横屏启动应用的时候，咱们的app（只支持竖屏） 显示混乱。</p>
+
+<p><img src="/images/xuanzhuanOne.png" alt="image" /></p>
+
+<p>window 的</p>
+
+<pre><code>bounds {0, 0}, {736, 414}
+</code></pre>
+
+<p> 状态栏也是横屏的（但是应用设置的竖屏的）。</p>
+
+<p>解决办法是 将导航栏</p>
+
+<pre><code>    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+</code></pre>
+
+<p>结果是</p>
+
+<p><img src="/images/xuanzhuanTwo.png" alt="image" /></p>
+
+<p>貌似看上去好了。单实际不然 现在window 的bounds 还是</p>
+
+<pre><code> {0, 0}, {736, 414}
+</code></pre>
+
+<p><img src="/iamges/xuanzhuanThree.jpeg" alt="image" /></p>
+
+<p>如图位置是不能进行点击的。</p>
+
+<pre><code>（屏幕实际bounds {0, 0}, {414, 736}  ）
+</code></pre>
+
+<p>再检测工程代码 显示如下</p>
+
+<pre><code>#define MAINSCREEN [UIScreen mainScreen].bounds 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{
+
+    NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+  self.window = [[UIWindow alloc]initWithFrame:MAINSCREEN];
+[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+    NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+.....
+
+}
+</code></pre>
+
+<p>实际上时window 生成frame的时候出错了。</p>
+
+<p>在 调用之前</p>
+
+<pre><code>    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+</code></pre>
+
+<p>的时候 MAINSCREEN  的</p>
+
+<pre><code>bounds  {0, 0}, {736, 414}
+</code></pre>
+
+<p>导致window初始化错误</p>
+
+<p>调用之后 MAINSCREEN 的</p>
+
+<pre><code>bounds 为 {0, 0}, {414, 736}
+</code></pre>
+
+<p> 恢复正常</p>
+
+<p>所以修改代码为</p>
+
+<pre><code>#define MAINSCREEN [UIScreen mainScreen].bounds 
+
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+self.window = [[UIWindow alloc]initWithFrame:MAINSCREEN];
+NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+    。。。
+}
+</code></pre>
+
+<p> iPhone6 Plus 横屏问题得以解决。</p>
+
+<pre><code>总结：
+    1.状态栏（status bar）控制屏幕显示文本的方向。
+    2.window 控制app显示的区域范围。
+</code></pre>
+
+<h3>基础知识</h3>
+
+<blockquote><p>UIDeviceOrientation 和 UIInterfaceOrientation 设备旋转的用法</p></blockquote>
+
+<p>UIDeviceOrientation      是机器硬件的当前旋转方向   这个你只能取值 不能设置</p>
+
+<p>UIInterfaceOrientation   是你程序界面的当前旋转方向   这个可以设置</p>
+
+<pre><code>判断设备现在的方向：
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+</code></pre>
+
+<p>{
+    //宣告一個UIDevice指標，並取得目前Device的狀況
+    UIDevice *device = [UIDevice currentDevice] ;</p>
+
+<pre><code>//取得當前Device的方向，來當作判斷敘述。（Device的方向型態為Integer）
+switch (device.orientation) {
+    case UIDeviceOrientationFaceUp:
+    NSLog(@"螢幕朝上平躺");
+        break;
+
+    case UIDeviceOrientationFaceDown:
+    NSLog(@"螢幕朝下平躺");
+        break;
+
+    //系統無法判斷目前Device的方向，有可能是斜置 
+    case UIDeviceOrientationUnknown:
+    NSLog(@"未知方向");
+        break;
+
+    case UIDeviceOrientationLandscapeLeft:
+    NSLog(@"螢幕向左橫置");
+        break;
+
+    case UIDeviceOrientationLandscapeRight:
+    NSLog(@"螢幕向右橫置");
+        break;
+
+    case UIDeviceOrientationPortrait:
+    NSLog(@"螢幕直立");
+        break;
+
+    case UIDeviceOrientationPortraitUpsideDown:
+    NSLog(@"螢幕直立，上下顛倒");
+        break;
+
+    default:
+    NSLog(@"無法辨識");
+        break;
+}
+
+// Return YES for supported orientations
+ return (interfaceOrientation ==        UIInterfaceOrientationLandscapeLeft); // 只支持向左横向, YES 表示支持所有方向
+}
+</code></pre>
+
+<p>或者</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+</span><span class='line'>{
+</span><span class='line'>UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+</span><span class='line'>if (UIDeviceOrientationIsLandscape(deviceOrientation)) NSLog(@"横向");    
+</span><span class='line'>else if(UIDeviceOrientationIsPortrait(deviceOrientation)) NSLog(@"纵向");
+</span><span class='line'>
+</span><span class='line'>// // Return YES for supported orientations
+</span><span class='line'>return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft); // 只支持向左横向, YES 表示支持所有方向
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> Portrait 表示 纵向，Landscape 表示 横向。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef enum {
+</span><span class='line'>    UIDeviceOrientationUnknown,
+</span><span class='line'>    UIDeviceOrientationPortrait,            // Device oriented vertically, home button on the bottom
+</span><span class='line'>    UIDeviceOrientationPortraitUpsideDown,  // Device oriented vertically, home button on the top
+</span><span class='line'>    UIDeviceOrientationLandscapeLeft,       // Device oriented horizontally, home button on the right
+</span><span class='line'>    UIDeviceOrientationLandscapeRight,      // Device oriented horizontally, home button on the left
+</span><span class='line'>    UIDeviceOrientationFaceUp,              // Device oriented flat, face up
+</span><span class='line'>    UIDeviceOrientationFaceDown             // Device oriented flat, face down
+</span><span class='line'>} UIDeviceOrientation;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>而对于UIInterfaceOrientation</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef NS_ENUM(NSInteger, UIInterfaceOrientation) {
+</span><span class='line'>    UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
+</span><span class='line'>    UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
+</span><span class='line'>    UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
+</span><span class='line'>    UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
+</span><span class='line'>    UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft
+</span><span class='line'>};</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>屏幕旋转屏幕（ios6以后版本）</h3>
+
+<blockquote><p> UIKit处理屏幕旋转的流程</p></blockquote>
+
+<p> 当加速计检测到方向变化的时候，会发出 UIDeviceOrientationDidChangeNotification 通知，这样任何关心方向变化的view都可以通过注册该通知，在设备方向变化的时候做出相应的响应。上一篇博客中，我们已经提到了在屏幕旋转的时候，UIKit帮助我们做了很多事情，方便我们完成屏幕旋转。</p>
+
+<p>　　UIKit的相应屏幕旋转的流程如下：</p>
+
+<p>1、设备旋转的时候，UIKit接收到旋转事件。</p>
+
+<p>2、UIKit通过AppDelegate通知当前程序的window。</p>
+
+<p>3、Window会知会它的rootViewController，判断该view controller所支持的旋转方向，完成旋转。</p>
+
+<p>4、如果存在弹出的view controller的话，系统则会根据弹出的view controller，来判断是否要进行旋转。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>When UIKit receives an orientation notification, it uses the UIApplication object and the root view controller to determine whether the new orientation is allowed. If both objects agree that the new orientation is supported, then the user interface is rotated to the new orientation. Otherwise the device orientation is ignored.
+</span><span class='line'>
+</span><span class='line'>When a view controller is presented over the root view controller, the system behavior changes in two ways. First, the presented view controller is used instead of the root view controller when determining whether an orientation is supported. Second, the presented view controller can also provide a preferred orientation. If the view controller is presented full screen, the user interface is presented in the preferred orientation. The user is expected to see that the orientation is different from the device orientation and rotate the device. A preferred orientation is most often used when the content must be presented in the new orientation.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>`</p>
+
+<blockquote><p>UIViewController实现屏幕旋转</p></blockquote>
+
+<p>在响应设备旋转时，我们可以通过UIViewController的方法实现更细粒度的控制，当view controller接收到window传来的方向变化的时候，流程如下：</p>
+
+<p>1、首先判断当前viewController是否支持旋转到目标方向，如果支持的话进入流程2，否则此次旋转流程直接结束。</p>
+
+<p>2、调用 willRotateToInterfaceOrientation:duration: 方法，通知view controller将要旋转到目标方向。如果该viewController是一个container view controller的话，它会继续调用其content view controller的该方法。这个时候我们也可以暂时将一些view隐藏掉，等旋转结束以后在现实出来。</p>
+
+<p>3、window调整显示的view controller的bounds，由于view controller的bounds发生变化，将会触发 viewWillLayoutSubviews 方法。这个时候self.interfaceOrientation和statusBarOrientation方向还是原来的方向。</p>
+
+<p>4、接着当前view controller的 willAnimateRotationToInterfaceOrientation:duration: 方法将会被调用。系统将会把该方法中执行的所有属性变化放到动animation block中。</p>
+
+<p>5、执行方向旋转的动画。</p>
+
+<p>6、最后调用 didRotateFromInterfaceOrientation: 方法，通知view controller旋转动画执行完毕。这个时候我们可以将第二部隐藏的view再显示出来。</p>
+
+<p>　　整个响应过程如下图所示：
+　　
+　　<img src="/images/xuanzhuanThree.png" alt="image" />
+　　</p>
+
+<blockquote><p>注意事项和建议</p></blockquote>
+
+<p>　　1）注意事项</p>
+
+<p>　　当我们的view controller隐藏的时候，设备方向也可能发生变化。例如view Controller A弹出一个全屏的view controller B的时候，由于A完全不可见，所以就接收不到屏幕旋转消息。这个时候如果屏幕方向发生变化，再dismiss B的时候，A的方向就会不正确。我们可以通过在view controller A的viewWillAppear中更新方向来修正这个问题。</p>
+
+<p>　　2）屏幕旋转时的一些建议</p>
+
+<p>在旋转过程中，暂时界面操作的响应。
+旋转前后，尽量当前显示的位置不变。
+对于view层级比较复杂的时候，为了提高效率在旋转开始前使用截图替换当前的view层级，旋转结束后再将原view层级替换回来。
+在旋转后最好强制reload tableview，保证在方向变化以后，新的row能够充满全屏。例如对于有些照片展示界面，竖屏只显示一列，但是横屏的时候显示列表界面，这个时候一个界面就会显示更多的元素，此时reload内容就是很有必要的。</p>
+
+<blockquote><p> 通知</p></blockquote>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIApplicationDidChangeStatusBarOrientationNotification
+</span><span class='line'>
+</span><span class='line'>注意这种方式监听的是StatusBar也就是状态栏的方向，所以这个是跟你的布局有关的，你的布局转了，才会接到这个通知，而不是设备旋转的通知。
+</span><span class='line'>当我们关注的东西和布局相关而不是纯粹设备旋转，关注这个通知。
+</span><span class='line'>  
+</span><span class='line'>UIDeviceOrientationDidChangeNotification
+</span><span class='line'>当我们关注的只是物理朝向时，我们通常需要注册该通知来解决问题。
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>处理UINavigationViewController 旋转策略</h3>
+
+<p>子类化UINavigationController，增加方法</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>return self.topViewController.shouldAutorotate;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>- (NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>return self.topViewController.supportedInterfaceOrientations;  
+</span><span class='line'>}  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>并且设定其为程序入口，或指定为 self.window.rootViewController</p>
+
+<p>随后添加自己的view controller，如果想禁止某个view controller的旋屏：（支持全部版本的控制）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation  
+</span><span class='line'>{  
+</span><span class='line'>    return (interfaceOrientation == UIInterfaceOrientationPortrait);  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>    return NO;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>    return UIInterfaceOrientationMaskPortrait;  
+</span><span class='line'>}  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果想又开启某个view controller的全部方向旋屏支持：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation  
+</span><span class='line'>{  
+</span><span class='line'>    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>    return UIInterfaceOrientationMaskAllButUpsideDown;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>    return YES;  
+</span><span class='line'>}  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>顺便提一下，如果整个应用所有view controller都不支持旋屏，那么干脆：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window  
+</span><span class='line'>{  
+</span><span class='line'>     return UIInterfaceOrientationMaskPortrait;  
+</span><span class='line'>} </span></code></pre></td></tr></table></div></figure>
+
+
+<h5>参考文章</h5>
+
+<p><a href="https://developer.apple.com/library/ios/featuredarticles/ViewControllerPGforiPhoneOS/RespondingtoDeviceOrientationChanges/RespondingtoDeviceOrientationChanges.html#//apple_ref/doc/uid/TP40007457-CH7-SW1">苹果文档</a></p>
+
+<p><a href="http://www.cnblogs.com/smileEvday/archive/2013/04/24/Rotate2.html">http://www.cnblogs.com/smileEvday/archive/2013/04/24/Rotate2.html</a></p>
+
+<p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/8035014">iOS6的旋屏控制技巧</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/24/dsymwen-jian-fen-xi/">Dsym文件分析</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-24T11:14:42+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:14 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天查看线上app友盟崩溃日志，发现好多内存地址没有反编译出来，无法查找崩溃点在哪。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-[NSDecimalNumber length]: unrecognized selector sent to instance 0x1df192c0
+</span><span class='line'>(null)
+</span><span class='line'>(
+</span><span class='line'>  0   CoreFoundation                      0x29f1c007  + 150
+</span><span class='line'>  1   libobjc.A.dylib                     0x3885fc8b objc_exception_throw + 38
+</span><span class='line'>  2   CoreFoundation                      0x29f21409  + 0
+</span><span class='line'>  3   CoreFoundation                      0x29f1f327  + 714
+</span><span class='line'>  4   CoreFoundation                      0x29e4ee78 _CF_forwarding_prep_0 + 24
+</span><span class='line'>  5   ETCP                                0x5d555 ETCP + 365909
+</span><span class='line'>  6   UIKit                               0x2d612dad  + 464
+</span><span class='line'>  7   UIKit                               0x2d804215  + 1704
+</span><span class='line'>  8   UIKit                               0x2d7fbcfb  + 106
+</span><span class='line'>  9   FrontBoardServices                  0x30afaec9  + 16
+</span><span class='line'>  10  CoreFoundation                      0x29ee1fd5  + 12
+</span><span class='line'>  11  CoreFoundation                      0x29ee1299  + 216
+</span><span class='line'>  12  CoreFoundation                      0x29edfa37  + 790
+</span><span class='line'>  13  CoreFoundation                      0x29e2c201 CFRunLoopRunSpecific + 476
+</span><span class='line'>  14  CoreFoundation                      0x29e2c013 CFRunLoopRunInMode + 106
+</span><span class='line'>  15  GraphicsServices                    0x318fd201 GSEventRunModal + 136
+</span><span class='line'>  16  UIKit                               0x2d5f8a09 UIApplicationMain + 1440
+</span><span class='line'>  17  ETCP                                0xa52f7 ETCP + 660215
+</span><span class='line'>  18  libdyld.dylib                       0x38e11aaf  + 2
+</span><span class='line'>)
+</span><span class='line'>dSYM UUID: 429DD54C-BACF-3CFB-8C0D-D40526224C4F
+</span><span class='line'>CPU Type: armv7
+</span><span class='line'>Slide Address: 0x00004000
+</span><span class='line'>Binary Image: xx
+</span><span class='line'>Base Address: 0x0005e000
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所以上网查找方法解析改内存地址，了解到需要到上线app 的release版本的 dsym文件。</p>
+
+<h3>具体操作</h3>
+
+<p>1.找到该app release 版本的dsym文件
+2.打开终端 cd 进入改 dsym文件所在文件夹
+3.用atos 命令 进行地址解析</p>
+
+<pre><code>atos -o xx.app.dSYM/Contents/Resources/DWARF/xx 0x5d555
+
+结果
+-[AppDelegate applicationDidBecomeActive:] (in ETCP) (AppDelegate.mm:508)
+</code></pre>
+
+<p>问题出在那一目了然。</p>
+
+<h3>软件</h3>
+
+<p>这样用终端不太爽啊，找了个免费软件，上传自己的云盘。<a href="http://pan.baidu.com/s/1o6N4Chs">下载链接</a></p>
+
+<p>用法可参考<a href="http://www.cocoachina.com/ios/20141219/10694.html">link</a></p>
+
+<p><a href="https://github.com/answer-huang/dSYMTools">工具源码</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-18T14:23:43+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:23 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>目前我在用的开发插件</p>
+
+<p>1、xcode生成规范注释</p>
+
+<p>VVDocumenter-Xcode <a href="https://github.com/onevcat/VVDocumenter-Xcode.git">github地址</a></p>
+
+<p><img src="/images/xcode.gif" alt="image" /></p>
+
+<p>我改了几行源码就成上面的样子了.<a href="http://pan.baidu.com/s/1bn8X7vL">代码</a></p>
+
+<p>安装出现问题可以参考<a href="http://www.bubuko.com/infodetail-922634.html">这里</a></p>
+
+<p>安装VVDocumenter-Xcode ，Xcode 6之后，重启Xcode时会提示“Load bundle”、 “Skip Bundle”，这里必须选择“Load bundle”，不然插件无法使用。但skip是你不小心点击<strong>“Skip Bundle”</strong> <br/>
+ 你可以执行下面命令</p>
+
+<pre><code>defaults delete com.apple.dt.Xcode DVTPlugInManagerNonApplePlugIns-Xcode-{your_xcode_version}
+</code></pre>
+
+<p>清除你的错误选择</p>
+
+<pre><code>我的xcode是6.4 命令为
+defaults delete com.apple.dt.Xcode DVTPlugInManagerNonApplePlugIns-Xcode-6.4
+</code></pre>
+
+<p>2、生成gif图的工具</p>
+
+<p>licecap 这个工具是免费的 网上搜下到处都是就不提供链接了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-18T10:13:11+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:13 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>修改xocde文件 的头信息</p>
+
+<blockquote><p>点击工程文件</p>
+
+<p>点击右边的文件设置窗口</p>
+
+<p>配置project Document 选项中的相关信息</p></blockquote>
+
+<p><img src="/images/xcodeSix.jpeg" alt="image" /></p>
+
+<p>上图第四步 class Prefix 是配置文件头，生成每个类前的头</p>
+
+<p><img src="/images/xcodeFileFour.png" alt="image" /></p>
+
+<p>organization 是配置文件中的  <strong>科技</strong>      位置的字</p>
+
+<p><img src="/images/xcodeFileFive.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/17/avfoundation-dot-fromworkde-xue-xi/">AVFoundation.framework的学习</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-17T17:15:52+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:15 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近学习自定义相机的相关知识，可以自定义相机成功，但是对AVFoundation不是很了解，这里有必要对这个AVFoundation.framework。</p>
+
+<p>（感觉写点东西咋这么困难）</p>
+
+<h2>学习类对象</h2>
+
+<blockquote><p>AVCaptureSession、AVCaptureInput 和 AVCaptureOutput 的学习</p></blockquote>
+
+<pre><code>    AVCaptureInput is an abstract base-class describing an input data source to an AVCaptureSession object. 
+
+    AVCaptureOutput is an abstract base class describing an output destination of an AVCaptureSession object
+
+    You use an AVCaptureSession object to coordinate the flow of data from AV input devices to outputs
+</code></pre>
+
+<p><img src="/iamges/AVCaptureOne.png" alt="image" /></p>
+
+<p>从图可以看出我们是用 session 管理输入输出设备的。session 就类似管理中心</p>
+
+<p>我们怎么用呢。
+1首先我们要获取一个输入对象（AVCaptureInput）
+2我们还需要获取一个输出对象（AVCaptureOutput）
+3还需要一个管理中心对象（AVCaptureSession）</p>
+
+<p><img src="/images/AVCaptureTwo.png" alt="image" /></p>
+
+<p>4.将他们组合安装。</p>
+
+<p>5.启动设备就可以了。</p>
+
+<h5>参考连接</h5>
+
+<p><a href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVFoundationFramework/">苹果AVFoundation ref</a></p>
+
+<p><a href="https://developer.apple.com/library/prerelease/mac/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/00_Introduction.html">苹果AVFoundation Programming Guide</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/12/zi-ding-yi-xiang-ji/">自定义相机</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-12T11:31:08+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:31 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>调用系统相机</h2>
+
+<p>调用系统相机一般的功能是可以满足的，如果没有特殊的要求要求，可以直接用系统相机。</p>
+
+<p>代码如下：</p>
+
+<pre><code>调用照相机
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+
+    UIImagePickerController * picker = [[UIImagePickerController alloc]init];
+    picker.delegate = self;
+    block(picker);
+    //摄像头
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:picker animated:YES completion:^{
+
+    }];
+}else{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"你没有摄像头" delegate:nil cancelButtonTitle:@"Drat!" otherButtonTitles:nil];
+    [alert show];
+
+}
+</code></pre>
+
+<p>获取图片或者取消图片实现代理</p>
+
+<pre><code>- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+
+UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+if ([self respondsToSelector:@selector(getCameraImage:)]) {
+    [self getCameraImage:image];
+}
+[self dismissViewControllerAnimated:YES completion:^{
+
+}];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+[self dismissViewControllerAnimated:YES completion:^{
+
+}];
+}
+</code></pre>
+
+<p>以上代码只是简单的调用下系统相机。并没有对相机进行相关设置。</p>
+
+<p>配置前</p>
+
+<p><img src="/images/comera1.jpg" alt="image" /></p>
+
+<pre><code>注意将系统相机配置成中文 ，在工程文件plist 中添加下面一项即可。
+</code></pre>
+
+<p><img src="/images/camerasytemChinese.png" alt="image" /></p>
+
+<p>配置后</p>
+
+<p><img src="/images/comera2.jpg" alt="image" /></p>
+
+<h2>自定义相机</h2>
+
+<pre><code>我个人偏向用自定义相机，个人理由只有一条，可以高度定制。（虽然有点麻烦）
+
+暂时更新到这里（哈哈。没有上下文了。）我发现学习相机还是先系统学习学习avfoudation.framework 比较靠谱些。学完av 再回来学喽
+</code></pre>
+
+<h5>参考连接</h5>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma/">进军二维码，从零开始学习二维码</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-11T18:30:03+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:30 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>做项目挺久的了，但是二维码这块总是用别人写好的，自己从来没有操过刀，内心有点小不爽啊，今天索性就写个博客，自己给自己定定需要，学学学习二维码。</p>
+
+<pre><code>二维条码/二维码（2-dimensional bar code）是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的；在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对应的几何形体来表示文字数值信息，通过图象输入设备或光电扫描设备自动识读以实现信息自动处理：它具有条码技术的一些共性：每种码制有其特定的字符集；每个字符占有一定的宽度；具有一定的校验功能等。同时还具有对不同行的信息自动识别功能、及处理图形旋转变化点。
+</code></pre>
+
+<h2>二维码扫描</h2>
+
+<p>现在都是2015年了。就不研究ZBar和ZXing了。今天要介绍的是iOS7.0后AVFoundation框架提供的原生二维码扫描。</p>
+
+<h2>二维码生成</h2>
+
+<h5>参考链接</h5>
+
+<p><a href="http://">二维码百度百科</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/10/cgaffinetransform-dot-hlei-de-xue-xi-he-yuan-li-jiang-jie/">CGAffineTransform.h类的学习和原理讲解</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-10T15:25:44+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:25 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p> 第一次写ios相关技术博客，所以先写个简单的，写的不好大家多多提意见。
+ 想学好这个类，我感觉最好还是从理论上弄明白什么二维图形到底是怎么变换的。</p>
+
+<h2>矩阵及其运算</h2>
+
+<blockquote><p>一．数学概念
+定义1.1 由<img src="/images/juzhen1.gif" alt="image" />个数<img src="/images/juzhen2.gif" alt="image" />   排成m行n列的数表
+<img src="/images/juzhen3.gif" alt="image" /></p></blockquote>
+
+<p>称为m行n列的矩阵，简称   矩阵，记作</p>
+
+<p><img src="/images/juzhen4.gif" alt="image" /></p>
+
+<blockquote><p>二．原理，公式和法则</p></blockquote>
+
+<p>1．矩阵的加法
+(1) 公式</p>
+
+<p> <img src="/images/juzhen5.gif" alt="image" /></p>
+
+<p>  (2) 运算律</p>
+
+<p> <img src="/images/juzhen6.gif" alt="image" /></p>
+
+<p> 2．数乘矩阵
+ (1) 公式</p>
+
+<p>  <img src="/images/juzhen7.gif" alt="image" /></p>
+
+<p>(2) 运算律
+  <img src="/images/juzhen8.gif" alt="image" /></p>
+
+<p> 3．矩阵与矩阵相乘
+ (1) 设 <img src="/images/juzhen9.gif" alt="image" />  ,
+ 则 <img src="/images/juzhen10.gif" alt="image" />  其中 <img src="/images/juzhen11.gif" alt="image" />  ，且</p>
+
+<p><img src="/images/juzhen12.gif" alt="image" /></p>
+
+<p>（2）　运算符(假设运算都是可行的)：</p>
+
+<p><img src="/images/juzhen13.gif" alt="image" /></p>
+
+<p>(3)　方阵的运算</p>
+
+<p><img src="/images/juzhen14.gif" alt="image" /></p>
+
+<p>注意：①矩阵乘法一般不满足交换律。
+②一般 <img src="/images/juzhen15.gif" alt="image" /></p>
+
+<p>4.矩阵的转置
+(1)　公式</p>
+
+<p><img src="/images/juzhen16.png" alt="image" /></p>
+
+<p><img src="/images/juzhen17.png" alt="image" /></p>
+
+<p> (2)　运算律</p>
+
+<p> <img src="/images/juzhen18.gif" alt="image" /></p>
+
+<p> 5.方阵的行列式</p>
+
+<p><img src="/images/juzhen19.png" alt="image" /></p>
+
+<p>6.共轭矩阵</p>
+
+<p><img src="/images/juzhen20.png" alt="image" /></p>
+
+<p>上面一定要看懂矩阵的乘法是怎么运算的才行。</p>
+
+<h2>数学原理</h2>
+
+<blockquote><p>1、基本几何变换及变换矩阵</p></blockquote>
+
+<p>基本几何变换都是相对于坐标原点和坐标轴进行的几何变换，有平移、比例、旋转、反射和错切等</p>
+
+<p><strong>1.1 平移变换</strong></p>
+
+<p>是指将p点沿直线路径从一个坐标位置移到另一个坐标位置的重定位过程。他是一种不产生变形而移动物体的刚体变换（rigid-body transformation），如下图所示。</p>
+
+<p><img src="/images/juzhen21.png" alt="image" /></p>
+
+<p> 推导：</p>
+
+<p> <img src="/images/juzhen22.png" alt="image" /></p>
+
+<pre><code>    解释(个人理解)
+    x'=x+Tx  相当于x'= x*1 + y*0 +  1 * Tx
+    y'=y+Ty  相当于y'= x*0 + y*1 +  1 * Ty
+
+    所以 A 矩阵  [x  y 1]
+         C 矩阵要和A矩阵格式一样 [x' y' 1]
+        c矩阵的1 怎么来。只能添加一行了
+
+        1=x*0+y*0+ 1*1
+
+所以b矩阵为 上面如图
+</code></pre>
+
+<p><strong>1.2 缩放变换</strong>
+缩放变换是指对p点相对于坐标原点沿x方向放缩Sx倍，沿y方向放缩Sy倍。其中Sx和Sy称为缩放系数。</p>
+
+<p><img src="/images/juzhen23.png" alt="image" />
+推导：</p>
+
+<p><img src="/images/juzhen24.png" alt="image" /></p>
+
+<p>  矩阵
+<img src="/images/juzhen25.png" alt="image" /></p>
+
+<pre><code>x'=x*Sx+y*0 + 0*0;
+y'=x*0 +y *Sy+0*0;
+0=x*0+y*0+0*1;
+</code></pre>
+
+<p>缩放变换可改变物体的大小，如下图所示。当Sx=Sy >1时，图形沿两个坐标轴方向等比例放大；当Sx=Sy&lt;1，图形沿两个坐标轴方向等比例缩小；当Sx≠Sy，图形沿两个坐标轴方向作非均匀的比例变换。</p>
+
+<p><img src="/images/juzhen26.png" alt="image" /></p>
+
+<p>  <strong>1.3 旋转变换</strong></p>
+
+<p>二维旋转是指将p点绕坐标原点转动某个角度（逆时针为正，顺时针为负）得到新的点p’的重定位过程。</p>
+
+<p><img src="/images/juzhen27.png" alt="image" /></p>
+
+<p> 推导：利用极坐标方程</p>
+
+<p><img src="/images/juzhen28.png" alt="image" /></p>
+
+<p>逆时针旋转θ角的矩阵如下：</p>
+
+<p><img src="/images/juzhen29.png" alt="image" /></p>
+
+<p><strong>1.4 对称变换</strong></p>
+
+<p>对称变换后的图形是原图形关于某一轴线或原点的镜像。
+<img src="/images/juzhen30.png" alt="image" /></p>
+
+<p>  (1)关于x轴对称</p>
+
+<p><img src="/images/juzhen31.png" alt="image" /></p>
+
+<pre><code>x'=x*1+y*0+0*0;
+y'=x*0+y*(-1)+0*0;
+0=x*0+y*0+0*1;
+</code></pre>
+
+<p> (2)关于y轴对称</p>
+
+<p> <img src="/images/juzhen33.png" alt="image" /></p>
+
+<p>  (3)关于原点对称</p>
+
+<p>  <img src="/images/juzhen34.png" alt="image" /></p>
+
+<p>  (4)关于y=x轴对称</p>
+
+<p>   <img src="/images/juzhen35.png" alt="image" /></p>
+
+<p>   (5)关于y=-x轴对称</p>
+
+<p>   <img src="/images/juzhen36.png" alt="image" /></p>
+
+<p><strong>1.5 错切变换</strong></p>
+
+<p>错切变换也称为剪切、错位变换，用于产生弹性物体的变形处理。</p>
+
+<p>   <img src="/images/juzhen37.png" alt="image" /></p>
+
+<p> 错切变换的变换矩阵为：</p>
+
+<p>   <img src="/images/juzhen38.png" alt="image" /></p>
+
+<p>   (1)沿x方向错切：b=0
+   (2)沿y方向错切：c=0
+   (3)两个方向错切：b和c都不等于0。</p>
+
+<blockquote><p>2、 复合变换</p></blockquote>
+
+<p>如果图形要做一次以上的几何变换，那么可以将各个变换矩阵综合起来进行一步到位的变换。复合变换有如下的性质：</p>
+
+<p><strong>1）复合平移</strong></p>
+
+<p>对同一图形做两次平移相当于将两次的平移两加起来：</p>
+
+<p> <img src="/images/juzhen39.png" alt="image" /></p>
+
+<p> <strong>2）复合缩放</strong></p>
+
+<p>两次连续的缩放相当于将缩放操作相乘：</p>
+
+<p> <img src="/images/juzhen40.png" alt="image" /></p>
+
+<p><strong>3）复合旋转</strong></p>
+
+<p>两次连续的旋转相当于将两次的旋转角度相加：</p>
+
+<p> <img src="/images/juzhen41.png" alt="image" /></p>
+
+<pre><code>缩放、旋转变换都与参考点有关，上面进行的各种变换都是以原点为参考点的。如果相对某个一般的参考点（xf，yf）作缩放、旋转变换，相当于将该点移到坐标原点处，然后进行缩放、旋转变换，最后将（xf，yf）点移回原来的位置。
+</code></pre>
+
+<p><strong>4）关于（xf，yf）点的缩放变换</strong></p>
+
+<p> <img src="/images/juzhen42.png" alt="image" /></p>
+
+<p><strong>5）绕（xf，yf）点的旋转变换</strong></p>
+
+<p>  <img src="/images/juzhen43.png" alt="image" /></p>
+
+<blockquote><p>  3、二维图形几何变换的计算</p></blockquote>
+
+<p>几何变换均可表示成P’=P*T的形式</p>
+
+<p>(1)点的变换：先将点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="/images/juzhen44.png" alt="image" /></p>
+
+<p>(2)直线的变换：将直线的两个端点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="/images/juzhen45.png" alt="image" /></p>
+
+<p>(3)多边形的变换：将多边形的顶点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="/images/juzhen46.png" alt="image" /></p>
+
+<p> (4)曲线的变换：将曲线的每个点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<blockquote><p> 4、复合变换的矩阵点乘的先后问题</p></blockquote>
+
+<p>1)如果采用以下方式计算几何变换的变换矩阵</p>
+
+<p><img src="/images/juzhen47.png" alt="image" /></p>
+
+<p>如上范例所示，其先执行变换的矩阵放在前面，后执行变换的矩阵放在后面。</p>
+
+<p>2)如果采用以下方式计算几何变换的变换矩阵：</p>
+
+<p><img src="/images/juzhen48.png" alt="image" /></p>
+
+<p>如上范例所示，其先执行变换的矩阵放在后面，后执行变换的矩阵放在前面。</p>
+
+<p>这是因为矩阵的特性：<img src="/images/juzhen49.png" alt="image" /></p>
+
+<h2>CGAffineTransform.h 函数介绍</h2>
+
+<p>说了半天，不来点代码怎么行。</p>
+
+<pre><code>在CGAffineTransform.h 文件中
+
+typedef struct CGAffineTransform CGAffineTransform;
+
+struct CGAffineTransform {
+    CGFloat a, b, c, d;
+     CGFloat tx, ty;
+};
+
+矩阵数学模型是[a  b]
+             c  d
+            tx  ty
+省略了  [a  b  0]  中的最后一列
+        c  d  0
+        tx ty 1
+</code></pre>
+
+<p> 函数介绍代码</p>
+
+<pre><code>///获取一个标准矩阵。没有变化的矩阵
+CGAffineTransform transform=  CGAffineTransformIdentity;
+NSLog(@"CGAffineTransformIdentity 数值%@" ,   NSStringFromCGAffineTransform(transform));
+
+///获取一个变幻矩阵 这个函数可以平移旋转和缩放
+/* Return the transform [ a b c d tx ty ]. */
+</code></pre>
+
+<p>  transform=  CGAffineTransformMake(a, b, c, d,x,y);</p>
+
+<pre><code>///获取一个只做平移的矩阵
+//        t' = [ 1 0 0 1 tx ty ]
+</code></pre>
+
+<p> transform=   CGAffineTransformMakeTranslation(x, y);</p>
+
+<pre><code>///获取一个缩放矩阵
+//         t' = [ sx 0 0 sy 0 0 ] 
+</code></pre>
+
+<p>  transform=  CGAffineTransformMakeScale(a,c);</p>
+
+<pre><code>//获取一个旋转矩阵
+/* Return a transform which rotates by `angle' radians:
+ t' = [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] */
+</code></pre>
+
+<p>  transform=  CGAffineTransformMakeRotation(3);</p>
+
+<pre><code>///验证是否是标准矩阵
+</code></pre>
+
+<p>  BOOL isTrue =  CGAffineTransformIsIdentity(transform);</p>
+
+<pre><code>///这个是矩阵之间的换算了
+/* Translate `t' by `(tx, ty)' and return the result:
+ t' = [ 1 0 0 1 tx ty ] * t */
+/// 说的很明确 用只有平移的矩阵和 t 矩阵相乘 t*t' 意思是在t'的基础上做t 变幻（例如平移旋转等等）
+transform=   CGAffineTransformTranslate(transform,x,y);
+
+///矩阵先缩放再transform
+/* Scale `t' by `(sx, sy)' and return the result:
+ t' = [ sx 0 0 sy 0 0 ] * t */
+</code></pre>
+
+<p>  transform=  CGAffineTransformScale(transform,a,c);</p>
+
+<pre><code>///矩阵先旋转再transform
+/* Rotate `t' by `angle' radians and return the result:
+ t' =  [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] * t */
+transform = CGAffineTransformRotate(transform,3);
+
+
+NSLog(@"CGAffineTransformInvert前 数值%@" , NSStringFromCGAffineTransform(transform));
+/// 获取 反转矩阵  看不出效果。做图看看  可以仔细研究下
+///我看着就是沿着y轴做了一个对称变换 （不见得对）
+transform =   CGAffineTransformInvert(transform);
+NSLog(@"CGAffineTransformInvert后 数值%@" , NSStringFromCGAffineTransform(transform));
+
+
+///矩阵相乘
+/* Concatenate `t2' to `t1' and return the result:
+ t' = t1 * t2 */
+</code></pre>
+
+<p>   transform = CGAffineTransformConcat(transform,transform);</p>
+
+<pre><code>///判断两个矩阵是否相等
+/* Return true if `t1' and `t2' are equal, false otherwise. */
+isTrue =CGAffineTransformEqualToTransform(transform,transform);
+
+///获取一个点矩阵变幻另一个点的位置
+/* Transform `point' by `t' and return the result:
+ p' = p * t
+ where p = [ x y 1 ]. */
+</code></pre>
+
+<p>  CGPoint point=  CGPointApplyAffineTransform(CGPointMake(30, 30), transform);</p>
+
+<pre><code>///获取一个矩形矩形变换的大小
+/* Transform `size' by `t' and return the result:
+ s' = s * t
+ where s = [ width height 0 ]. */
+CGSize size= CGSizeApplyAffineTransform(CGSizeMake(30, 30),transform);
+
+///获取矩形位置变幻后的位置
+ CGRect rect=CGRectApplyAffineTransform(CGRectMake(0, 0, 30, 30),transform);
+</code></pre>
+
+<p>项目中有每个函数的具体用法。</p>
+
+<p><img src="/images/transformNew.gif" alt="image" /></p>
+
+<p>项目托管在<a href="https://github.com/NPOpenSource/transform.github.com.git">github</a></p>
+
+<h5>参考文章：</h5>
+
+<p><a href="http://dec3.jlu.edu.cn/webcourse/t000022/teach/chapter2/2_1.htm">矩阵定义</a></p>
+
+<p><a href="http://blog.csdn.net/wcyoot/article/details/33310329">变换原理</a></p>
+
+<p><a href="https://developer.apple.com/library/prerelease/watchos/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_affine/dq_affine.html">苹果官方文档</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong/">记录unix命令的使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-04T18:07:24+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:07 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>经常为在mac 终端操作，所以不得不学习一些终端命令并做下记录，方便以后查询。</p>
+
+<h2>命令查询</h2>
+
+<p>其实所有的命令参数都是可以通过man 来查询的。</p>
+
+<pre><code>eg：
+man cd
+man rm
+man ls
+man open
+</code></pre>
+
+<p>都有命令的详细使用情况</p>
+
+<h2>命令介绍</h2>
+
+<ul>
+<li>rm -rf xxx 删除文件夹xxx（包括里面的内容）</li>
+<li>mkdir xxx 新建xxx文件夹</li>
+<li>cd xxx 进入xxx文件夹，xxx可以是个路径</li>
+<li>open . 使用Finder打开当前目录</li>
+<li>open ./source 使用Finder打开当前目录下的source文件夹</li>
+<li>ls 查看当面文件夹中的目录列表</li>
+<li>cd .. 返回上已目录</li>
+<li>rm xxx 删除文件</li>
+<li>vi xxx 打开文件
+  进入vi文件之后，q键是功能切换
+                a键是插入操作
+                shift+q 进入退出模式。wq 写入并保存 q! 强制退出不保存</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/">coreImage.framework的学习</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/">Ios7旋转屏学习总结和遇到的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/24/dsymwen-jian-fen-xi/">Dsym文件分析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,557 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>CGAffineTransform.h类的学习和原理讲解 - 温杰的博客</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="第一次写ios相关技术博客，所以先写个简单的，写的不好大家多多提意见。 想学好这个类，我感觉最好还是从理论上弄明白什么二维图形到底是怎么变换的。 矩阵及其运算 一．数学概念
+定义1.1 由个数 排成m行n列的数表 称为m行n列的矩阵，简称 矩阵，记作 二．原理，公式和法则 1．矩阵的加法
+(1 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yoursite.com/blog/2015/08/10/cgaffinetransform-dot-hlei-de-xue-xi-he-yuan-li-jiang-jie/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="温杰的博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">温杰的博客</a></h1>
+  
+    <h2>不积跬步无以至千里，不积小流无以成江海。</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yoursite.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">CGAffineTransform.h类的学习和原理讲解</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-10T15:25:44+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:25 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p> 第一次写ios相关技术博客，所以先写个简单的，写的不好大家多多提意见。
+ 想学好这个类，我感觉最好还是从理论上弄明白什么二维图形到底是怎么变换的。</p>
+
+<h2>矩阵及其运算</h2>
+
+<blockquote><p>一．数学概念
+定义1.1 由<img src="/images/juzhen1.gif" alt="image" />个数<img src="/images/juzhen2.gif" alt="image" />   排成m行n列的数表
+<img src="/images/juzhen3.gif" alt="image" /></p></blockquote>
+
+<p>称为m行n列的矩阵，简称   矩阵，记作</p>
+
+<p><img src="/images/juzhen4.gif" alt="image" /></p>
+
+<blockquote><p>二．原理，公式和法则</p></blockquote>
+
+<p>1．矩阵的加法
+(1) 公式</p>
+
+<p> <img src="/images/juzhen5.gif" alt="image" /></p>
+
+<p>  (2) 运算律</p>
+
+<p> <img src="/images/juzhen6.gif" alt="image" /></p>
+
+<p> 2．数乘矩阵
+ (1) 公式</p>
+
+<p>  <img src="/images/juzhen7.gif" alt="image" /></p>
+
+<p>(2) 运算律
+  <img src="/images/juzhen8.gif" alt="image" /></p>
+
+<p> 3．矩阵与矩阵相乘
+ (1) 设 <img src="/images/juzhen9.gif" alt="image" />  ,
+ 则 <img src="/images/juzhen10.gif" alt="image" />  其中 <img src="/images/juzhen11.gif" alt="image" />  ，且</p>
+
+<p><img src="/images/juzhen12.gif" alt="image" /></p>
+
+<p>（2）　运算符(假设运算都是可行的)：</p>
+
+<p><img src="/images/juzhen13.gif" alt="image" /></p>
+
+<p>(3)　方阵的运算</p>
+
+<p><img src="/images/juzhen14.gif" alt="image" /></p>
+
+<p>注意：①矩阵乘法一般不满足交换律。
+②一般 <img src="/images/juzhen15.gif" alt="image" /></p>
+
+<p>4.矩阵的转置
+(1)　公式</p>
+
+<p><img src="/images/juzhen16.png" alt="image" /></p>
+
+<p><img src="/images/juzhen17.png" alt="image" /></p>
+
+<p> (2)　运算律</p>
+
+<p> <img src="/images/juzhen18.gif" alt="image" /></p>
+
+<p> 5.方阵的行列式</p>
+
+<p><img src="/images/juzhen19.png" alt="image" /></p>
+
+<p>6.共轭矩阵</p>
+
+<p><img src="/images/juzhen20.png" alt="image" /></p>
+
+<p>上面一定要看懂矩阵的乘法是怎么运算的才行。</p>
+
+<h2>数学原理</h2>
+
+<blockquote><p>1、基本几何变换及变换矩阵</p></blockquote>
+
+<p>基本几何变换都是相对于坐标原点和坐标轴进行的几何变换，有平移、比例、旋转、反射和错切等</p>
+
+<p><strong>1.1 平移变换</strong></p>
+
+<p>是指将p点沿直线路径从一个坐标位置移到另一个坐标位置的重定位过程。他是一种不产生变形而移动物体的刚体变换（rigid-body transformation），如下图所示。</p>
+
+<p><img src="/images/juzhen21.png" alt="image" /></p>
+
+<p> 推导：</p>
+
+<p> <img src="/images/juzhen22.png" alt="image" /></p>
+
+<pre><code>    解释(个人理解)
+    x'=x+Tx  相当于x'= x*1 + y*0 +  1 * Tx
+    y'=y+Ty  相当于y'= x*0 + y*1 +  1 * Ty
+
+    所以 A 矩阵  [x  y 1]
+         C 矩阵要和A矩阵格式一样 [x' y' 1]
+        c矩阵的1 怎么来。只能添加一行了
+
+        1=x*0+y*0+ 1*1
+
+所以b矩阵为 上面如图
+</code></pre>
+
+<p><strong>1.2 缩放变换</strong>
+缩放变换是指对p点相对于坐标原点沿x方向放缩Sx倍，沿y方向放缩Sy倍。其中Sx和Sy称为缩放系数。</p>
+
+<p><img src="/images/juzhen23.png" alt="image" />
+推导：</p>
+
+<p><img src="/images/juzhen24.png" alt="image" /></p>
+
+<p>  矩阵
+<img src="/images/juzhen25.png" alt="image" /></p>
+
+<pre><code>x'=x*Sx+y*0 + 0*0;
+y'=x*0 +y *Sy+0*0;
+0=x*0+y*0+0*1;
+</code></pre>
+
+<p>缩放变换可改变物体的大小，如下图所示。当Sx=Sy >1时，图形沿两个坐标轴方向等比例放大；当Sx=Sy&lt;1，图形沿两个坐标轴方向等比例缩小；当Sx≠Sy，图形沿两个坐标轴方向作非均匀的比例变换。</p>
+
+<p><img src="/images/juzhen26.png" alt="image" /></p>
+
+<p>  <strong>1.3 旋转变换</strong></p>
+
+<p>二维旋转是指将p点绕坐标原点转动某个角度（逆时针为正，顺时针为负）得到新的点p’的重定位过程。</p>
+
+<p><img src="/images/juzhen27.png" alt="image" /></p>
+
+<p> 推导：利用极坐标方程</p>
+
+<p><img src="/images/juzhen28.png" alt="image" /></p>
+
+<p>逆时针旋转θ角的矩阵如下：</p>
+
+<p><img src="/images/juzhen29.png" alt="image" /></p>
+
+<p><strong>1.4 对称变换</strong></p>
+
+<p>对称变换后的图形是原图形关于某一轴线或原点的镜像。
+<img src="/images/juzhen30.png" alt="image" /></p>
+
+<p>  (1)关于x轴对称</p>
+
+<p><img src="/images/juzhen31.png" alt="image" /></p>
+
+<pre><code>x'=x*1+y*0+0*0;
+y'=x*0+y*(-1)+0*0;
+0=x*0+y*0+0*1;
+</code></pre>
+
+<p> (2)关于y轴对称</p>
+
+<p> <img src="/images/juzhen33.png" alt="image" /></p>
+
+<p>  (3)关于原点对称</p>
+
+<p>  <img src="/images/juzhen34.png" alt="image" /></p>
+
+<p>  (4)关于y=x轴对称</p>
+
+<p>   <img src="/images/juzhen35.png" alt="image" /></p>
+
+<p>   (5)关于y=-x轴对称</p>
+
+<p>   <img src="/images/juzhen36.png" alt="image" /></p>
+
+<p><strong>1.5 错切变换</strong></p>
+
+<p>错切变换也称为剪切、错位变换，用于产生弹性物体的变形处理。</p>
+
+<p>   <img src="/images/juzhen37.png" alt="image" /></p>
+
+<p> 错切变换的变换矩阵为：</p>
+
+<p>   <img src="/images/juzhen38.png" alt="image" /></p>
+
+<p>   (1)沿x方向错切：b=0
+   (2)沿y方向错切：c=0
+   (3)两个方向错切：b和c都不等于0。</p>
+
+<blockquote><p>2、 复合变换</p></blockquote>
+
+<p>如果图形要做一次以上的几何变换，那么可以将各个变换矩阵综合起来进行一步到位的变换。复合变换有如下的性质：</p>
+
+<p><strong>1）复合平移</strong></p>
+
+<p>对同一图形做两次平移相当于将两次的平移两加起来：</p>
+
+<p> <img src="/images/juzhen39.png" alt="image" /></p>
+
+<p> <strong>2）复合缩放</strong></p>
+
+<p>两次连续的缩放相当于将缩放操作相乘：</p>
+
+<p> <img src="/images/juzhen40.png" alt="image" /></p>
+
+<p><strong>3）复合旋转</strong></p>
+
+<p>两次连续的旋转相当于将两次的旋转角度相加：</p>
+
+<p> <img src="/images/juzhen41.png" alt="image" /></p>
+
+<pre><code>缩放、旋转变换都与参考点有关，上面进行的各种变换都是以原点为参考点的。如果相对某个一般的参考点（xf，yf）作缩放、旋转变换，相当于将该点移到坐标原点处，然后进行缩放、旋转变换，最后将（xf，yf）点移回原来的位置。
+</code></pre>
+
+<p><strong>4）关于（xf，yf）点的缩放变换</strong></p>
+
+<p> <img src="/images/juzhen42.png" alt="image" /></p>
+
+<p><strong>5）绕（xf，yf）点的旋转变换</strong></p>
+
+<p>  <img src="/images/juzhen43.png" alt="image" /></p>
+
+<blockquote><p>  3、二维图形几何变换的计算</p></blockquote>
+
+<p>几何变换均可表示成P’=P*T的形式</p>
+
+<p>(1)点的变换：先将点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="/images/juzhen44.png" alt="image" /></p>
+
+<p>(2)直线的变换：将直线的两个端点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="/images/juzhen45.png" alt="image" /></p>
+
+<p>(3)多边形的变换：将多边形的顶点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="/images/juzhen46.png" alt="image" /></p>
+
+<p> (4)曲线的变换：将曲线的每个点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<blockquote><p> 4、复合变换的矩阵点乘的先后问题</p></blockquote>
+
+<p>1)如果采用以下方式计算几何变换的变换矩阵</p>
+
+<p><img src="/images/juzhen47.png" alt="image" /></p>
+
+<p>如上范例所示，其先执行变换的矩阵放在前面，后执行变换的矩阵放在后面。</p>
+
+<p>2)如果采用以下方式计算几何变换的变换矩阵：</p>
+
+<p><img src="/images/juzhen48.png" alt="image" /></p>
+
+<p>如上范例所示，其先执行变换的矩阵放在后面，后执行变换的矩阵放在前面。</p>
+
+<p>这是因为矩阵的特性：<img src="/images/juzhen49.png" alt="image" /></p>
+
+<h2>CGAffineTransform.h 函数介绍</h2>
+
+<p>说了半天，不来点代码怎么行。</p>
+
+<pre><code>在CGAffineTransform.h 文件中
+
+typedef struct CGAffineTransform CGAffineTransform;
+
+struct CGAffineTransform {
+    CGFloat a, b, c, d;
+     CGFloat tx, ty;
+};
+
+矩阵数学模型是[a  b]
+             c  d
+            tx  ty
+省略了  [a  b  0]  中的最后一列
+        c  d  0
+        tx ty 1
+</code></pre>
+
+<p> 函数介绍代码</p>
+
+<pre><code>///获取一个标准矩阵。没有变化的矩阵
+CGAffineTransform transform=  CGAffineTransformIdentity;
+NSLog(@"CGAffineTransformIdentity 数值%@" ,   NSStringFromCGAffineTransform(transform));
+
+///获取一个变幻矩阵 这个函数可以平移旋转和缩放
+/* Return the transform [ a b c d tx ty ]. */
+</code></pre>
+
+<p>  transform=  CGAffineTransformMake(a, b, c, d,x,y);</p>
+
+<pre><code>///获取一个只做平移的矩阵
+//        t' = [ 1 0 0 1 tx ty ]
+</code></pre>
+
+<p> transform=   CGAffineTransformMakeTranslation(x, y);</p>
+
+<pre><code>///获取一个缩放矩阵
+//         t' = [ sx 0 0 sy 0 0 ] 
+</code></pre>
+
+<p>  transform=  CGAffineTransformMakeScale(a,c);</p>
+
+<pre><code>//获取一个旋转矩阵
+/* Return a transform which rotates by `angle' radians:
+ t' = [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] */
+</code></pre>
+
+<p>  transform=  CGAffineTransformMakeRotation(3);</p>
+
+<pre><code>///验证是否是标准矩阵
+</code></pre>
+
+<p>  BOOL isTrue =  CGAffineTransformIsIdentity(transform);</p>
+
+<pre><code>///这个是矩阵之间的换算了
+/* Translate `t' by `(tx, ty)' and return the result:
+ t' = [ 1 0 0 1 tx ty ] * t */
+/// 说的很明确 用只有平移的矩阵和 t 矩阵相乘 t*t' 意思是在t'的基础上做t 变幻（例如平移旋转等等）
+transform=   CGAffineTransformTranslate(transform,x,y);
+
+///矩阵先缩放再transform
+/* Scale `t' by `(sx, sy)' and return the result:
+ t' = [ sx 0 0 sy 0 0 ] * t */
+</code></pre>
+
+<p>  transform=  CGAffineTransformScale(transform,a,c);</p>
+
+<pre><code>///矩阵先旋转再transform
+/* Rotate `t' by `angle' radians and return the result:
+ t' =  [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] * t */
+transform = CGAffineTransformRotate(transform,3);
+
+
+NSLog(@"CGAffineTransformInvert前 数值%@" , NSStringFromCGAffineTransform(transform));
+/// 获取 反转矩阵  看不出效果。做图看看  可以仔细研究下
+///我看着就是沿着y轴做了一个对称变换 （不见得对）
+transform =   CGAffineTransformInvert(transform);
+NSLog(@"CGAffineTransformInvert后 数值%@" , NSStringFromCGAffineTransform(transform));
+
+
+///矩阵相乘
+/* Concatenate `t2' to `t1' and return the result:
+ t' = t1 * t2 */
+</code></pre>
+
+<p>   transform = CGAffineTransformConcat(transform,transform);</p>
+
+<pre><code>///判断两个矩阵是否相等
+/* Return true if `t1' and `t2' are equal, false otherwise. */
+isTrue =CGAffineTransformEqualToTransform(transform,transform);
+
+///获取一个点矩阵变幻另一个点的位置
+/* Transform `point' by `t' and return the result:
+ p' = p * t
+ where p = [ x y 1 ]. */
+</code></pre>
+
+<p>  CGPoint point=  CGPointApplyAffineTransform(CGPointMake(30, 30), transform);</p>
+
+<pre><code>///获取一个矩形矩形变换的大小
+/* Transform `size' by `t' and return the result:
+ s' = s * t
+ where s = [ width height 0 ]. */
+CGSize size= CGSizeApplyAffineTransform(CGSizeMake(30, 30),transform);
+
+///获取矩形位置变幻后的位置
+ CGRect rect=CGRectApplyAffineTransform(CGRectMake(0, 0, 30, 30),transform);
+</code></pre>
+
+<p>项目中有每个函数的具体用法。</p>
+
+<p><img src="/images/transformNew.gif" alt="image" /></p>
+
+<p>项目托管在<a href="https://github.com/NPOpenSource/transform.github.com.git">github</a></p>
+
+<h5>参考文章：</h5>
+
+<p><a href="http://dec3.jlu.edu.cn/webcourse/t000022/teach/chapter2/2_1.htm">矩阵定义</a></p>
+
+<p><a href="http://blog.csdn.net/wcyoot/article/details/33310329">变换原理</a></p>
+
+<p><a href="https://developer.apple.com/library/prerelease/watchos/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_affine/dq_affine.html">苹果官方文档</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-08-10T15:25:44+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:25 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong/" title="Previous Post: 记录unix命令的使用">&laquo; 记录unix命令的使用</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma/" title="Next Post: 进军二维码，从零开始学习二维码">进军二维码，从零开始学习二维码 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/">coreImage.framework的学习</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/">Ios7旋转屏学习总结和遇到的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/24/dsymwen-jian-fen-xi/">Dsym文件分析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

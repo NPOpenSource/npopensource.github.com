@@ -1,0 +1,3375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[温杰的博客]]></title>
+  <link href="http://yoursite.com/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2015-09-24T11:48:35+08:00</updated>
+  <id>http://yoursite.com/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[coreImage.framework的学习]]></title>
+    <link href="http://yoursite.com/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/"/>
+    <updated>2015-09-11T14:16:00+08:00</updated>
+    <id>http://yoursite.com/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi</id>
+    <content type="html"><![CDATA[<h3>关于 core Image</h3>
+
+<p>CoreImage是一个图像框架，它基于OpenGL顶层创建，底层则用着色器来处理图像，这意味着它利用了GPU基于硬件加速来处理图像。CoreImage中有很多滤镜，它们能够一次给予一张图像或者视频帧多种视觉效果。而且滤镜可以连接起来组成一个滤镜链，把滤镜效果叠加起来处理图像。</p>
+
+<p><img src="http://yoursite.com/images/coreImage.jpg" alt="image" /></p>
+
+<p><img src="http://yoursite.com/images/coreImage1.png" alt="image" /></p>
+
+<h3>关于core image 类</h3>
+
+<ul>
+<li>CIFlilter 是代表滤片对象。一个滤片至少要有一个输入参数 能输出一张图片。</li>
+<li>CIImage 代表可以变的图片。</li>
+<li>CIContext 相当于画笔吧。</li>
+</ul>
+
+
+<h3>使用基本步骤</h3>
+
+<p>1 创建 CIContext 对象
+2 创建 CIImage 对象
+3 创建 CIFilter 对象设置输入参数
+4 获取 CIFilter 对象结果
+5 用 CIcontext 对象 进行绘制。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>首先引入coreImage.framework 
+</span><span class='line'>
+</span><span class='line'>///1 创建 CIContext 对象
+</span><span class='line'>CIContext *context = [CIContext contextWithOptions:nil];
+</span><span class='line'>//2 创建 CIImage 对象    CIImage *image = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>//3 创建 CIFilter 对象设置输入参数    CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];    [filter setValue:image forKey:kCIInputImageKey];    [filter setValue:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>
+</span><span class='line'>//4 获取 CIFilter 对象结果    CIImage *result = [filter valueForKey:kCIOutputImageKey];    
+</span><span class='line'>///5 用 CIcontext 对象 进行绘制。    CGRect extent = [result extent];    CGImageRef cgImage = [context createCGImage:result fromRect:extent];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>效果 如图</p>
+
+<p> <img src="http://yoursite.com/images/coreImage2.png" alt="image" /></p>
+
+<h3>core image 所有类 及每个类函数用法</h3>
+
+<ul>
+<li>CIColor</li>
+<li>CIContext</li>
+<li>CIDetector</li>
+<li>CIFeature</li>
+<li>CIFilter</li>
+<li>CIImage</li>
+<li>CIKernel</li>
+<li>CIVector</li>
+<li>CoreImage</li>
+<li>CoreImageDefines</li>
+</ul>
+
+
+<h4>CIContext 用法</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)CIContextTest
+</span><span class='line'>{
+</span><span class='line'>    
+</span><span class='line'>    ///mac 使用的方法
+</span><span class='line'>    {
+</span><span class='line'>//#if !TARGET_OS_IPHONE
+</span><span class='line'>//    + (CIContext *)contextWithCGLContext:(CGLContextObj)ctx
+</span><span class='line'>//pixelFormat:(CGLPixelFormatObj)pf
+</span><span class='line'>//colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>//options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_NA);
+</span><span class='line'>//#endif
+</span><span class='line'>        
+</span><span class='line'>//#if !TARGET_OS_IPHONE
+</span><span class='line'>//        + (CIContext *)contextWithCGLContext:(CGLContextObj)ctx
+</span><span class='line'>//    pixelFormat:(CGLPixelFormatObj)pf
+</span><span class='line'>//    options:(NSDictionary *)dict
+</span><span class='line'>//        __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_4,__MAC_10_6,__IPHONE_NA,__IPHONE_NA);
+</span><span class='line'>//#endif
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        + (CIContext *)contextWithCGContext:(CGContextRef)ctx
+</span><span class='line'>//    options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_NA);
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    CIContext *context =nil;
+</span><span class='line'>    ///cpu 渲染
+</span><span class='line'>//    context = [CIContext contextWithOptions:nil];
+</span><span class='line'>    
+</span><span class='line'>    ///gpu 渲染  优势是直到渲染完成才会复制到cpu中。
+</span><span class='line'>   
+</span><span class='line'>    EAGLContext  * eagl = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
+</span><span class='line'>//    context  = [CIContext contextWithEAGLContext:eagl];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    /// 如果不关心颜色 应该关闭颜色空间 不关闭会慢些。
+</span><span class='line'>    NSDictionary *options = @{ kCIContextWorkingColorSpace : [NSNull null] };
+</span><span class='line'>    context = [CIContext contextWithEAGLContext:eagl options:options];
+</span><span class='line'>    
+</span><span class='line'>    CIImage *image = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>    
+</span><span class='line'>    CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];    [filter setValue:image forKey:kCIInputImageKey];    [filter setValue:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    CIImage *result = [filter valueForKey:kCIOutputImageKey];    
+</span><span class='line'>    ///获取输入context尺寸 输入的图片尺寸不能大于size
+</span><span class='line'>   CGSize size= [context inputImageMaximumSize];
+</span><span class='line'>    NSLog(@"inputImageMaximumSize %@", NSStringFromCGSize(size));
+</span><span class='line'>    
+</span><span class='line'>    CGRect extent = [result extent];
+</span><span class='line'>    
+</span><span class='line'>    ///ios5 到ios6 才能使用 过时了。不做说明
+</span><span class='line'>    {
+</span><span class='line'>//        - (void)drawImage:(CIImage *)im atPoint:(CGPoint)p fromRect:(CGRect)src __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_4, __MAC_10_8, __IPHONE_5_0, __IPHONE_6_0);
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>
+</span><span class='line'>    ///这个函数使用是有限制的必须是contextWithEAGLContext 渲染的内容，也就是GPU 才能使用 并且渲染到CAEAGLayer 上
+</span><span class='line'>//    [context drawImage:result inRect:extent fromRect:CGRectMake(0, 0, 500, 250)];
+</span><span class='line'>    //    CGImageRef cgImage = [context createCGImage:result fromRect:extent];
+</span><span class='line'>    
+</span><span class='line'>    /// CIFormat 和 CGColorSpaceRef 空间配对使用才行 具体配对规则不懂颜色空间，暂时不做过多说明。
+</span><span class='line'>    CGImageRef cgImage =[context createCGImage:result fromRect:extent format:kCIFormatARGB8 colorSpace:CGColorSpaceCreateDeviceRGB()];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    ///mac 使用
+</span><span class='line'>    {
+</span><span class='line'>       //    - (CGLayerRef)createCGLayerWithSize:(CGSize)size info:(CFDictionaryRef)d __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_NA);
+</span><span class='line'>
+</span><span class='line'>//        - (void)render:(CIImage *)im
+</span><span class='line'>//    toIOSurface:(IOSurfaceRef)surface
+</span><span class='line'>//    bounds:(CGRect)r
+</span><span class='line'>//    colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_NA);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    ///不会使用的
+</span><span class='line'>    {
+</span><span class='line'>//        - (void)render:(CIImage *)im
+</span><span class='line'>//    toBitmap:(void *)data
+</span><span class='line'>//    rowBytes:(ptrdiff_t)rb
+</span><span class='line'>//    bounds:(CGRect)r
+</span><span class='line'>//    format:(CIFormat)f
+</span><span class='line'>//    colorSpace:(CGColorSpaceRef)cs;
+</span><span class='line'>//        - (void)render:(CIImage *)image
+</span><span class='line'>//    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>//        
+</span><span class='line'>//
+</span><span class='line'>        //    - (void)render:(CIImage *)image
+</span><span class='line'>        //    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>        //    bounds:(CGRect)r
+</span><span class='line'>        //    colorSpace:(CGColorSpaceRef)cs
+</span><span class='line'>        //        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>
+</span><span class='line'>//        - (void)render:(CIImage *)image
+</span><span class='line'>//    toCVPixelBuffer:(CVPixelBufferRef)buffer
+</span><span class='line'>//        __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>        
+</span><span class='line'>//        reclaimResources
+</span><span class='line'>//        clearCaches
+</span><span class='line'>        
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    [context render:result toCVPixelBuffer:nil];
+</span><span class='line'>    
+</span><span class='line'>    ///获取输出最大图片尺寸  意思是输出的图片的大小不可能大于size的大小
+</span><span class='line'>     size= [context outputImageMaximumSize];
+</span><span class='line'>    NSLog(@"outputImageMaximumSize %@", NSStringFromCGSize(size));
+</span><span class='line'>
+</span><span class='line'>    [self createImageFrame:CGRectMake(0,220, 200, 100) image:[UIImage imageWithCGImage:cgImage]];
+</span><span class='line'>    
+</span><span class='line'>}
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIImage 的学习</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>-(void)CIImageTest{
+</span><span class='line'>    
+</span><span class='line'>    ///创建一张图片
+</span><span class='line'>    {
+</span><span class='line'>        ///创建一个空的image
+</span><span class='line'>//        CIImage * IMAGE=[CIImage emptyImage];
+</span><span class='line'>        
+</span><span class='line'>        /// 创建 一个颜色图片。但是没有颜色。奇怪啊.
+</span><span class='line'>     const  CGFloat floatCom[4]={1.0,0,0,1};
+</span><span class='line'>      CIImage *  IMAGE =[CIImage imageWithColor:[CIColor colorWithCGColor:CGColorCreate(CGColorSpaceCreateDeviceRGB(), floatCom)]];
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        不会使用抱歉
+</span><span class='line'>//        - (id)initWithBitmapData:(NSData *)d bytesPerRow:(size_t)bpr size:(CGSize)size
+</span><span class='line'>//    format:(CIFormat)f colorSpace:(CGColorSpaceRef)c;
+</span><span class='line'>        
+</span><span class='line'>        IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSMutableDictionary * dic =[[NSMutableDictionary alloc]init];
+</span><span class='line'>        [dic setObject:[NSNull null] forKey:kCIImageColorSpace];
+</span><span class='line'>        IMAGE=[CIImage imageWithCGImage:imageUI.CGImage options:dic];
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///这个函数测试是同步卡线程的。要单独开线程进行下载。
+</span><span class='line'>//        IMAGE =[CIImage imageWithContentsOfURL:[NSURL URLWithString:@"http://f.hiphotos.baidu.com/image/pic/item/adaf2edda3cc7cd938c2c3283b01213fb90e9150.jpg"]];
+</span><span class='line'>//        
+</span><span class='line'>//   
+</span><span class='line'>//        IMAGE =[CIImage imageWithContentsOfURL:[NSURL URLWithString:@"http://f.hiphotos.baidu.com/image/pic/item/adaf2edda3cc7cd938c2c3283b01213fb90e9150.jpg"] options:dic];
+</span><span class='line'>        
+</span><span class='line'>        ///操作图片源还不是很会。暂时不研究不好意思
+</span><span class='line'>//        + (CIImage *)imageWithCVPixelBuffer:(CVPixelBufferRef)buffer __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>//        + (CIImage *)imageWithCVPixelBuffer:(CVPixelBufferRef)buffer options:(NSDictionary *)dict __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_5_0);
+</span><span class='line'>        
+</span><span class='line'>        NSData * data=UIImageJPEGRepresentation(imageUI, 1);
+</span><span class='line'>        IMAGE =[CIImage imageWithData:data];
+</span><span class='line'>    
+</span><span class='line'>        IMAGE = [CIImage imageWithData:data options:dic];
+</span><span class='line'>        
+</span><span class='line'>//        + (CIImage *)imageWithTexture:(unsigned int)name size:(CGSize)size
+</span><span class='line'>//    flipped:(BOOL)flag colorSpace:(CGColorSpaceRef)cs __OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_6_0);
+</span><span class='line'>        
+</span><span class='line'>       [self createImageFrame:CGRectMake(0,330, 200, 100) image:[UIImage imageWithCIImage:IMAGE]];
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    /// init 一个图片
+</span><span class='line'>    {
+</span><span class='line'>        ///只是类方法的变形而已。所以不做详细描述
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///修改已经创建的图片获取新图片。
+</span><span class='line'>    {
+</span><span class='line'>        
+</span><span class='line'>     CIImage * IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+</span><span class='line'>        [dic setObject:@0.8f forKey:kCIInputIntensityKey];
+</span><span class='line'>        ///用 一个filter 过滤图片 还是有局限性的。只能用一种滤片
+</span><span class='line'>   CIImage * newImage=  [IMAGE imageByApplyingFilter:@"CISepiaTone" withInputParameters:dic];
+</span><span class='line'>     
+</span><span class='line'>        ///图片矩阵变换
+</span><span class='line'>        newImage =[IMAGE imageByApplyingTransform:CGAffineTransformMakeRotation(M_1_PI)];
+</span><span class='line'>        
+</span><span class='line'>        ///裁剪图片像素区域  图片的坐标零点是左下角 真正裁剪要做矩阵变换
+</span><span class='line'>        newImage = [IMAGE imageByCroppingToRect:CGRectMake(0, IMAGE.extent.size.height/2, IMAGE.extent.size.width/2,IMAGE.extent.size.height/2)];
+</span><span class='line'>        
+</span><span class='line'>        ///这个是ios8 之后的api 图片反转
+</span><span class='line'>        /*
+</span><span class='line'>         1  Top, left
+</span><span class='line'>         2  Top, right
+</span><span class='line'>         3  Bottom, right
+</span><span class='line'>         4  Bottom, left
+</span><span class='line'>         5  Left, top
+</span><span class='line'>         6  Right, top
+</span><span class='line'>         7  Right, bottom
+</span><span class='line'>         8  Left, bottom
+</span><span class='line'>         */
+</span><span class='line'>        newImage = [IMAGE imageByApplyingOrientation:2];
+</span><span class='line'>        
+</span><span class='line'>        ///ios 8 以后使用  这个要CIAffineClamp 滤片创建的图片 没效果
+</span><span class='line'>        newImage = [IMAGE imageByClampingToExtent];
+</span><span class='line'>        
+</span><span class='line'>        ///ios 8 以后使用  要用这个 CISourceOverCompositing 没看到效果
+</span><span class='line'>      newImage =   [IMAGE imageByCompositingOverImage:IMAGE];
+</span><span class='line'>        
+</span><span class='line'>    [self createImageFrame:CGRectMake(0,440, 200, 100) image:[UIImage imageWithCIImage:newImage]];
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    /// 获取图片的相关属性
+</span><span class='line'>    {
+</span><span class='line'>        CIImage * IMAGE = [CIImage imageWithCGImage:imageUI.CGImage];
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取图片大小像素 %@",NSStringFromCGRect(IMAGE.extent));
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取图片属性 %@",IMAGE.properties);
+</span><span class='line'>        
+</span><span class='line'>        NSLog(@"获取矩阵变换的矩阵 %@", NSStringFromCGAffineTransform([IMAGE imageTransformForOrientation:4]));
+</span><span class='line'>        
+</span><span class='line'>        NSArray * array=   [IMAGE autoAdjustmentFilters];
+</span><span class='line'>        NSLog(@"获取应用在图片的滤片 %@",array);
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///key 值是
+</span><span class='line'>        /*
+</span><span class='line'>         NSString *kCIImageAutoAdjustEnhance;
+</span><span class='line'>         NSString *kCIImageAutoAdjustRedEye;
+</span><span class='line'>         NSString *kCIImageAutoAdjustFeatures;
+</span><span class='line'>         NSString *kCIImageAutoAdjustCrop;
+</span><span class='line'>         NSString *kCIImageAutoAdjustLevel;
+</span><span class='line'>         
+</span><span class='line'>         ///这个特殊。
+</span><span class='line'>          CIDetectorImageOrientation;
+</span><span class='line'>         */
+</span><span class='line'>        array =[IMAGE autoAdjustmentFiltersWithOptions:nil];
+</span><span class='line'>        
+</span><span class='line'>        ///没看出效果 不知道怎么用
+</span><span class='line'>        CIImage * otherImage=[CIImage imageWithCGImage:[UIImage imageNamed:@"3.jpg"].CGImage];
+</span><span class='line'>        [IMAGE regionOfInterestForImage:otherImage inRect:CGRectMake(0, 0, 300,300)];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    {
+</span><span class='line'>        
+</span><span class='line'>        //Pixel Formats 像素形式。
+</span><span class='line'>        /// 部件排列顺序
+</span><span class='line'>        kCIFormatARGB8;  ///排列顺序透明度（A)红(R)绿(G)蓝(B)
+</span><span class='line'>        kCIFormatBGRA8;///排列顺序蓝(B)绿(G)红(R)透明度（A)
+</span><span class='line'>        kCIFormatRGBA8;///排列顺序是红(R)绿(G)蓝(B)透明度A)
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        ///图片option字典的key  暂时没研究懂什么意思
+</span><span class='line'>        kCIImageColorSpace;///
+</span><span class='line'>        kCIImageProperties;///
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>        
+</span><span class='line'>//        Autoadjustment Keys
+</span><span class='line'>        NSString *kCIImageAutoAdjustEnhance;
+</span><span class='line'>        NSString *kCIImageAutoAdjustRedEye;
+</span><span class='line'>        NSString *kCIImageAutoAdjustFeatures;
+</span><span class='line'>        NSString *kCIImageAutoAdjustCrop;
+</span><span class='line'>        NSString *kCIImageAutoAdjustLevel;
+</span><span class='line'>    }
+</span><span class='line'>  
+</span><span class='line'>}
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIColor 的学习</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)CIColorTest
+</span><span class='line'>{
+</span><span class='line'>
+</span><span class='line'>    UIView  * allView=nil;
+</span><span class='line'>    CIColor* colorStr=nil;
+</span><span class='line'>    ///初始化一个ciColor
+</span><span class='line'>    {
+</span><span class='line'>        CGFloat components[2] = {.5,1};
+</span><span class='line'>        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
+</span><span class='line'>        CGColorRef color = (CGColorRef)CGColorCreate(colorSpace, components);
+</span><span class='line'>        CIColor * colorCI =[[CIColor alloc]initWithCGColor:color];
+</span><span class='line'>        [self createViewFrame:CGRectMake(0, 330, 100, 50) color:colorCI];
+</span><span class='line'>        
+</span><span class='line'>        CIColor * colorNew=[[CIColor alloc]initWithColor:[UIColor redColor]];
+</span><span class='line'>        [self createViewFrame:CGRectMake(110, 330, 100, 50) color:colorNew];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///类方法创建color
+</span><span class='line'>    {
+</span><span class='line'>        CGFloat components[4] = {.5,0,0,1};
+</span><span class='line'>        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+</span><span class='line'>        CGColorRef color = (CGColorRef)CGColorCreate(colorSpace, components);
+</span><span class='line'>        CIColor * colorCI=[CIColor colorWithCGColor:color];
+</span><span class='line'>        [self createViewFrame:CGRectMake(220, 330, 100, 50) color:colorCI];
+</span><span class='line'>  
+</span><span class='line'>        CIColor * colorRGB=[CIColor colorWithRed:1.0 green:0 blue:0];
+</span><span class='line'>        [self createViewFrame:CGRectMake(0, 390, 100,50)  color:colorRGB];
+</span><span class='line'>        
+</span><span class='line'>        CIColor * colorRGBA=[CIColor colorWithRed:0 green:1 blue:1 alpha:0.5];
+</span><span class='line'>        [self createViewFrame:CGRectMake(110, 390, 100,50)  color:colorRGBA];
+</span><span class='line'>        
+</span><span class='line'>        /// 这种方式总用的rgba
+</span><span class='line'>        colorStr=[CIColor colorWithString:@"0.5 0.7 0.3 1.0"];
+</span><span class='line'>    allView =  [self createViewFrame:CGRectMake(220, 390, 100,50)  color:colorStr];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    ///获取颜色相关信息
+</span><span class='line'>    {
+</span><span class='line'>        NSLog(@"获取CIColor 透明度 %f",colorStr.alpha);
+</span><span class='line'>        NSLog(@"获取红绿蓝 %f  %f  %f",colorStr.red, colorStr.green,colorStr.blue );
+</span><span class='line'>        NSLog(@"获取颜色空间 %@",colorStr.colorSpace);
+</span><span class='line'>        NSLog(@"颜色空间部件数量 %zu",colorStr.numberOfComponents);
+</span><span class='line'>        for (int i=0; i&lt;colorStr.numberOfComponents; i++) {
+</span><span class='line'>            NSLog(@"部件第%d 个 值 %f\n",i,colorStr.components[i]);
+</span><span class='line'>        }
+</span><span class='line'>        
+</span><span class='line'>        ///不管你用的颜色空间设gray 还是其他。都返回rgb 颜色空间string 0.5 0.5 0.5 1
+</span><span class='line'>        NSLog(@"stringRepresentation %@",colorStr.stringRepresentation);
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>CIFilter 的学习</h4>
+
+<h5>参考文档</h5>
+
+<p><a href="https://developer.apple.com/library/prerelease/mac/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_intro/ci_intro.html">苹果文档</a></p>
+
+<p><a href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/QuartzCoreFramework/Classes/CIImage_Class/index.html">苹果文档</a></p>
+
+<p><a href="http://www.tuicool.com/articles/nEFBru">简单介绍</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ios7旋转屏学习总结和遇到的问题]]></title>
+    <link href="http://yoursite.com/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti/"/>
+    <updated>2015-08-28T15:55:36+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/28/ios7xuan-zhuan-ping-xue-xi-zong-jie-he-yu-dao-de-wen-ti</id>
+    <content type="html"><![CDATA[<p>今天测试人员反馈一个bug 说是 iPhone6 Plus（可以横屏显示icon），横屏启动应用的时候，咱们的app（只支持竖屏） 显示混乱。</p>
+
+<p><img src="http://yoursite.com/images/xuanzhuanOne.png" alt="image" /></p>
+
+<p>window 的</p>
+
+<pre><code>bounds {0, 0}, {736, 414}
+</code></pre>
+
+<p> 状态栏也是横屏的（但是应用设置的竖屏的）。</p>
+
+<p>解决办法是 将导航栏</p>
+
+<pre><code>    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+</code></pre>
+
+<p>结果是</p>
+
+<p><img src="http://yoursite.com/images/xuanzhuanTwo.png" alt="image" /></p>
+
+<p>貌似看上去好了。单实际不然 现在window 的bounds 还是</p>
+
+<pre><code> {0, 0}, {736, 414}
+</code></pre>
+
+<p><img src="http://yoursite.com/iamges/xuanzhuanThree.jpeg" alt="image" /></p>
+
+<p>如图位置是不能进行点击的。</p>
+
+<pre><code>（屏幕实际bounds {0, 0}, {414, 736}  ）
+</code></pre>
+
+<p>再检测工程代码 显示如下</p>
+
+<pre><code>#define MAINSCREEN [UIScreen mainScreen].bounds 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{
+
+    NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+  self.window = [[UIWindow alloc]initWithFrame:MAINSCREEN];
+[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+    NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+.....
+
+}
+</code></pre>
+
+<p>实际上时window 生成frame的时候出错了。</p>
+
+<p>在 调用之前</p>
+
+<pre><code>    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+</code></pre>
+
+<p>的时候 MAINSCREEN  的</p>
+
+<pre><code>bounds  {0, 0}, {736, 414}
+</code></pre>
+
+<p>导致window初始化错误</p>
+
+<p>调用之后 MAINSCREEN 的</p>
+
+<pre><code>bounds 为 {0, 0}, {414, 736}
+</code></pre>
+
+<p> 恢复正常</p>
+
+<p>所以修改代码为</p>
+
+<pre><code>#define MAINSCREEN [UIScreen mainScreen].bounds 
+
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+self.window = [[UIWindow alloc]initWithFrame:MAINSCREEN];
+NSLog(@"%@",NSStringFromCGRect(MAINSCREEN));
+
+    。。。
+}
+</code></pre>
+
+<p> iPhone6 Plus 横屏问题得以解决。</p>
+
+<pre><code>总结：
+    1.状态栏（status bar）控制屏幕显示文本的方向。
+    2.window 控制app显示的区域范围。
+</code></pre>
+
+<h3>基础知识</h3>
+
+<blockquote><p>UIDeviceOrientation 和 UIInterfaceOrientation 设备旋转的用法</p></blockquote>
+
+<p>UIDeviceOrientation      是机器硬件的当前旋转方向   这个你只能取值 不能设置</p>
+
+<p>UIInterfaceOrientation   是你程序界面的当前旋转方向   这个可以设置</p>
+
+<pre><code>判断设备现在的方向：
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+</code></pre>
+
+<p>{
+    //宣告一個UIDevice指標，並取得目前Device的狀況
+    UIDevice *device = [UIDevice currentDevice] ;</p>
+
+<pre><code>//取得當前Device的方向，來當作判斷敘述。（Device的方向型態為Integer）
+switch (device.orientation) {
+    case UIDeviceOrientationFaceUp:
+    NSLog(@"螢幕朝上平躺");
+        break;
+
+    case UIDeviceOrientationFaceDown:
+    NSLog(@"螢幕朝下平躺");
+        break;
+
+    //系統無法判斷目前Device的方向，有可能是斜置 
+    case UIDeviceOrientationUnknown:
+    NSLog(@"未知方向");
+        break;
+
+    case UIDeviceOrientationLandscapeLeft:
+    NSLog(@"螢幕向左橫置");
+        break;
+
+    case UIDeviceOrientationLandscapeRight:
+    NSLog(@"螢幕向右橫置");
+        break;
+
+    case UIDeviceOrientationPortrait:
+    NSLog(@"螢幕直立");
+        break;
+
+    case UIDeviceOrientationPortraitUpsideDown:
+    NSLog(@"螢幕直立，上下顛倒");
+        break;
+
+    default:
+    NSLog(@"無法辨識");
+        break;
+}
+
+// Return YES for supported orientations
+ return (interfaceOrientation ==        UIInterfaceOrientationLandscapeLeft); // 只支持向左横向, YES 表示支持所有方向
+}
+</code></pre>
+
+<p>或者</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+</span><span class='line'>{
+</span><span class='line'>UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+</span><span class='line'>if (UIDeviceOrientationIsLandscape(deviceOrientation)) NSLog(@"横向");    
+</span><span class='line'>else if(UIDeviceOrientationIsPortrait(deviceOrientation)) NSLog(@"纵向");
+</span><span class='line'>
+</span><span class='line'>// // Return YES for supported orientations
+</span><span class='line'>return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft); // 只支持向左横向, YES 表示支持所有方向
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> Portrait 表示 纵向，Landscape 表示 横向。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef enum {
+</span><span class='line'>    UIDeviceOrientationUnknown,
+</span><span class='line'>    UIDeviceOrientationPortrait,            // Device oriented vertically, home button on the bottom
+</span><span class='line'>    UIDeviceOrientationPortraitUpsideDown,  // Device oriented vertically, home button on the top
+</span><span class='line'>    UIDeviceOrientationLandscapeLeft,       // Device oriented horizontally, home button on the right
+</span><span class='line'>    UIDeviceOrientationLandscapeRight,      // Device oriented horizontally, home button on the left
+</span><span class='line'>    UIDeviceOrientationFaceUp,              // Device oriented flat, face up
+</span><span class='line'>    UIDeviceOrientationFaceDown             // Device oriented flat, face down
+</span><span class='line'>} UIDeviceOrientation;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>而对于UIInterfaceOrientation</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef NS_ENUM(NSInteger, UIInterfaceOrientation) {
+</span><span class='line'>    UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
+</span><span class='line'>    UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
+</span><span class='line'>    UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
+</span><span class='line'>    UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
+</span><span class='line'>    UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft
+</span><span class='line'>};</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>屏幕旋转屏幕（ios6以后版本）</h3>
+
+<blockquote><p> UIKit处理屏幕旋转的流程</p></blockquote>
+
+<p> 当加速计检测到方向变化的时候，会发出 UIDeviceOrientationDidChangeNotification 通知，这样任何关心方向变化的view都可以通过注册该通知，在设备方向变化的时候做出相应的响应。上一篇博客中，我们已经提到了在屏幕旋转的时候，UIKit帮助我们做了很多事情，方便我们完成屏幕旋转。</p>
+
+<p>　　UIKit的相应屏幕旋转的流程如下：</p>
+
+<p>1、设备旋转的时候，UIKit接收到旋转事件。</p>
+
+<p>2、UIKit通过AppDelegate通知当前程序的window。</p>
+
+<p>3、Window会知会它的rootViewController，判断该view controller所支持的旋转方向，完成旋转。</p>
+
+<p>4、如果存在弹出的view controller的话，系统则会根据弹出的view controller，来判断是否要进行旋转。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>When UIKit receives an orientation notification, it uses the UIApplication object and the root view controller to determine whether the new orientation is allowed. If both objects agree that the new orientation is supported, then the user interface is rotated to the new orientation. Otherwise the device orientation is ignored.
+</span><span class='line'>
+</span><span class='line'>When a view controller is presented over the root view controller, the system behavior changes in two ways. First, the presented view controller is used instead of the root view controller when determining whether an orientation is supported. Second, the presented view controller can also provide a preferred orientation. If the view controller is presented full screen, the user interface is presented in the preferred orientation. The user is expected to see that the orientation is different from the device orientation and rotate the device. A preferred orientation is most often used when the content must be presented in the new orientation.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>`</p>
+
+<blockquote><p>UIViewController实现屏幕旋转</p></blockquote>
+
+<p>在响应设备旋转时，我们可以通过UIViewController的方法实现更细粒度的控制，当view controller接收到window传来的方向变化的时候，流程如下：</p>
+
+<p>1、首先判断当前viewController是否支持旋转到目标方向，如果支持的话进入流程2，否则此次旋转流程直接结束。</p>
+
+<p>2、调用 willRotateToInterfaceOrientation:duration: 方法，通知view controller将要旋转到目标方向。如果该viewController是一个container view controller的话，它会继续调用其content view controller的该方法。这个时候我们也可以暂时将一些view隐藏掉，等旋转结束以后在现实出来。</p>
+
+<p>3、window调整显示的view controller的bounds，由于view controller的bounds发生变化，将会触发 viewWillLayoutSubviews 方法。这个时候self.interfaceOrientation和statusBarOrientation方向还是原来的方向。</p>
+
+<p>4、接着当前view controller的 willAnimateRotationToInterfaceOrientation:duration: 方法将会被调用。系统将会把该方法中执行的所有属性变化放到动animation block中。</p>
+
+<p>5、执行方向旋转的动画。</p>
+
+<p>6、最后调用 didRotateFromInterfaceOrientation: 方法，通知view controller旋转动画执行完毕。这个时候我们可以将第二部隐藏的view再显示出来。</p>
+
+<p>　　整个响应过程如下图所示：
+　　
+　　<img src="http://yoursite.com/images/xuanzhuanThree.png" alt="image" />
+　　</p>
+
+<blockquote><p>注意事项和建议</p></blockquote>
+
+<p>　　1）注意事项</p>
+
+<p>　　当我们的view controller隐藏的时候，设备方向也可能发生变化。例如view Controller A弹出一个全屏的view controller B的时候，由于A完全不可见，所以就接收不到屏幕旋转消息。这个时候如果屏幕方向发生变化，再dismiss B的时候，A的方向就会不正确。我们可以通过在view controller A的viewWillAppear中更新方向来修正这个问题。</p>
+
+<p>　　2）屏幕旋转时的一些建议</p>
+
+<p>在旋转过程中，暂时界面操作的响应。
+旋转前后，尽量当前显示的位置不变。
+对于view层级比较复杂的时候，为了提高效率在旋转开始前使用截图替换当前的view层级，旋转结束后再将原view层级替换回来。
+在旋转后最好强制reload tableview，保证在方向变化以后，新的row能够充满全屏。例如对于有些照片展示界面，竖屏只显示一列，但是横屏的时候显示列表界面，这个时候一个界面就会显示更多的元素，此时reload内容就是很有必要的。</p>
+
+<blockquote><p> 通知</p></blockquote>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIApplicationDidChangeStatusBarOrientationNotification
+</span><span class='line'>
+</span><span class='line'>注意这种方式监听的是StatusBar也就是状态栏的方向，所以这个是跟你的布局有关的，你的布局转了，才会接到这个通知，而不是设备旋转的通知。
+</span><span class='line'>当我们关注的东西和布局相关而不是纯粹设备旋转，关注这个通知。
+</span><span class='line'>  
+</span><span class='line'>UIDeviceOrientationDidChangeNotification
+</span><span class='line'>当我们关注的只是物理朝向时，我们通常需要注册该通知来解决问题。
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>处理UINavigationViewController 旋转策略</h3>
+
+<p>子类化UINavigationController，增加方法</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>return self.topViewController.shouldAutorotate;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>- (NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>return self.topViewController.supportedInterfaceOrientations;  
+</span><span class='line'>}  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>并且设定其为程序入口，或指定为 self.window.rootViewController</p>
+
+<p>随后添加自己的view controller，如果想禁止某个view controller的旋屏：（支持全部版本的控制）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation  
+</span><span class='line'>{  
+</span><span class='line'>    return (interfaceOrientation == UIInterfaceOrientationPortrait);  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>    return NO;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>    return UIInterfaceOrientationMaskPortrait;  
+</span><span class='line'>}  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果想又开启某个view controller的全部方向旋屏支持：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation  
+</span><span class='line'>{  
+</span><span class='line'>    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(NSUInteger)supportedInterfaceOrientations  
+</span><span class='line'>{  
+</span><span class='line'>    return UIInterfaceOrientationMaskAllButUpsideDown;  
+</span><span class='line'>}  
+</span><span class='line'>  
+</span><span class='line'>-(BOOL)shouldAutorotate  
+</span><span class='line'>{  
+</span><span class='line'>    return YES;  
+</span><span class='line'>}  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>顺便提一下，如果整个应用所有view controller都不支持旋屏，那么干脆：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window  
+</span><span class='line'>{  
+</span><span class='line'>     return UIInterfaceOrientationMaskPortrait;  
+</span><span class='line'>} </span></code></pre></td></tr></table></div></figure>
+
+
+<h5>参考文章</h5>
+
+<p><a href="https://developer.apple.com/library/ios/featuredarticles/ViewControllerPGforiPhoneOS/RespondingtoDeviceOrientationChanges/RespondingtoDeviceOrientationChanges.html#//apple_ref/doc/uid/TP40007457-CH7-SW1">苹果文档</a></p>
+
+<p><a href="http://www.cnblogs.com/smileEvday/archive/2013/04/24/Rotate2.html">http://www.cnblogs.com/smileEvday/archive/2013/04/24/Rotate2.html</a></p>
+
+<p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/8035014">iOS6的旋屏控制技巧</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Dsym文件分析]]></title>
+    <link href="http://yoursite.com/blog/2015/08/24/dsymwen-jian-fen-xi/"/>
+    <updated>2015-08-24T11:14:42+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/24/dsymwen-jian-fen-xi</id>
+    <content type="html"><![CDATA[<p>今天查看线上app友盟崩溃日志，发现好多内存地址没有反编译出来，无法查找崩溃点在哪。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-[NSDecimalNumber length]: unrecognized selector sent to instance 0x1df192c0
+</span><span class='line'>(null)
+</span><span class='line'>(
+</span><span class='line'>  0   CoreFoundation                      0x29f1c007  + 150
+</span><span class='line'>  1   libobjc.A.dylib                     0x3885fc8b objc_exception_throw + 38
+</span><span class='line'>  2   CoreFoundation                      0x29f21409  + 0
+</span><span class='line'>  3   CoreFoundation                      0x29f1f327  + 714
+</span><span class='line'>  4   CoreFoundation                      0x29e4ee78 _CF_forwarding_prep_0 + 24
+</span><span class='line'>  5   ETCP                                0x5d555 ETCP + 365909
+</span><span class='line'>  6   UIKit                               0x2d612dad  + 464
+</span><span class='line'>  7   UIKit                               0x2d804215  + 1704
+</span><span class='line'>  8   UIKit                               0x2d7fbcfb  + 106
+</span><span class='line'>  9   FrontBoardServices                  0x30afaec9  + 16
+</span><span class='line'>  10  CoreFoundation                      0x29ee1fd5  + 12
+</span><span class='line'>  11  CoreFoundation                      0x29ee1299  + 216
+</span><span class='line'>  12  CoreFoundation                      0x29edfa37  + 790
+</span><span class='line'>  13  CoreFoundation                      0x29e2c201 CFRunLoopRunSpecific + 476
+</span><span class='line'>  14  CoreFoundation                      0x29e2c013 CFRunLoopRunInMode + 106
+</span><span class='line'>  15  GraphicsServices                    0x318fd201 GSEventRunModal + 136
+</span><span class='line'>  16  UIKit                               0x2d5f8a09 UIApplicationMain + 1440
+</span><span class='line'>  17  ETCP                                0xa52f7 ETCP + 660215
+</span><span class='line'>  18  libdyld.dylib                       0x38e11aaf  + 2
+</span><span class='line'>)
+</span><span class='line'>dSYM UUID: 429DD54C-BACF-3CFB-8C0D-D40526224C4F
+</span><span class='line'>CPU Type: armv7
+</span><span class='line'>Slide Address: 0x00004000
+</span><span class='line'>Binary Image: xx
+</span><span class='line'>Base Address: 0x0005e000
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所以上网查找方法解析改内存地址，了解到需要到上线app 的release版本的 dsym文件。</p>
+
+<h3>具体操作</h3>
+
+<p>1.找到该app release 版本的dsym文件
+2.打开终端 cd 进入改 dsym文件所在文件夹
+3.用atos 命令 进行地址解析</p>
+
+<pre><code>atos -o xx.app.dSYM/Contents/Resources/DWARF/xx 0x5d555
+
+结果
+-[AppDelegate applicationDidBecomeActive:] (in ETCP) (AppDelegate.mm:508)
+</code></pre>
+
+<p>问题出在那一目了然。</p>
+
+<h3>软件</h3>
+
+<p>这样用终端不太爽啊，找了个免费软件，上传自己的云盘。<a href="http://pan.baidu.com/s/1o6N4Chs">下载链接</a></p>
+
+<p>用法可参考<a href="http://www.cocoachina.com/ios/20141219/10694.html">link</a></p>
+
+<p><a href="https://github.com/answer-huang/dSYMTools">工具源码</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[目前常用第三方插件]]></title>
+    <link href="http://yoursite.com/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/"/>
+    <updated>2015-08-18T14:23:43+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian</id>
+    <content type="html"><![CDATA[<p>目前我在用的开发插件</p>
+
+<p>1、xcode生成规范注释</p>
+
+<p>VVDocumenter-Xcode <a href="https://github.com/onevcat/VVDocumenter-Xcode.git">github地址</a></p>
+
+<p><img src="http://yoursite.com/images/xcode.gif" alt="image" /></p>
+
+<p>我改了几行源码就成上面的样子了.<a href="http://pan.baidu.com/s/1bn8X7vL">代码</a></p>
+
+<p>安装出现问题可以参考<a href="http://www.bubuko.com/infodetail-922634.html">这里</a></p>
+
+<p>安装VVDocumenter-Xcode ，Xcode 6之后，重启Xcode时会提示“Load bundle”、 “Skip Bundle”，这里必须选择“Load bundle”，不然插件无法使用。但skip是你不小心点击<strong>“Skip Bundle”</strong> <br/>
+ 你可以执行下面命令</p>
+
+<pre><code>defaults delete com.apple.dt.Xcode DVTPlugInManagerNonApplePlugIns-Xcode-{your_xcode_version}
+</code></pre>
+
+<p>清除你的错误选择</p>
+
+<pre><code>我的xcode是6.4 命令为
+defaults delete com.apple.dt.Xcode DVTPlugInManagerNonApplePlugIns-Xcode-6.4
+</code></pre>
+
+<p>2、生成gif图的工具</p>
+
+<p>licecap 这个工具是免费的 网上搜下到处都是就不提供链接了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[更改xcode生成每个文件头信息]]></title>
+    <link href="http://yoursite.com/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/"/>
+    <updated>2015-08-18T10:13:11+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi</id>
+    <content type="html"><![CDATA[<p>修改xocde文件 的头信息</p>
+
+<blockquote><p>点击工程文件</p>
+
+<p>点击右边的文件设置窗口</p>
+
+<p>配置project Document 选项中的相关信息</p></blockquote>
+
+<p><img src="http://yoursite.com/images/xcodeSix.jpeg" alt="image" /></p>
+
+<p>上图第四步 class Prefix 是配置文件头，生成每个类前的头</p>
+
+<p><img src="http://yoursite.com/images/xcodeFileFour.png" alt="image" /></p>
+
+<p>organization 是配置文件中的  <strong>科技</strong>      位置的字</p>
+
+<p><img src="http://yoursite.com/images/xcodeFileFive.png" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AVFoundation.framework的学习]]></title>
+    <link href="http://yoursite.com/blog/2015/08/17/avfoundation-dot-fromworkde-xue-xi/"/>
+    <updated>2015-08-17T17:15:52+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/17/avfoundation-dot-fromworkde-xue-xi</id>
+    <content type="html"><![CDATA[<p>最近学习自定义相机的相关知识，可以自定义相机成功，但是对AVFoundation不是很了解，这里有必要对这个AVFoundation.framework。</p>
+
+<p>（感觉写点东西咋这么困难）</p>
+
+<h2>学习类对象</h2>
+
+<blockquote><p>AVCaptureSession、AVCaptureInput 和 AVCaptureOutput 的学习</p></blockquote>
+
+<pre><code>    AVCaptureInput is an abstract base-class describing an input data source to an AVCaptureSession object. 
+
+    AVCaptureOutput is an abstract base class describing an output destination of an AVCaptureSession object
+
+    You use an AVCaptureSession object to coordinate the flow of data from AV input devices to outputs
+</code></pre>
+
+<p><img src="http://yoursite.com/iamges/AVCaptureOne.png" alt="image" /></p>
+
+<p>从图可以看出我们是用 session 管理输入输出设备的。session 就类似管理中心</p>
+
+<p>我们怎么用呢。
+1首先我们要获取一个输入对象（AVCaptureInput）
+2我们还需要获取一个输出对象（AVCaptureOutput）
+3还需要一个管理中心对象（AVCaptureSession）</p>
+
+<p><img src="http://yoursite.com/images/AVCaptureTwo.png" alt="image" /></p>
+
+<p>4.将他们组合安装。</p>
+
+<p>5.启动设备就可以了。</p>
+
+<h5>参考连接</h5>
+
+<p><a href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVFoundationFramework/">苹果AVFoundation ref</a></p>
+
+<p><a href="https://developer.apple.com/library/prerelease/mac/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/00_Introduction.html">苹果AVFoundation Programming Guide</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[自定义相机]]></title>
+    <link href="http://yoursite.com/blog/2015/08/12/zi-ding-yi-xiang-ji/"/>
+    <updated>2015-08-12T11:31:08+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/12/zi-ding-yi-xiang-ji</id>
+    <content type="html"><![CDATA[<h2>调用系统相机</h2>
+
+<p>调用系统相机一般的功能是可以满足的，如果没有特殊的要求要求，可以直接用系统相机。</p>
+
+<p>代码如下：</p>
+
+<pre><code>调用照相机
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+
+    UIImagePickerController * picker = [[UIImagePickerController alloc]init];
+    picker.delegate = self;
+    block(picker);
+    //摄像头
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:picker animated:YES completion:^{
+
+    }];
+}else{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"你没有摄像头" delegate:nil cancelButtonTitle:@"Drat!" otherButtonTitles:nil];
+    [alert show];
+
+}
+</code></pre>
+
+<p>获取图片或者取消图片实现代理</p>
+
+<pre><code>- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+
+UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+if ([self respondsToSelector:@selector(getCameraImage:)]) {
+    [self getCameraImage:image];
+}
+[self dismissViewControllerAnimated:YES completion:^{
+
+}];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+[self dismissViewControllerAnimated:YES completion:^{
+
+}];
+}
+</code></pre>
+
+<p>以上代码只是简单的调用下系统相机。并没有对相机进行相关设置。</p>
+
+<p>配置前</p>
+
+<p><img src="http://yoursite.com/images/comera1.jpg" alt="image" /></p>
+
+<pre><code>注意将系统相机配置成中文 ，在工程文件plist 中添加下面一项即可。
+</code></pre>
+
+<p><img src="http://yoursite.com/images/camerasytemChinese.png" alt="image" /></p>
+
+<p>配置后</p>
+
+<p><img src="http://yoursite.com/images/comera2.jpg" alt="image" /></p>
+
+<h2>自定义相机</h2>
+
+<pre><code>我个人偏向用自定义相机，个人理由只有一条，可以高度定制。（虽然有点麻烦）
+
+暂时更新到这里（哈哈。没有上下文了。）我发现学习相机还是先系统学习学习avfoudation.framework 比较靠谱些。学完av 再回来学喽
+</code></pre>
+
+<h5>参考连接</h5>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[进军二维码，从零开始学习二维码]]></title>
+    <link href="http://yoursite.com/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma/"/>
+    <updated>2015-08-11T18:30:03+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/11/jin-jun-er-wei-ma-,cong-ling-kai-shi-xue-xi-er-wei-ma</id>
+    <content type="html"><![CDATA[<p>做项目挺久的了，但是二维码这块总是用别人写好的，自己从来没有操过刀，内心有点小不爽啊，今天索性就写个博客，自己给自己定定需要，学学学习二维码。</p>
+
+<pre><code>二维条码/二维码（2-dimensional bar code）是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的；在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对应的几何形体来表示文字数值信息，通过图象输入设备或光电扫描设备自动识读以实现信息自动处理：它具有条码技术的一些共性：每种码制有其特定的字符集；每个字符占有一定的宽度；具有一定的校验功能等。同时还具有对不同行的信息自动识别功能、及处理图形旋转变化点。
+</code></pre>
+
+<h2>二维码扫描</h2>
+
+<p>现在都是2015年了。就不研究ZBar和ZXing了。今天要介绍的是iOS7.0后AVFoundation框架提供的原生二维码扫描。</p>
+
+<h2>二维码生成</h2>
+
+<h5>参考链接</h5>
+
+<p><a href="http://">二维码百度百科</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CGAffineTransform.h类的学习和原理讲解]]></title>
+    <link href="http://yoursite.com/blog/2015/08/10/cgaffinetransform-dot-hlei-de-xue-xi-he-yuan-li-jiang-jie/"/>
+    <updated>2015-08-10T15:25:44+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/10/cgaffinetransform-dot-hlei-de-xue-xi-he-yuan-li-jiang-jie</id>
+    <content type="html"><![CDATA[<p> 第一次写ios相关技术博客，所以先写个简单的，写的不好大家多多提意见。
+ 想学好这个类，我感觉最好还是从理论上弄明白什么二维图形到底是怎么变换的。</p>
+
+<h2>矩阵及其运算</h2>
+
+<blockquote><p>一．数学概念
+定义1.1 由<img src="http://yoursite.com/images/juzhen1.gif" alt="image" />个数<img src="http://yoursite.com/images/juzhen2.gif" alt="image" />   排成m行n列的数表
+<img src="http://yoursite.com/images/juzhen3.gif" alt="image" /></p></blockquote>
+
+<p>称为m行n列的矩阵，简称   矩阵，记作</p>
+
+<p><img src="http://yoursite.com/images/juzhen4.gif" alt="image" /></p>
+
+<blockquote><p>二．原理，公式和法则</p></blockquote>
+
+<p>1．矩阵的加法
+(1) 公式</p>
+
+<p> <img src="http://yoursite.com/images/juzhen5.gif" alt="image" /></p>
+
+<p>  (2) 运算律</p>
+
+<p> <img src="http://yoursite.com/images/juzhen6.gif" alt="image" /></p>
+
+<p> 2．数乘矩阵
+ (1) 公式</p>
+
+<p>  <img src="http://yoursite.com/images/juzhen7.gif" alt="image" /></p>
+
+<p>(2) 运算律
+  <img src="http://yoursite.com/images/juzhen8.gif" alt="image" /></p>
+
+<p> 3．矩阵与矩阵相乘
+ (1) 设 <img src="http://yoursite.com/images/juzhen9.gif" alt="image" />  ,
+ 则 <img src="http://yoursite.com/images/juzhen10.gif" alt="image" />  其中 <img src="http://yoursite.com/images/juzhen11.gif" alt="image" />  ，且</p>
+
+<p><img src="http://yoursite.com/images/juzhen12.gif" alt="image" /></p>
+
+<p>（2）　运算符(假设运算都是可行的)：</p>
+
+<p><img src="http://yoursite.com/images/juzhen13.gif" alt="image" /></p>
+
+<p>(3)　方阵的运算</p>
+
+<p><img src="http://yoursite.com/images/juzhen14.gif" alt="image" /></p>
+
+<p>注意：①矩阵乘法一般不满足交换律。
+②一般 <img src="http://yoursite.com/images/juzhen15.gif" alt="image" /></p>
+
+<p>4.矩阵的转置
+(1)　公式</p>
+
+<p><img src="http://yoursite.com/images/juzhen16.png" alt="image" /></p>
+
+<p><img src="http://yoursite.com/images/juzhen17.png" alt="image" /></p>
+
+<p> (2)　运算律</p>
+
+<p> <img src="http://yoursite.com/images/juzhen18.gif" alt="image" /></p>
+
+<p> 5.方阵的行列式</p>
+
+<p><img src="http://yoursite.com/images/juzhen19.png" alt="image" /></p>
+
+<p>6.共轭矩阵</p>
+
+<p><img src="http://yoursite.com/images/juzhen20.png" alt="image" /></p>
+
+<p>上面一定要看懂矩阵的乘法是怎么运算的才行。</p>
+
+<h2>数学原理</h2>
+
+<blockquote><p>1、基本几何变换及变换矩阵</p></blockquote>
+
+<p>基本几何变换都是相对于坐标原点和坐标轴进行的几何变换，有平移、比例、旋转、反射和错切等</p>
+
+<p><strong>1.1 平移变换</strong></p>
+
+<p>是指将p点沿直线路径从一个坐标位置移到另一个坐标位置的重定位过程。他是一种不产生变形而移动物体的刚体变换（rigid-body transformation），如下图所示。</p>
+
+<p><img src="http://yoursite.com/images/juzhen21.png" alt="image" /></p>
+
+<p> 推导：</p>
+
+<p> <img src="http://yoursite.com/images/juzhen22.png" alt="image" /></p>
+
+<pre><code>    解释(个人理解)
+    x'=x+Tx  相当于x'= x*1 + y*0 +  1 * Tx
+    y'=y+Ty  相当于y'= x*0 + y*1 +  1 * Ty
+
+    所以 A 矩阵  [x  y 1]
+         C 矩阵要和A矩阵格式一样 [x' y' 1]
+        c矩阵的1 怎么来。只能添加一行了
+
+        1=x*0+y*0+ 1*1
+
+所以b矩阵为 上面如图
+</code></pre>
+
+<p><strong>1.2 缩放变换</strong>
+缩放变换是指对p点相对于坐标原点沿x方向放缩Sx倍，沿y方向放缩Sy倍。其中Sx和Sy称为缩放系数。</p>
+
+<p><img src="http://yoursite.com/images/juzhen23.png" alt="image" />
+推导：</p>
+
+<p><img src="http://yoursite.com/images/juzhen24.png" alt="image" /></p>
+
+<p>  矩阵
+<img src="http://yoursite.com/images/juzhen25.png" alt="image" /></p>
+
+<pre><code>x'=x*Sx+y*0 + 0*0;
+y'=x*0 +y *Sy+0*0;
+0=x*0+y*0+0*1;
+</code></pre>
+
+<p>缩放变换可改变物体的大小，如下图所示。当Sx=Sy >1时，图形沿两个坐标轴方向等比例放大；当Sx=Sy&lt;1，图形沿两个坐标轴方向等比例缩小；当Sx≠Sy，图形沿两个坐标轴方向作非均匀的比例变换。</p>
+
+<p><img src="http://yoursite.com/images/juzhen26.png" alt="image" /></p>
+
+<p>  <strong>1.3 旋转变换</strong></p>
+
+<p>二维旋转是指将p点绕坐标原点转动某个角度（逆时针为正，顺时针为负）得到新的点p’的重定位过程。</p>
+
+<p><img src="http://yoursite.com/images/juzhen27.png" alt="image" /></p>
+
+<p> 推导：利用极坐标方程</p>
+
+<p><img src="http://yoursite.com/images/juzhen28.png" alt="image" /></p>
+
+<p>逆时针旋转θ角的矩阵如下：</p>
+
+<p><img src="http://yoursite.com/images/juzhen29.png" alt="image" /></p>
+
+<p><strong>1.4 对称变换</strong></p>
+
+<p>对称变换后的图形是原图形关于某一轴线或原点的镜像。
+<img src="http://yoursite.com/images/juzhen30.png" alt="image" /></p>
+
+<p>  (1)关于x轴对称</p>
+
+<p><img src="http://yoursite.com/images/juzhen31.png" alt="image" /></p>
+
+<pre><code>x'=x*1+y*0+0*0;
+y'=x*0+y*(-1)+0*0;
+0=x*0+y*0+0*1;
+</code></pre>
+
+<p> (2)关于y轴对称</p>
+
+<p> <img src="http://yoursite.com/images/juzhen33.png" alt="image" /></p>
+
+<p>  (3)关于原点对称</p>
+
+<p>  <img src="http://yoursite.com/images/juzhen34.png" alt="image" /></p>
+
+<p>  (4)关于y=x轴对称</p>
+
+<p>   <img src="http://yoursite.com/images/juzhen35.png" alt="image" /></p>
+
+<p>   (5)关于y=-x轴对称</p>
+
+<p>   <img src="http://yoursite.com/images/juzhen36.png" alt="image" /></p>
+
+<p><strong>1.5 错切变换</strong></p>
+
+<p>错切变换也称为剪切、错位变换，用于产生弹性物体的变形处理。</p>
+
+<p>   <img src="http://yoursite.com/images/juzhen37.png" alt="image" /></p>
+
+<p> 错切变换的变换矩阵为：</p>
+
+<p>   <img src="http://yoursite.com/images/juzhen38.png" alt="image" /></p>
+
+<p>   (1)沿x方向错切：b=0
+   (2)沿y方向错切：c=0
+   (3)两个方向错切：b和c都不等于0。</p>
+
+<blockquote><p>2、 复合变换</p></blockquote>
+
+<p>如果图形要做一次以上的几何变换，那么可以将各个变换矩阵综合起来进行一步到位的变换。复合变换有如下的性质：</p>
+
+<p><strong>1）复合平移</strong></p>
+
+<p>对同一图形做两次平移相当于将两次的平移两加起来：</p>
+
+<p> <img src="http://yoursite.com/images/juzhen39.png" alt="image" /></p>
+
+<p> <strong>2）复合缩放</strong></p>
+
+<p>两次连续的缩放相当于将缩放操作相乘：</p>
+
+<p> <img src="http://yoursite.com/images/juzhen40.png" alt="image" /></p>
+
+<p><strong>3）复合旋转</strong></p>
+
+<p>两次连续的旋转相当于将两次的旋转角度相加：</p>
+
+<p> <img src="http://yoursite.com/images/juzhen41.png" alt="image" /></p>
+
+<pre><code>缩放、旋转变换都与参考点有关，上面进行的各种变换都是以原点为参考点的。如果相对某个一般的参考点（xf，yf）作缩放、旋转变换，相当于将该点移到坐标原点处，然后进行缩放、旋转变换，最后将（xf，yf）点移回原来的位置。
+</code></pre>
+
+<p><strong>4）关于（xf，yf）点的缩放变换</strong></p>
+
+<p> <img src="http://yoursite.com/images/juzhen42.png" alt="image" /></p>
+
+<p><strong>5）绕（xf，yf）点的旋转变换</strong></p>
+
+<p>  <img src="http://yoursite.com/images/juzhen43.png" alt="image" /></p>
+
+<blockquote><p>  3、二维图形几何变换的计算</p></blockquote>
+
+<p>几何变换均可表示成P’=P*T的形式</p>
+
+<p>(1)点的变换：先将点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="http://yoursite.com/images/juzhen44.png" alt="image" /></p>
+
+<p>(2)直线的变换：将直线的两个端点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="http://yoursite.com/images/juzhen45.png" alt="image" /></p>
+
+<p>(3)多边形的变换：将多边形的顶点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<p>  <img src="http://yoursite.com/images/juzhen46.png" alt="image" /></p>
+
+<p> (4)曲线的变换：将曲线的每个点表示为规范化齐次坐标形式，再乘以变换矩阵。</p>
+
+<blockquote><p> 4、复合变换的矩阵点乘的先后问题</p></blockquote>
+
+<p>1)如果采用以下方式计算几何变换的变换矩阵</p>
+
+<p><img src="http://yoursite.com/images/juzhen47.png" alt="image" /></p>
+
+<p>如上范例所示，其先执行变换的矩阵放在前面，后执行变换的矩阵放在后面。</p>
+
+<p>2)如果采用以下方式计算几何变换的变换矩阵：</p>
+
+<p><img src="http://yoursite.com/images/juzhen48.png" alt="image" /></p>
+
+<p>如上范例所示，其先执行变换的矩阵放在后面，后执行变换的矩阵放在前面。</p>
+
+<p>这是因为矩阵的特性：<img src="http://yoursite.com/images/juzhen49.png" alt="image" /></p>
+
+<h2>CGAffineTransform.h 函数介绍</h2>
+
+<p>说了半天，不来点代码怎么行。</p>
+
+<pre><code>在CGAffineTransform.h 文件中
+
+typedef struct CGAffineTransform CGAffineTransform;
+
+struct CGAffineTransform {
+    CGFloat a, b, c, d;
+     CGFloat tx, ty;
+};
+
+矩阵数学模型是[a  b]
+             c  d
+            tx  ty
+省略了  [a  b  0]  中的最后一列
+        c  d  0
+        tx ty 1
+</code></pre>
+
+<p> 函数介绍代码</p>
+
+<pre><code>///获取一个标准矩阵。没有变化的矩阵
+CGAffineTransform transform=  CGAffineTransformIdentity;
+NSLog(@"CGAffineTransformIdentity 数值%@" ,   NSStringFromCGAffineTransform(transform));
+
+///获取一个变幻矩阵 这个函数可以平移旋转和缩放
+/* Return the transform [ a b c d tx ty ]. */
+</code></pre>
+
+<p>  transform=  CGAffineTransformMake(a, b, c, d,x,y);</p>
+
+<pre><code>///获取一个只做平移的矩阵
+//        t' = [ 1 0 0 1 tx ty ]
+</code></pre>
+
+<p> transform=   CGAffineTransformMakeTranslation(x, y);</p>
+
+<pre><code>///获取一个缩放矩阵
+//         t' = [ sx 0 0 sy 0 0 ] 
+</code></pre>
+
+<p>  transform=  CGAffineTransformMakeScale(a,c);</p>
+
+<pre><code>//获取一个旋转矩阵
+/* Return a transform which rotates by `angle' radians:
+ t' = [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] */
+</code></pre>
+
+<p>  transform=  CGAffineTransformMakeRotation(3);</p>
+
+<pre><code>///验证是否是标准矩阵
+</code></pre>
+
+<p>  BOOL isTrue =  CGAffineTransformIsIdentity(transform);</p>
+
+<pre><code>///这个是矩阵之间的换算了
+/* Translate `t' by `(tx, ty)' and return the result:
+ t' = [ 1 0 0 1 tx ty ] * t */
+/// 说的很明确 用只有平移的矩阵和 t 矩阵相乘 t*t' 意思是在t'的基础上做t 变幻（例如平移旋转等等）
+transform=   CGAffineTransformTranslate(transform,x,y);
+
+///矩阵先缩放再transform
+/* Scale `t' by `(sx, sy)' and return the result:
+ t' = [ sx 0 0 sy 0 0 ] * t */
+</code></pre>
+
+<p>  transform=  CGAffineTransformScale(transform,a,c);</p>
+
+<pre><code>///矩阵先旋转再transform
+/* Rotate `t' by `angle' radians and return the result:
+ t' =  [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] * t */
+transform = CGAffineTransformRotate(transform,3);
+
+
+NSLog(@"CGAffineTransformInvert前 数值%@" , NSStringFromCGAffineTransform(transform));
+/// 获取 反转矩阵  看不出效果。做图看看  可以仔细研究下
+///我看着就是沿着y轴做了一个对称变换 （不见得对）
+transform =   CGAffineTransformInvert(transform);
+NSLog(@"CGAffineTransformInvert后 数值%@" , NSStringFromCGAffineTransform(transform));
+
+
+///矩阵相乘
+/* Concatenate `t2' to `t1' and return the result:
+ t' = t1 * t2 */
+</code></pre>
+
+<p>   transform = CGAffineTransformConcat(transform,transform);</p>
+
+<pre><code>///判断两个矩阵是否相等
+/* Return true if `t1' and `t2' are equal, false otherwise. */
+isTrue =CGAffineTransformEqualToTransform(transform,transform);
+
+///获取一个点矩阵变幻另一个点的位置
+/* Transform `point' by `t' and return the result:
+ p' = p * t
+ where p = [ x y 1 ]. */
+</code></pre>
+
+<p>  CGPoint point=  CGPointApplyAffineTransform(CGPointMake(30, 30), transform);</p>
+
+<pre><code>///获取一个矩形矩形变换的大小
+/* Transform `size' by `t' and return the result:
+ s' = s * t
+ where s = [ width height 0 ]. */
+CGSize size= CGSizeApplyAffineTransform(CGSizeMake(30, 30),transform);
+
+///获取矩形位置变幻后的位置
+ CGRect rect=CGRectApplyAffineTransform(CGRectMake(0, 0, 30, 30),transform);
+</code></pre>
+
+<p>项目中有每个函数的具体用法。</p>
+
+<p><img src="http://yoursite.com/images/transformNew.gif" alt="image" /></p>
+
+<p>项目托管在<a href="https://github.com/NPOpenSource/transform.github.com.git">github</a></p>
+
+<h5>参考文章：</h5>
+
+<p><a href="http://dec3.jlu.edu.cn/webcourse/t000022/teach/chapter2/2_1.htm">矩阵定义</a></p>
+
+<p><a href="http://blog.csdn.net/wcyoot/article/details/33310329">变换原理</a></p>
+
+<p><a href="https://developer.apple.com/library/prerelease/watchos/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_affine/dq_affine.html">苹果官方文档</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[记录unix命令的使用]]></title>
+    <link href="http://yoursite.com/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong/"/>
+    <updated>2015-08-04T18:07:24+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong</id>
+    <content type="html"><![CDATA[<p>经常为在mac 终端操作，所以不得不学习一些终端命令并做下记录，方便以后查询。</p>
+
+<h2>命令查询</h2>
+
+<p>其实所有的命令参数都是可以通过man 来查询的。</p>
+
+<pre><code>eg：
+man cd
+man rm
+man ls
+man open
+</code></pre>
+
+<p>都有命令的详细使用情况</p>
+
+<h2>命令介绍</h2>
+
+<ul>
+<li>rm -rf xxx 删除文件夹xxx（包括里面的内容）</li>
+<li>mkdir xxx 新建xxx文件夹</li>
+<li>cd xxx 进入xxx文件夹，xxx可以是个路径</li>
+<li>open . 使用Finder打开当前目录</li>
+<li>open ./source 使用Finder打开当前目录下的source文件夹</li>
+<li>ls 查看当面文件夹中的目录列表</li>
+<li>cd .. 返回上已目录</li>
+<li>rm xxx 删除文件</li>
+<li>vi xxx 打开文件
+  进入vi文件之后，q键是功能切换
+                a键是插入操作
+                shift+q 进入退出模式。wq 写入并保存 q! 强制退出不保存</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GitPages + Octopress搭建博客（转）]]></title>
+    <link href="http://yoursite.com/blog/2015/08/04/gitpages-plus-octopressda-jian-bo-ke-(zhuan-)/"/>
+    <updated>2015-08-04T16:39:04+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/04/gitpages-plus-octopressda-jian-bo-ke-(zhuan-)</id>
+    <content type="html"><![CDATA[<h1>直接转兄弟的链接</h1>
+
+<p><a href="http://summerhanada.github.io/blog/2015/07/07/da-jian-zi-ji-de-bo-ke/">GitPages + Octopress 搭建博客</a></p>
+
+<h2>我在创建中遇到的问题</h2>
+
+<p>主要问题是输入命令rake deploy 的时候报下面的错误</p>
+
+<pre><code>## Pushing generated _deploy website
+To git@github.com:NPOpenSource/npopensource.github.com.git
+! [rejected]        master -&gt; master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:NPOpenSource/    npopensource.github.com.git'
+hint: Updates were rejected because the tip of your current branch is   behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+</code></pre>
+
+<p>这个原因的产生是因为在目录 /octopress/_deploy/ 下面的文件和远程有冲突导致的。</p>
+
+<p>解决办法是 在 /octopress  输入命令git pull origin master</p>
+
+<p> cd _deploy/
+进入该文件夹 git remote -v<br/>
+查看当前文件下 有冲突的文件  将有冲突的文件解决掉就行了 并提交</p>
+
+<p>保证 git status 结果为</p>
+
+<pre><code> On branch master
+nothing to commit, working directory clean
+</code></pre>
+
+<p>之后cd .. 退出到 /octopress</p>
+
+<p>查看 git remote -v  将修改的文件也提交
+ 保证 git status  结果为</p>
+
+<pre><code>On branch master
+nothing to commit, working directory clean
+</code></pre>
+
+<p>最后再次运行 rake deploy 就行了。</p>
+
+<p>个性化设置<a href="http://www.tuicool.com/articles/3muYJj">参考链接</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git的学习使用]]></title>
+    <link href="http://yoursite.com/blog/2015/08/04/gitde-xue-xi-shi-yong/"/>
+    <updated>2015-08-04T16:33:09+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/04/gitde-xue-xi-shi-yong</id>
+    <content type="html"><![CDATA[<h2>git原理(最好自己实践敲下代码)</h2>
+
+<blockquote><p>底层命令 (Plumbing) 和高层命令 (Porcelain)</p></blockquote>
+
+<p>用github 不得不学习下 git 命令行。 要想学好git ，我认为，首先要弄懂git 原理，接着熟练掌握git 命令行。</p>
+
+<p>本文讲解了使用 checkout, branch, remote 等共约 30 个 Git 命令。然而由于 Git 一开始被设计成供 VCS 使用的工具集而不是一整套用户友好的 VCS，它还包含了许多底层命令，这些命令用于以 UNIX 风格使用或由脚本调用。这些命令一般被称为 “plumbing” 命令（底层命令），其他的更友好的命令则被称为 “porcelain” 命令（高层命令）。</p>
+
+<p>当你在一个新目录或已有目录内执行 git init 时，Git 会创建一个 .git 目录，几乎所有 Git 存储和操作的内容都位于该目录下。如果你要备份或复制一个库，基本上将这一目录拷贝至其他地方就可以了。本章基本上都讨论该目录下的内容。该目录结构如下：</p>
+
+<pre><code>$ ls HEAD branches/ config description hooks/ index info/ objects/ refs/
+</code></pre>
+
+<p>该目录下有可能还有其他文件，但这是一个全新的 git init 生成的库，所以默认情况下这些就是你能看到的结构。新版本的 Git 不再使用branches 目录，description 文件仅供 GitWeb 程序使用，所以不用关心这些内容。config 文件包含了项目特有的配置选项，info 目录保存了一份不希望在 .gitignore 文件中管理的忽略模式 (ignored patterns) 的全局可执行文件。hooks 。</p>
+
+<p><strong>另外还有四个重要的文件或目录：HEAD 及 index 文件，objects 及refs 目录。这些是 Git 的核心部分。objects 目录存储所有数据内容，refs 目录存储指向数据 (分支) 的提交对象的指针，HEAD 文件指向当前分支，index 文件保存了暂存区域信息。</strong></p>
+
+<blockquote><p>Git 对象</p></blockquote>
+
+<p><strong>Git 是一套内容寻址文件系统</strong>。这种说法的意思是，从内部来看，Git 是简单的 key-value 数据存储。它允许插入任意类型的内容，并会返回一个键值，通过该键值可以在任何时候再取出该内容。可以通过底层命令hash-object 来示范这点，传一些数据给该命令，它会将数据保存在 .git 目录并返回表示这些数据的键值。首先初使化一个 Git 仓库并确认objects 目录是空的：</p>
+
+<pre><code>$ mkdir test
+ $ cd test
+ $ git init 
+
+ Initialized empty Git repository in /tmp/test/.git/ 
+ $ find .git/objects
+  .git/objects 
+  .git/objects/info 
+  .git/objects/pack 
+  $ find .git/objects -type f 
+</code></pre>
+
+<p>Git 初始化了 objects 目录，同时在该目录下创建了 pack 和 info 子目录，但是该目录下没有其他常规文件。我们往这个 Git 数据库里存储一些文本：</p>
+
+<pre><code>$ echo 'test content' | git hash-object -w --stdin 
+d670460b4b4aece5915caf5c68d12f560a9fe3e4
+</code></pre>
+
+<p>参数 -w 指示 hash-object 命令存储 (数据) 对象，若不指定这个参数该命令仅仅返回键值。&ndash;stdin 指定从标准输入设备 (stdin) 来读取内容，若不指定这个参数则需指定一个要存储的文件的路径。该命令输出长度为 40 个字符的校验和。这是个 SHA-1 哈希值──其值为要存储的数据加上你马上会了解到的一种头信息的校验和。现在可以查看到 Git 已经存储了数据</p>
+
+<pre><code>$ find .git/objects -type f 
+.git/objects/d6/70460b4b4aece5915caf5c68d12f560a9fe3e4
+</code></pre>
+
+<p>可以在 objects 目录下看到一个文件。这便是 Git 存储数据内容的方式──为每份内容生成一个文件，取得该内容与头信息的 SHA-1 校验和，创建以该校验和前两个字符为名称的子目录，并以 (校验和) 剩下 38 个字符为文件命名 (保存至子目录下)。</p>
+
+<p>通过 cat-file 命令可以将数据内容取回。该命令是查看 Git 对象的瑞士军刀。传入 -p 参数可以让该命令输出数据内容的类型</p>
+
+<pre><code>$ git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4 
+test content
+</code></pre>
+
+<p>可以往 Git 中添加更多内容并取回了。也可以直接添加文件。比方说可以对一个文件进行简单的版本控制。首先，创建一个新文件，并把文件内容存储到数据库中：</p>
+
+<pre><code>$ echo 'version 1' &gt; test.txt
+ $ git hash-object -w test.txt 83baae61804e65cc73a7201a7252750c76066a30
+</code></pre>
+
+<p> 接着往该文件中写入一些新内容并再次保存</p>
+
+<pre><code>    $ echo 'version 2' &gt; test.txt
+    $ git hash-object -w test.txt 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a
+</code></pre>
+
+<p> 数据库中已经将文件的两个新版本连同一开始的内容保存下来了：</p>
+
+<pre><code> $ find .git/objects -type f 
+ .git/objects/1f/7a7a472abf3dd9643fd615f6da379c4acb3e3a 
+ .git/objects/83/baae61804e65cc73a7201a7252750c76066a30 
+ .git/objects/d6/70460b4b4aece5915caf5c68d12f560a9fe3e4
+</code></pre>
+
+<p>再将文件恢复到第一个版本</p>
+
+<pre><code>$ git cat-file -p 83baae61804e65cc73a7201a7252750c76066a30 &gt; test.txt
+ $ cat test.txt 
+ version 1
+</code></pre>
+
+<p> 或恢复到第二个版本：</p>
+
+<pre><code> $ git cat-file -p 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a &gt; test.txt 
+ $ cat test.txt 
+    version 2
+</code></pre>
+
+<p>需要记住的是几个版本的文件 SHA-1 值可能与实际的值不同，其次，存储的并不是文件名而仅仅是文件内容。这种对象类型称为 blob 。通过传递 SHA-1 值给cat-file -t 命令可以让 Git 返回任何对象的类型：</p>
+
+<pre><code>$ git cat-file -t 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a 
+blob
+</code></pre>
+
+<blockquote><p>tree (树) 对象</p></blockquote>
+
+<p>接下去来看 tree 对象，tree 对象可以存储文件名，同时也允许存储一组文件。Git 以一种类似 UNIX 文件系统但更简单的方式来存储内容。所有内容以 tree 或 blob 对象存储，其中 tree 对象对应于 UNIX 中的目录，blob 对象则大致对应于 inodes 或文件内容。一个单独的 tree 对象包含一条或多条 tree 记录，每一条记录含有一个指向 blob 或子 tree 对象的 SHA-1 指针，并附有该对象的权限模式 (mode)、类型和文件名信息。以 simplegit 项目为例，最新的 tree 可能是这个样子：</p>
+
+<pre><code>    $ git cat-file -p master^{tree} 100644 blob a906cb2a4a904a152e80877d4088654daad0c859 README 100644 blob 8f94139338f9404f26296befa88755fc2598c289 Rakefile 040000 tree 99f1a6d12cb4b6f19c8655fca46c3ecf317074e0 lib
+
+    具体生成办法往下看，这个代码可以暂时不验证     
+</code></pre>
+
+<p>master^{tree} 表示 branch 分支上最新提交指向的 tree 对象。请注意 lib 子目录并非一个 blob 对象，而是一个指向别一个 tree 对象的指针：</p>
+
+<pre><code>$ git cat-file -p 99f1a6d12cb4b6f19c8655fca46c3ecf317074e0 100644 blob 47c6340d6459e05787f644c2447d2595f5d3a54b simplegit.rb
+</code></pre>
+
+<p>从概念上来讲，Git 保存的数据如图
+<img src="http://yoursite.com/images/git-branch32.png" alt="alt text" /></p>
+
+<p>你可以自己创建 tree 。通常 Git 根据你的暂存区域或 index 来创建并写入一个 tree 。因此要创建一个 tree 对象的话首先要通过将一些文件暂存从而创建一个 index 。可以使用 plumbing 命令update-index 为一个单独文件 ── test.txt 文件的第一个版本 ──    创建一个 index    。通过该命令人为的将 test.txt 文件的首个版本加入到了一个新的暂存区域中。由于该文件原先并不在暂存区域中 (甚至就连暂存区域也还没被创建出来呢) ，必须传入&ndash;add 参数;由于要添加的文件并不在当前目录下而是在数据库中，必须传入 &ndash;cacheinfo 参数。同时指定了文件模式，SHA-1 值和文件名：</p>
+
+<pre><code>$ git update-index --add --cacheinfo 100644  83baae61804e65cc73a7201a7252750c76066a30 test.txt
+</code></pre>
+
+<p>在本例中，指定了文件模式为 100644，表明这是一个普通文件。其他可用的模式有：100755 表示可执行文件，120000 表示符号链接。文件模式是从常规的 UNIX 文件模式中参考来的，但是没有那么灵活 ── 上述三种模式仅对 Git 中的文件 (blobs) 有效 (虽然也有其他模式用于目录和子模块)。</p>
+
+<p>现在可以用 write-tree 命令将暂存区域的内容写到一个 tree 对象了。无需 -w 参数 ── 如果目标 tree 不存在，调用write-tree 会自动根据 index 状态创建一个 tree 对象。</p>
+
+<pre><code>$ git write-tree 
+d8329fc1cc938780ffdd9f94e0d364e0ea74f579 
+$ git cat-file -p d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+ 100644 blob 83baae61804e65cc73a7201a7252750c76066a30 test.txt
+</code></pre>
+
+<p>可以这样验证这确实是一个 tree 对象</p>
+
+<pre><code>$ git cat-file -t 
+d8329fc1cc938780ffdd9f94e0d364e0ea74f579 tree
+</code></pre>
+
+<p>再根据 test.txt 的第二个版本以及一个新文件创建一个新 tree 对象：</p>
+
+<pre><code>$ echo 'new file' &gt; new.txt
+ $ git update-index test.txt 
+ $ git update-index --add new.txt
+</code></pre>
+
+<p>这时暂存区域中包含了 test.txt 的新版本及一个新文件 new.txt 。创建 (写) 该 tree 对象 (将暂存区域或 index 状态写入到一个 tree 对象)，然后瞧瞧它的样子</p>
+
+<pre><code>$ git write-tree 
+0155eb4229851634a0f03eb265b69f5a2d56f341 
+$ git cat-file -p 0155eb4229851634a0f03eb265b69f5a2d56f341
+ 100644 blob fa49b077972391ad58037050f2a75f74e3671e92 new.txt 100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a test.txt
+</code></pre>
+
+<p>请注意该 tree 对象包含了两个文件记录，且 test.txt 的 SHA 值是早先值的 “第二版” (1f7a7a)。来点更有趣的，你将把第一个 tree 对象作为一个子目录加进该 tree 中。可以用read-tree 命令将 tree 对象读到暂存区域中去。在这时，通过传一个 &ndash;prefix 参数给 read-tree，将一个已有的 tree 对象作为一个子 tree 读到暂存区域中</p>
+
+<pre><code>$ git read-tree --prefix=bak
+ d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+  $ git write-tree
+   3c4e9cd789d88d8d89c1073707c3585e41b0e614 
+   $ git cat-file -p 3c4e9cd789d88d8d89c1073707c3585e41b0e614 
+   040000 tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579 bak 100644 blob fa49b077972391ad58037050f2a75f74e3671e92 new.txt 100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a test.txt
+</code></pre>
+
+<p>如果从刚写入的新 tree 对象创建一个工作目录，将得到位于工作目录顶级的两个文件和一个名为 bak 的子目录，该子目录包含了 test.txt 文件的第一个版本。可以将 Git 用来包含这些内容的数据想象成如图  所示的样子
+    <img src="http://yoursite.com/images/git-branch40.png" alt="alt text" /></p>
+
+<blockquote><p>commit (提交) 对象</p></blockquote>
+
+<p>你现在有三个 tree 对象，它们指向了你要跟踪的项目的不同快照，可是先前的问题依然存在：必须记往三个 SHA-1 值以获得这些快照。你也没有关于谁、何时以及为何保存了这些快照的信息。commit 对象为你保存了这些基本信息。</p>
+
+<p>要创建一个 commit 对象，使用 commit-tree 命令，指定一个 tree 的 SHA-1，如果有任何前继提交对象，也可以指定。从你写的第一个 tree 开始：</p>
+
+<pre><code>$ echo 'first commit' | git commit-tree d8329f
+ fdf4fc3344e67ab068f836878b6c4951e3b15f3d
+</code></pre>
+
+<p>通过 cat-file 查看这个新 commit 对象</p>
+
+<pre><code>$ git cat-file -p fdf4fc3 
+tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579 author Scott Chacon 1243040974 -0700 committer Scott Chacon 1243040974 -0700 first commit 
+</code></pre>
+
+<p>commit 对象有格式很简单：指明了该时间点项目快照的顶层树对象、作者/提交者信息（从 Git 设理发店的 user.name 和user.email中获得)以及当前时间戳、一个空行，以及提交注释信息。</p>
+
+<p>接着再写入另外两个 commit 对象，每一个都指定其之前的那个 commit 对象</p>
+
+<pre><code>$ echo 'second commit' | git commit-tree 0155eb -p fdf4fc3 
+cac0cab538b970a37ea1e769cbbde608743bc96d
+ $ echo 'third commit' | git commit-tree 3c4e9c -p cac0cab 
+ 1a410efbd13591db07496601ebc7a059dd55cfe9
+</code></pre>
+
+<p>每一个 commit 对象都指向了你创建的树对象快照。出乎意料的是，现在已经有了真实的 Git 历史了，所以如果运行 git log 命令并指定最后那个 commit 对象的 SHA-1 便可以查看历史：</p>
+
+<pre><code>$ git log    --stat 1a410e 
+commit 1a410efbd13591db07496601ebc7a059dd55cfe9 Author: Scott Chacon Date: Fri May 22 18:15:24 2009 -0700 third commit bak/test.txt | 1 + 1 files changed, 1 insertions(+), 0 deletions(-)
+ commit cac0cab538b970a37ea1e769cbbde608743bc96d Author: Scott Chacon Date: Fri May 22 18:14:29 2009 -0700 second commit new.txt | 1 + test.txt | 2 +- 2 files changed, 2 insertions(+), 1 deletions(-)
+  commit fdf4fc3344e67ab068f836878b6c4951e3b15f3d Author: Scott Chacon Date: Fri May 22 18:09:34 2009 -0700 first commit test.txt | 1 + 1 files changed, 1 insertions(+), 0 deletions(-) 
+</code></pre>
+
+<p>真棒。你刚刚通过使用低级操作而不是那些普通命令创建了一个 Git 历史。这基本上就是运行    git add 和 git commit 命令时 Git 进行的工作    ──保存修改了的文件的 blob，更新索引，创建 tree 对象，最后创建 commit 对象，这些 commit 对象指向了顶层 tree 对象以及先前的 commit 对象。这三类 Git 对象 ── blob，tree 以及 tree ── 都各自以文件的方式保存在.git/objects 目录下。以下所列是目前为止样例中的所有对象，每个对象后面的注释里标明了它们保存的内容：</p>
+
+<pre><code>$ find .git/objects -type f 
+.git/objects/01/55eb4229851634a0f03eb265b69f5a2d56f341 # tree 2 .git/objects/1a/410efbd13591db07496601ebc7a059dd55cfe9 # commit 3 .git/objects/1f/7a7a472abf3dd9643fd615f6da379c4acb3e3a # test.txt v2 .git/objects/3c/4e9cd789d88d8d89c1073707c3585e41b0e614 # tree 3 .git/objects/83/baae61804e65cc73a7201a7252750c76066a30 # test.txt v1 .git/objects/ca/c0cab538b970a37ea1e769cbbde608743bc96d # commit 2 .git/objects/d6/70460b4b4aece5915caf5c68d12f560a9fe3e4 # 'test content' .git/objects/d8/329fc1cc938780ffdd9f94e0d364e0ea74f579 # tree 1 .git/objects/fa/49b077972391ad58037050f2a75f74e3671e92 # new.txt .git/objects/fd/f4fc3344e67ab068f836878b6c4951e3b15f3d # commit 1
+</code></pre>
+
+<p>如果你按照以上描述进行了操作，可以得到如图所示的对象图</p>
+
+<p><img src="http://yoursite.com/images/git-branch41.png" alt="alt text" /></p>
+
+<h3>原理图</h3>
+
+<p><img src="http://yoursite.com/images/git-yuanli.png" alt="alt text" />
+这张图能比较直观的看出git 的工作原理和简单关键命令。</p>
+
+<blockquote><p> 底层命令 (Plumbing) 和高层命令 (Porcelain)</p></blockquote>
+
+<p>首先要弄明白一点，从根本上来讲 Git 是一套内容寻址 (content-addressable) 文件系统。</p>
+
+<h3>git 目录</h3>
+
+<p><img src="http://yoursite.com/images/git-mulu.png" alt="alt text" /></p>
+
+<h3>关于版本控制（可以不看，讲述git的由来）</h3>
+
+<blockquote><p>本地版本控制系统</p></blockquote>
+
+<p>许多人习惯用复制整个项目目录的方式来保存不同的版本，或许还会改名加上备份时间以示区别。这么做唯一的好处就是简单。不过坏处也不少：有时候会混淆所在的工作目录，一旦弄错文件丢了数据就没法撤销恢复。</p>
+
+<p>为了解决这个问题，人们很久以前就开发了许多种本地版本控制系统，大多都是采用某种简单的数据库来记录文件的历次更新差异。</p>
+
+<p><img src="http://yoursite.com/images/git-local.png" alt="alt text" /></p>
+
+<p>其中最流行的一种叫做 rcs，现今许多计算机系统上都还看得到它的踪影。甚至在流行的 Mac OS X 系统上安装了开发者工具包之后，也可以使用 rcs 命令。它的工作原理基本上就是保存并管理文件补丁（patch）。文件补丁是一种特定格式的文本文件，记录着对应文件修订前后的内容变化。所以，根据每次 修订后的补丁，rcs 可以通过不断打补丁，计算出各个版本的文件内容。</p>
+
+<blockquote><p>集中化的版本控制系统</p></blockquote>
+
+<p>接下来人们又遇到一个问题，如何让在不同系统上的开发者协同工作？于是，集中化的版本控制系统（ Centralized Version Control Systems，简称 CVCS ）应运而生。这类系统，诸如 CVS，Subversion 以及 Perforce 等，都有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们都通过客户端连到这台服务器，取出最新的文件或者提交更新。多年以来，这 已成为版本控制系统的标准做法</p>
+
+<p><img src="http://yoursite.com/images/git-morepeople.png" alt="alt text" /></p>
+
+<p>这种做法带来了许多好处，特别是相较于老式的本地 VCS 来说。现在，每个人都可以在一定程度上看到项目中的其他人正在做些什么。而管理员也可以轻松掌控每个开发者的权限，并且管理一个 CVCS 要远比在各个客户端上维护本地数据库来得轻松容易。</p>
+
+<p>事分两面，有好有坏。这么做最显而易见的缺点是中央服务器的单点故障。如果宕机一小时，那么在这一小时内，谁都无法提交更新，也就无法协同工作。要 是中央服务器的磁盘发生故障，碰巧没做备份，或者备份不够及时，就还是会有丢失数据的风险。最坏的情况是彻底丢失整个项目的所有历史更改记录，而被客户端 提取出来的某些快照数据除外，但这样的话依然是个问题，你不能保证所有的数据都已经有人事先完整提取出来过。本地版本控制系统也存在类似问题，只要整个项 目的历史记录被保存在单一位置，就有丢失所有历史更新记录的风险</p>
+
+<blockquote><p>分布式版本控制系统</p></blockquote>
+
+<p>于是分布式版本控制系统（ Distributed Version Control System，简称 DVCS ）面世了。在这类系统中，像 Git，Mercurial，Bazaar 以及 Darcs 等，客户端并不只提取最新版本的文件快照，而是把原始的代码仓库完整地镜像下来。这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜 像出来的本地仓库恢复。因为每一次的提取操作，实际上都是一次对代码仓库的完整备份。</p>
+
+<p><img src="http://yoursite.com/images/git-fenbushi.png" alt="alt text" /></p>
+
+<p>更进一步，许多这类系统都可以指定和若干不同的远端代码仓库进行交互。籍此，你就可以在同一个项目中，分别和不同工作小组的人相互协作。你可以根据需要设定不同的协作流程，比如层次模型式的工作流，而这在以前的集中式系统中是无法实现的。</p>
+
+<h3>git基础</h3>
+
+<blockquote><p>直接记录快照，而非差异比较</p></blockquote>
+
+<p>Git 和其他版本控制系统的主要差别在于，Git 只关心文件数据的整体是否发生变化，而大多数其他系统则只关心文件内容的具体差异。这类系统 （CVS，Subversion，Perforce，Bazaar 等等）每次记录有哪些文件作了更新，以及都更新了哪些行的什么内容</p>
+
+<p><img src="http://yoursite.com/images/git-otherSys.png" alt="alt text" /></p>
+
+<p>Git 并不保存这些前后变化的差异数据。实际上，Git 更像是把变化的文件作快照后，记录在一个微型的文件系统中。每次提交更新时，它会纵览一遍所有文件的指纹信息并对文件作一快照，然后保存一个指向这次快照 的索引。为提高性能，若文件没有变化，Git 不会再次保存，而只对上次保存的快照作一链接。</p>
+
+<p><img src="http://yoursite.com/images/git-differentSys.png" alt="alt text" /></p>
+
+<p>这是 Git 同其他系统的重要区别。它完全颠覆了传统版本控制的套路，并对各个环节的实现方式作了新的设计。Git 更像是个小型的文件系统，但它同时还提供了许多以此为基础的超强工具，而不只是一个简单的 VCS</p>
+
+<blockquote><p>近乎所有操作都是本地执行</p></blockquote>
+
+<p>在 Git 中的绝大多数操作都只需要访问本地文件和资源，不用连网。但如果用 CVCS 的话，差不多所有操作都需要连接网络。因为 Git 在本地磁盘上就保存着所有当前项目的历史更新，所以处理起来速度飞快。
+    举个例子，如果要浏览项目的历史更新摘要，Git 不用跑到外面的服务器上去取数据回来，而直接从本地数据库读取后展示给你看。所以任何时候你都可以马上翻阅，无需等待。如果想要看当前版本的文件和一个月 前的版本之间有何差异，Git 会取出一个月前的快照和当前文件作一次差异运算，而不用请求远程服务器来做这件事，或是把老版本的文件拉到本地来作比较。</p>
+
+<blockquote><p>时刻保持数据完整性</p></blockquote>
+
+<p>在保存到 Git 之前，所有数据都要进行内容的校验和（checksum）计算，并将此结果作为数据的唯一标识和索引。换句话说，不可能在你修改了文件或目录之后，Git 一无所知。这项特性作为 Git 的设计哲学，建在整体架构的最底层。所以如果文件在传输时变得不完整，或者磁盘损坏导致文件数据缺失，Git 都能立即察觉。</p>
+
+<p>Git 使用 SHA-1 算法计算数据的校验和，通过对文件的内容或目录的结构计算出一个 SHA-1 哈希值，作为指纹字符串。该字串由 40 个十六进制字符（0-9 及 a-f）组成，看起来就像是：</p>
+
+<p>24b9da6552252987aa493b52f8696cd6d3b00373</p>
+
+<p>Git 的工作完全依赖于这类指纹字串，所以你会经常看到这样的哈希值。实际上，所有保存在 Git 数据库中的东西都是用此哈希值来作索引的，而不是靠文件名。</p>
+
+<blockquote><p>多数操作仅添加数据</p></blockquote>
+
+<p>常用的 Git 操作大多仅仅是把数据添加到数据库。因为任何一种不可逆的操作，比如删除数据，都会使回退或重现历史版本变得困难重重。在别的 VCS 中，若还未提交更新，就有可能丢失或者混淆一些修改的内容，但在 Git 里，一旦提交快照之后就完全不用担心丢失数据，特别是养成定期推送到其他仓库的习惯的话。</p>
+
+<blockquote><p>文件的三种状态</p></blockquote>
+
+<p>好，现在请注意，接下来要讲的概念非常重要。对于任何一个文件，在 Git 内都只有三种状态：已提交（committed），已修改（modified）和已暂存（staged）。已提交表示该文件已经被安全地保存在本地数据库 中了；已修改表示修改了某个文件，但还没有提交保存；已暂存表示把已修改的文件放在下次提交时要保存的清单中。</p>
+
+<p>由此我们看到 Git 管理项目时，文件流转的三个工作区域：Git 的工作目录，暂存区域，以及本地仓库。</p>
+
+<p><img src="http://yoursite.com/images/git-option.png" alt="alt text" /></p>
+
+<p>每个项目都有一个 Git 目录（译注：如果 git clone 出来的话，就是其中 .git 的目录；如果git clone &ndash;bare 的话，新建的目录本身就是 Git 目录。），它是 Git 用来保存元数据和对象数据库的地方。该目录非常重要，每次克隆镜像仓库的时候，实际拷贝的就是这个目录里面的数据。</p>
+
+<p>从项目中取出某个版本的所有文件和目录，用以开始后续工作的叫做工作目录。这些文件实际上都是从 Git 目录中的压缩对象数据库中提取出来的，接下来就可以在工作目录中对这些文件进行编辑。</p>
+
+<p>所谓的暂存区域只不过是个简单的文件，一般都放在 Git 目录中。有时候人们会把这个文件叫做索引文件，不过标准说法还是叫暂存区域。</p>
+
+<p>基本的 Git 工作流程如下：</p>
+
+<ol>
+<li><p>在工作目录中修改某些文件。 2. 对修改后的文件进行快照，然后保存到暂存区域。 3. 提交更新，将保存在暂存区域的文件快照永久转储到 Git 目录中。</p>
+
+<p> 所以，我们可以从文件所处的位置来判断状态：如果是 Git 目录中保存着的特定版本文件，就属于已提交状态；如果作了修改并已放入暂存区域，就属于已暂存状态；如果自上次取出后，作了修改但还没有放到暂存区域，就 是已修改状态。</p></li>
+</ol>
+
+
+<p>请记住，工作目录下面的所有文件都不外乎这两种状态：已跟踪或未跟踪。已跟踪的文件是指本来就被纳入版本控制管理的文件，在上次快照中有它们的记 录，工作一段时间后，它们的状态可能是未更新，已修改或者已放入暂存区。而所有其他文件都属于未跟踪文件。它们既没有上次更新时的快照，也不在当前的暂存 区域。初次克隆某个仓库时，工作目录中的所有文件都属于已跟踪文件，且状态为未修改。</p>
+
+<p>在编辑过某些文件之后，Git 将这些文件标为已修改。我们逐步把这些修改过的文件放到暂存区域，直到最后一次性提交所有这些暂存起来的文件，如此重复。所以使用 Git 时的文件状态变化周期如图
+<img src="http://yoursite.com/images/git-change.png" alt="alt text" /></p>
+
+<h3>git 分支</h3>
+
+<blockquote><p> 何谓分支</p></blockquote>
+
+<p>为了理解 Git 分支的实现方式，我们需要回顾一下 Git 是如何储存数据的。或许你还记得第一章的内容，Git 保存的不是文件差异或者变化量，而只是一系列文件快照。</p>
+
+<p>在 Git 中提交时，会保存一个提交（commit）对象，该对象包含一个指向暂存内容快照的指针，包含本次提交的作者等相关附属信息，包含零个或多个指向该提交对 象的父对象指针：首次提交是没有直接祖先的，普通提交有一个祖先，由两个或多个分支合并产生的提交则有多个祖先。</p>
+
+<p>为直观起见，我们假设在工作目录中有三个文件，准备将它们暂存后提交。暂存操作会对每一个文件计算校验和，然后把当前版本的文件快照保存到 Git 仓库中（Git 使用 blob 类型的对象存储这些快照），并将校验和加入暂存区域：</p>
+
+<pre><code>$ git add README test.rb LICENSE $ git commit -m 'initial commit of my project'
+</code></pre>
+
+<p>当使用 git commit 新建一个提交对象前，Git 会先计算每一个子目录（本例中就是项目根目录）的校验和，然后在 Git 仓库中将这些目录保存为树（tree）对象。之后 Git 创建的提交对象，除了包含相关提交信息以外，还包含着指向这个树对象（项目根目录）的指针，如此它就可以在将来需要的时候，重现此次快照的内容了。</p>
+
+<p>现在，Git 仓库中有五个对象：三个表示文件快照内容的 blob 对象；一个记录着目录树内容及其中各个文件对应 blob 对象索引的 tree 对象；以及一个包含指向 tree 对象（根目录）的索引和其他提交信息元数据的 commit 对象。概念上来说，仓库中的各个对象保存的数据和相互关系看起来如图：
+<img src="http://yoursite.com/images/git-branch-master.png" alt="alt text" /></p>
+
+<p>作些修改后再次提交，那么这次的提交对象会包含一个指向上次提交对象的指针（译注：即下图中的 parent 对象）。两次提交后，仓库历史会变成下图</p>
+
+<p><img src="http://yoursite.com/iamges/git-commit-more.png" alt="alt text" /></p>
+
+<p>现在来谈分支。Git 中的分支，其实本质上仅仅是个指向 commit 对象的可变指针。Git 会使用 master 作为分支的默认名字。在若干次提交后，你其实已经有了一个指向最后一次提交对象的 master 分支，它在每次提交的时候都会自动向前移动。</p>
+
+<p><img src="http://yoursite.com/images/git-branch-new.png" alt="alt text" /></p>
+
+<p>Git 又是如何创建一个新的分支的呢？答案很简单，创建一个新的分支指针。比如新建一个 testing 分支，可以使用 git branch 命令：</p>
+
+<pre><code>$ git branch testing
+</code></pre>
+
+<p>这会在当前 commit 对象上新建一个分支指针如图</p>
+
+<p><img src="http://yoursite.com/images/git-branch-create.png" alt="alt text" /></p>
+
+<p>那么，Git 是如何知道你当前在哪个分支上工作的呢？其实答案也很简单，它保存着一个名为 HEAD 的特别指针。请注意它和你熟知的许多其他版本控制系统（比如 Subversion 或 CVS）里的 HEAD 概念大不相同。在 Git 中，它是一个指向你正在工作中的本地分支的指针（译注：将 HEAD 想象为当前分支的别名。）。运行git branch 命令，仅仅是建立了一个新的分支，但不会自动切换到这个分支中去，所以在这个例子中，我们依然还在 master 分支里工作(如图)</p>
+
+<p><img src="http://yoursite.com/images/git-branch-show.png" alt="alt text" /></p>
+
+<p>要切换到其他分支，可以执行 git checkout 命令。我们现在转换到新建的 testing 分支</p>
+
+<pre><code>$ git checkout testing
+</code></pre>
+
+<p>这样 HEAD 就指向了 testing 分支</p>
+
+<p><img src="http://yoursite.com/images/git-branch-check.png" alt="alt text" /></p>
+
+<p>这样的实现方式会给我们带来什么好处呢？好吧，现在不妨再提交一次：</p>
+
+<pre><code>$ vim test.rb $ git commit -a -m 'made a change'
+</code></pre>
+
+<p>下图  展示了提交后的结果</p>
+
+<p><img src="http://yoursite.com/images/git-branch-checkout.png" alt="alt text" /></p>
+
+<p>非常有趣，现在 testing 分支向前移动了一格，而 master 分支仍然指向原先 git checkout 时所在的 commit 对象。现在我们回到 master 分支看看：</p>
+
+<pre><code>$ git checkout master
+</code></pre>
+
+<p>下图 显示了结果。</p>
+
+<p><img src="http://yoursite.com/images/git-master-new.png" alt="alt text" /></p>
+
+<p>这条命令做了两件事。它把 HEAD 指针移回到 master 分支，并把工作目录中的文件换成了 master 分支所指向的快照内容。也就是说，现在开始所做的改动，将始于本项目中一个较老的版本。它的主要作用是将 testing 分支里作出的修改暂时取消，这样你就可以向另一个方向进行开发。</p>
+
+<p>我们作些修改后再次提交：</p>
+
+<pre><code>$ vim test.rb $ git commit -a -m 'made other changes'
+</code></pre>
+
+<p>现在我们的项目提交历史产生了分叉（如图 3-9 所示），因为刚才我们创建了一个分支，转换到其中进行了一些工作，然后又回到原来的主分支进行了另外一些工作。这些改变分别孤立在不同的分支里：我们可以 在不同分支里反复切换，并在时机成熟时把它们合并到一起。而所有这些工作，仅仅需要branch 和 checkout 这两条命令就可以完成。</p>
+
+<p><img src="http://yoursite.com/images/git-head.png" alt="alt text" /></p>
+
+<p>由于 Git 中的分支实际上仅是一个包含所指对象校验和（40 个字符长度 SHA-1 字串）的文件，所以创建和销毁一个分支就变得非常廉价。说白了，新建一个分支就是向一个文件写入 41 个字节（外加一个换行符）那么简单，当然也就很快了。</p>
+
+<p>这和大多数版本控制系统形成了鲜明对比，它们管理分支大多采取备份所有项目文件到特定目录的方式，所以根据项目文件数量和大小不同，可能花费的时间 也会有相当大的差别，快则几秒，慢则数分钟。而 Git 的实现与项目复杂度无关，它永远可以在几毫秒的时间内完成分支的创建和切换。同时，因为每次提交时都记录了祖先信息（译注：即parent 对象），将来要合并分支时，寻找恰当的合并基础（译注：即共同祖先）的工作其实已经自然而然地摆在那里了，所以实现起来非常容易。Git 鼓励开发者频繁使用分支，正是因为有着这些特性作保障</p>
+
+<blockquote><p>  分支的新建与合并</p></blockquote>
+
+<p>现在让我们来看一个简单的分支与合并的例子，实际工作中大体也会用到这样的工作流程：</p>
+
+<p> 开发某个网站。 2. 为实现某个新的需求，创建一个分支。 3. 在这个分支上开展工作。</p>
+
+<p>假设此时，你突然接到一个电话说有个很严重的问题需要紧急修补，那么可以按照下面的方式处理：</p>
+
+<ol>
+<li>返回到原先已经发布到生产服务器上的分支。 2. 为这次紧急修补建立一个新分支，并在其中修复问题。 3. 通过测试后，回到生产服务器所在的分支，将修补分支合并进来，然后再推送到生产服务器上。 4. 切换到之前实现新需求的分支，继续工作。</li>
+</ol>
+
+
+<p><strong>分支的新建与切换</strong></p>
+
+<p>首先，我们假设你正在项目中愉快地工作，并且已经提交了几次更新
+<img src="http://yoursite.com/images/git-branch1.png" alt="alt text" /></p>
+
+<p>现在，你决定要修补问题追踪系统上的 #53 问题。顺带说明下，Git 并不同任何特定的问题追踪系统打交道。这里为了说明要解决的问题，才把新建的分支取名为 iss53。要新建并切换到该分支，运行git checkout 并加上 -b 参数：</p>
+
+<pre><code>$ git checkout -b iss53 
+ Switched to a new branch "iss53"
+</code></pre>
+
+<p>这相当于执行下面这两条命令：</p>
+
+<pre><code>$ git branch iss53 $ git checkout iss53
+</code></pre>
+
+<p>图 示意该命令的执行结果。</p>
+
+<p><img src="http://yoursite.com/images/git-branch2.png" alt="alt text" /></p>
+
+<p>接着你开始尝试修复问题，在提交了若干次更新后，iss53 分支的指针也会随着向前推进，因为它就是当前分支（换句话说，当前的 HEAD 指针正指向 iss53，见图 ）：</p>
+
+<pre><code>$ vim index.html $ git commit -a -m 'added a new footer [issue 53]'
+</code></pre>
+
+<p><img src="http://yoursite.com/images/git-branch3.png" alt="alt text" /></p>
+
+<p>现在你就接到了那个网站问题的紧急电话，需要马上修补。有了 Git ，我们就不需要同时发布这个补丁和 iss53 里作出的修改，也不需要在创建和发布该补丁到服务器之前花费大力气来复原这些修改。唯一需要的仅仅是切换回master 分支。</p>
+
+<p>不过在此之前，留心你的暂存区或者工作目录里，那些还没有提交的修改，它会和你即将检出的分支产生冲突从而阻止 Git 为你切换分支。切换分支的时候最好保持一个清洁的工作区域。稍后会介绍几个绕过这种问题的办法（分别叫做 stashing 和 commit amending）。目前已经提交了所有的修改，所以接下来可以正常转换到master 分支：</p>
+
+<pre><code>$ git checkout master Switched to branch "master"
+</code></pre>
+
+<p>此时工作目录中的内容和你在解决问题 #53 之前一模一样，你可以集中精力进行紧急修补。这一点值得牢记：Git 会把工作目录的内容恢复为检出某分支时它所指向的那个提交对象的快照。它会自动添加、删除和修改文件以确保目录的内容和你当时提交时完全一样</p>
+
+<p>接下来，你得进行紧急修补。我们创建一个紧急修补分支 hotfix 来开展工作，直到搞定（见图 3-13）：</p>
+
+<pre><code>$ git checkout -b 'hotfix'
+ $ vim index.html $ git commit -a -m 'fixed "
+</code></pre>
+
+<p> <img src="http://yoursite.com/images/git-branch6.png" alt="alt text" /></p>
+
+<p> 有必要作些测试，确保修补是成功的，然后回到 master 分支并把它合并进来，然后发布到生产服务器。用 git merge 命令来进行合并</p>
+
+<pre><code>$ git checkout master 
+$ git merge hotfix
+</code></pre>
+
+<p>请注意，合并时出现了“Fast forward”的提示。由于当前 master 分支所在的提交对象是要并入的 hotfix 分支的直接上游，Git 只需把master 分支指针直接右移。换句话说，如果顺着一个分支走下去可以到达另一个分支的话，那么 Git 在合并两者时，只会简单地把指针右移，因为这种单线的历史分支不存在任何需要解决的分歧，所以这种合并过程可以称为快进（Fast forward）。</p>
+
+<p>现在最新的修改已经在当前 master 分支所指向的提交对象中了，可以部署到生产服务器上去了
+<img src="http://yoursite.com/images/git-branch5.png" alt="alt text" />
+在那个超级重要的修补发布以后，你想要回到被打扰之前的工作。由于当前 hotfix 分支和 master 都指向相同的提交对象，所以hotfix 已经完成了历史使命，可以删掉了。使用 git branch 的 -d 选项执行删除操作：</p>
+
+<pre><code>$ git branch -d hotfix Deleted branch hotfix (3a0874c).
+</code></pre>
+
+<p>现在回到之前未完成的 #53 问题修复分支上继续工作</p>
+
+<pre><code>$ git checkout iss53
+$ vim index.html $ git commit -a -m "new content"
+</code></pre>
+
+<p><img src="http://yoursite.com/images/git-branch6.png" alt="alt text" /></p>
+
+<p>不用担心之前 hotfix 分支的修改内容尚未包含到 iss53 中来。如果确实需要纳入此次修补，可以用git merge master 把 master 分支合并到 iss53；或者等 iss53 完成之后，再将iss53 分支中的更新并入 master</p>
+
+<ul>
+<li>分支的合并</li>
+</ul>
+
+
+<p>在问题 #53 相关的工作完成之后，可以合并回 master 分支。实际操作同前面合并 hotfix 分支差不多，只需回到master 分支，运行 git merge 命令指定要合并进来的分支：</p>
+
+<pre><code>$ git checkout master 
+$ git merge iss53
+</code></pre>
+
+<p>请注意，这次合并操作的底层实现，并不同于之前 hotfix 的并入方式。因为这次你的开发历史是从更早的地方开始分叉的。由于当前 master 分支所指向的提交对象（C4）并不是 iss53 分支的直接祖先，Git 不得不进行一些额外处理。就此例而言，Git 会用两个分支的末端（C4 和 C5）以及它们的共同祖先（C2）进行一次简单的三方合并计算。图 3-16 用红框标出了 Git 用于合并的三个提交对象</p>
+
+<p><img src="http://yoursite.com/images/git-branch7.png" alt="alt text" /></p>
+
+<p>这次，Git 没有简单地把分支指针右移，而是对三方合并后的结果重新做一个新的快照，并自动创建一个指向它的提交对象（C6）（见图）。这个提交对象比较特殊，它有两个祖先（C4 和 C5）。</p>
+
+<p>值得一提的是 Git 可以自己裁决哪个共同祖先才是最佳合并基础；这和 CVS 或 Subversion（1.5 以后的版本）不同，它们需要开发者手工指定合并基础。所以此特性让 Git 的合并操作比其他系统都要简单不少</p>
+
+<p><img src="http://yoursite.com/images/git-branch8.png" alt="alt text" /></p>
+
+<p>既然之前的工作成果已经合并到 master 了，那么 iss53 也就没用了。你可以就此删除它，并在问题追踪系统里关闭该问题。</p>
+
+<pre><code>$ git branch -d iss53
+</code></pre>
+
+<ul>
+<li>遇到冲突时的分支合并</li>
+</ul>
+
+
+<p>有时候合并操作并不会如此顺利。如果在不同的分支中都修改了同一个文件的同一部分，Git 就无法干净地把两者合到一起（译注：逻辑上说，这种问题只能由人来裁决。）。如果你在解决问题 #53 的过程中修改了hotfix 中修改的部分，将得到类似下面的结果</p>
+
+<pre><code>$ git merge iss53 Auto-merging index.html CONFLICT (content): Merge conflict in index.html Automatic merge failed; fix conflicts and then commit the result.
+</code></pre>
+
+<p>Git 作了合并，但没有提交，它会停下来等你解决冲突。要看看哪些文件在合并时发生冲突，可以用 git status 查阅</p>
+
+<pre><code>[master*]$ git status index.html: needs merge # On branch master # Changed but not updated: # (use "git add ..." to update what will be committed) # (use "git checkout -- ..." to discard changes in working directory) # # unmerged: index.html #     
+</code></pre>
+
+<p>任何包含未解决冲突的文件都会以未合并（unmerged）的状态列出。Git 会在有冲突的文件里加入标准的冲突解决标记，可以通过它们来手工定位并解决这些冲突。可以看到此文件包含类似下面这样的部分：</p>
+
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:index.html 
+contact : email.support@github.com
+======= 
+please contact us at support@github.com
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; iss53:index.html
+</code></pre>
+
+<p>可以看到 ======= 隔开的上半部分，是 HEAD（即 master 分支，在运行merge 命令时所切换到的分支）中的内容，下半部分是在 iss53 分支中的内容。解决冲突的办法无非是二者选其一或者由你亲自整合到一起。比如你可以通过把这段内容替换为下面这样来解决</p>
+
+<pre><code>please contact us at email.support@github.com
+</code></pre>
+
+<p>这个解决方案各采纳了两个分支中的一部分内容，而且我还删除了 &lt;&lt;&lt;&lt;&lt;&lt;&lt;，======= 和 >>>>>>> 这些行。在解决了所有文件里的所有冲突后，运行 git add 将把它们标记为已解决状态（译注：实际上就是来一次快照保存到暂存区域。）。因为一旦暂存，就表示冲突已经解决。如果你想用一个有图形界面的工具来解决这些问题，不妨运行git mergetool，它会调用一个可视化的合并工具并引导你解决所有冲突：</p>
+
+<pre><code>$ git mergetool merge tool candidates: kdiff3 tkdiff xxdiff meld gvimdiff opendiff emerge vimdiff Merging the files: index.html Normal merge conflict for 'index.html': {local}: modified {remote}: modified Hit return to start merge resolution tool (opendiff):
+</code></pre>
+
+<p>如果不想用默认的合并工具（Git 为我默认选择了 opendiff，因为我在 Mac 上运行了该命令），你可以在上方”merge tool candidates”里找到可用的合并工具列表，输入你想用的工具名。我们将在第七章讨论怎样改变环境中的默认值。</p>
+
+<p>退出合并工具以后，Git 会询问你合并是否成功。如果回答是，它会为你把相关文件暂存起来，以表明状态为已解决。</p>
+
+<p>再运行一次 git status 来确认所有冲突都已解决：</p>
+
+<pre><code>$ git status # On branch master # Changes to be committed: # (use "git reset HEAD ..." to unstage) # # modified: index.html # 
+</code></pre>
+
+<p>如果觉得满意了，并且确认所有冲突都已解决，也就是进入了暂存区，就可以用 git commit 来完成这次合并提交。提交的记录差不多是这样：</p>
+
+<pre><code>Merge branch 'iss53' Conflicts: index.html # # It looks like you may be committing a MERGE. # If this is not correct, please remove the file # .git/MERGE_HEAD # and try again. #
+</code></pre>
+
+<p>如果想给将来看这次合并的人一些方便，可以修改该信息，提供更多合并细节。比如你都作了哪些改动，以及这么做的原因。有时候裁决冲突的理由并不直接或明显，有必要略加注解。</p>
+
+<ul>
+<li>分支的管理</li>
+</ul>
+
+
+<p>到目前为止，你已经学会了如何创建、合并和删除分支。除此之外，我们还需要学习如何管理分支，在日后的常规工作中会经常用到下面介绍的管理命令</p>
+
+<p>git branch 命令不仅仅能创建和删除分支，如果不加任何参数，它会给出当前所有分支的清单</p>
+
+<pre><code>$ git branch iss53 * master testing
+</code></pre>
+
+<p>注意看 master 分支前的 * 字符：它表示当前所在的分支。也就是说，如果现在提交更新，master 分支将随着开发进度前移。若要查看各个分支最后一个提交对象的信息，运行git branch -v</p>
+
+<pre><code>$ git branch -v iss53 93b412c fix javascript issue * master 7a98805 Merge branch 'iss53' testing 782fd34 add scott to the author list in the readmes
+</code></pre>
+
+<p>要从该清单中筛选出你已经（或尚未）与当前分支合并的分支，可以用 &ndash;merge 和 &ndash;no-merged 选项（Git 1.5.6 以上版本）。比如用git branch &ndash;merge 查看哪些分支已被并入当前分支（译注：也就是说哪些分支是当前分支的直接上游。）：</p>
+
+<pre><code>$ git branch --merged iss53 * master
+</code></pre>
+
+<p>之前我们已经合并了 iss53，所以在这里会看到它。一般来说，列表中没有 * 的分支通常都可以用 git branch -d 来删掉。原因很简单，既然已经把它们所包含的工作整合到了其他分支，删掉也不会损失什么。</p>
+
+<p>另外可以用 git branch &ndash;no-merged 查看尚未合并的工作：</p>
+
+<pre><code>$ git branch --no-merged testing
+</code></pre>
+
+<p>它会显示还未合并进来的分支。由于这些分支中还包含着尚未合并进来的工作成果，所以简单地用 git branch -d 删除该分支会提示错误，因为那样做会丢失数据</p>
+
+<pre><code>$ git branch -d testing error: The branch 'testing' is not an ancestor of your current HEAD. If you are sure you want to delete it, run 'git branch -D testing'.
+</code></pre>
+
+<p>不过，如果你确实想要删除该分支上的改动，可以用大写的删除选项 -D 强制执行，就像上面提示信息中给出的那样。</p>
+
+<blockquote><p>利用分支进行开发的工作流程</p></blockquote>
+
+<ul>
+<li>长期分支</li>
+</ul>
+
+
+<p>由于 Git 使用简单的三方合并，所以就算在较长一段时间内，反复多次把某个分支合并到另一分支，也不是什么难事。也就是说，你可以同时拥有多个开放的分支，每个分支用于完成特定的任务，随着开发的推进，你可以随时把某个特性分支的成果并到其他分支中。</p>
+
+<p>许多使用 Git 的开发者都喜欢用这种方式来开展工作，比如仅在 master 分支中保留完全稳定的代码，即已经发布或即将发布的代码。与此同时，他们还有一个名为develop 或 next 的平行分支，专门用于后续的开发，或仅用于稳定性测试 — 当然并不是说一定要绝对稳定，不过一旦进入某种稳定状态，便可以把它合并到master 里。这样，在确保这些已完成的特性分支（短期分支，比如之前的 iss53 分支）能够通过所有测试，并且不会引入更多错误之后，就可以并到主干分支中，等待下一次的发布</p>
+
+<p>本质上我们刚才谈论的，是随着提交对象不断右移的指针。稳定分支的指针总是在提交历史中落后一大截，而前沿分支总是比较靠前
+<img src="http://yoursite.com/images/git-branch9.png" alt="alt text" /></p>
+
+<p>或者把它们想象成工作流水线，或许更好理解一些，经过测试的提交对象集合被遴选到更稳定的流水线（见图 ）。</p>
+
+<p><img src="http://yoursite.com/images/git-branch10.png" alt="alt text" /></p>
+
+<p>你可以用这招维护不同层次的稳定性。某些大项目还会有个 proposed（建议）或 pu（proposed updates，建议更新）分支，它包含着那些可能还没有成熟到进入next 或 master 的内容。这么做的目的是拥有不同层次的稳定性：当这些分支进入到更稳定的水平时，再把它们合并到更高层分支中去。再次说明下，使用多个长期分支的做法并非必需，不过一般来说，对于特大型项目或特复杂的项目，这么做确实更容易管理。</p>
+
+<ul>
+<li>特性分支</li>
+</ul>
+
+
+<p>在任何规模的项目中都可以使用特性（Topic）分支。一个特性分支是指一个短期的，用来实现单一特性或与其相关工作的分支。可能你在以前的版本控 制系统里从未做过类似这样的事情，因为通常创建与合并分支消耗太大。然而在 Git 中，一天之内建立、使用、合并再删除多个分支是常见的事。</p>
+
+<p>我们在上节的例子里已经见过这种用法了。我们创建了 iss53 和 hotfix 这两个特性分支，在提交了若干更新后，把它们合并到主干分支，然后删除。该技术允许你迅速且完全的进行语境切换 — 因为你的工作分散在不同的流水线里，每个分支里的改变都和它的目标特性相关，浏览代码之类的事情因而变得更简单了。你可以把作出的改变保持在特性分支中几 分钟，几天甚至几个月，等它们成熟以后再合并，而不用在乎它们建立的顺序或者进度。</p>
+
+<p>现在我们来看一个实际的例子。请看图 ，由下往上，起先我们在 master 工作到 C1，然后开始一个新分支 iss91 尝试修复 91 号缺陷，提交到 C6 的时候，又冒出一个解决该问题的新办法，于是从之前 C4 的地方又分出一个分支iss91v2，干到 C8 的时候，又回到主干 master 中提交了 C9 和 C10，再回到 iss91v2 继续工作，提交 C11，接着，又冒出个不太确定的想法，从 master 的最新提交 C10 处开了个新的分支dumbidea 做些试验。</p>
+
+<p><img src="http://yoursite.com/images/git-branch11.png" alt="alt text" /></p>
+
+<p>现在，假定两件事情：我们最终决定使用第二个解决方案，即 iss91v2 中的办法；另外，我们把 dumbidea 分支拿给同事们看了以后，发现它竟然是个天才之作。所以接下来，我们准备抛弃原来的iss91 分支（实际上会丢弃 C5 和 C6），直接在主干中并入另外两个分支。最终的提交历史将变成图 这样</p>
+
+<p><img src="http://yoursite.com/images/git-branch12.png" alt="alt text" /></p>
+
+<p>请务必牢记这些分支全部都是本地分支，这一点很重要。当你在使用分支及合并的时候，一切都是在你自己的 Git 仓库中进行的 — 完全不涉及与服务器的交互</p>
+
+<blockquote><p>  远程分支</p></blockquote>
+
+<p>远程分支（remote branch）是对远程仓库中的分支的索引。它们是一些无法移动的本地分支；只有在 Git 进行网络交互时才会更新。远程分支就像是书签，提醒着你上次连接远程仓库时上面各分支的位置。</p>
+
+<p>我们用 (远程仓库名)/(分支名) 这样的形式表示远程分支。比如我们想看看上次同 origin 仓库通讯时master 的样子，就应该查看 origin/master 分支。如果你和同伴一起修复某个问题，但他们先推送了一个iss53 分支到远程仓库，虽然你可能也有一个本地的 iss53 分支，但指向服务器上最新更新的却应该是 origin/iss53 分支。</p>
+
+<p>可能有点乱，我们不妨举例说明。假设你们团队有个地址为 git.ourcompany.com 的 Git 服务器。如果你从这里克隆，Git 会自动为你将此远程仓库命名为origin，并下载其中所有的数据，建立一个指向它的 master 分支的指针，在本地命名为 origin/master，但你无法在本地更改其数据。接着，Git 建立一个属于你自己的本地master 分支，始于 origin 上 master 分支相同的位置，你可以就此开始工作</p>
+
+<p><img src="http://yoursite.com/images/git-branch13.png" alt="alt text" /></p>
+
+<p>一次 Git 克隆会建立你自己的本地分支 master 和远程分支 origin/master，它们都指向 origin/master 分支的最后一次提交。</p>
+
+<p>如果你在本地 master 分支做了些改动，与此同时，其他人向 git.ourcompany.com 推送了他们的更新，那么服务器上的master 分支就会向前推进，而于此同时，你在本地的提交历史正朝向不同方向发展。不过只要你不和服务器通讯，你的 origin/master 指针仍然保持原位不会移动</p>
+
+<p><img src="http://yoursite.com/images/git-branch14.png" alt="alt text" /></p>
+
+<p>可以运行 git fetch origin 来同步远程服务器上的数据到本地。该命令首先找到 origin 是哪个服务器（本例为git.ourcompany.com），从上面获取你尚未拥有的数据，更新你本地的数据库，然后把 origin/master 的指针移到它最新的位置上</p>
+
+<p><img src="http://yoursite.com/images/git-branch15.png" alt="alt text" /></p>
+
+<p> git fetch 命令会更新 remote 索引</p>
+
+<p> 为了演示拥有多个远程分支（在不同的远程服务器上）的项目是如何工作的，我们假设你还有另一个仅供你的敏捷开发小组使用的内部服务器 git.team1.ourcompany.com。可以用第二章中提到的git remote add 命令把它加为当前项目的远程分支之一。我们把它命名为 teamone，以便代替原始的 Git 地址</p>
+
+<p> <img src="http://yoursite.com/images/git-branch16.png" alt="alt text" /></p>
+
+<p> 把另一个服务器加为远程仓库</p>
+
+<p> 现在你可以用 git fetch teamone 来获取小组服务器上你还没有的数据了。由于当前该服务器上的内容是你 origin 服务器上的子集，Git 不会下载任何数据，而只是简单地创建一个名为teamone/master 的分支，指向 teamone 服务器上 master 分支所在的提交对象31b8e</p>
+
+<p> <img src="http://yoursite.com/images/git-branch17.png" alt="alt text" /></p>
+
+<p>  你在本地有了一个指向 teamone 服务器上 master 分支的索引。</p>
+
+<ul>
+<li>推送本地分支</li>
+</ul>
+
+
+<p>要想和其他人分享某个本地分支，你需要把它推送到一个你拥有写权限的远程仓库。你的本地分支不会被自动同步到你引入的远程服务器上，除非你明确执行推送操作。换句话说，对于无意分享的分支，你尽管保留为私人分支好了，而只推送那些协同工作要用到的特性分支。</p>
+
+<p>如果你有个叫 serverfix 的分支需要和他人一起开发，可以运行 git push (远程仓库名) (分支名)</p>
+
+<pre><code>$ git push origin serverfix Counting objects: 20, done. Compressing objects: 100% (14/14), done. Writing objects: 100% (15/15), 1.74 KiB, done. Total 15 (delta 5), reused 0 (delta 0) To git@github.com:schacon/simplegit.git * [new branch] serverfix -&gt; serverfix
+</code></pre>
+
+<p>其实有点像条捷径。Git 自动把 serverfix 分支名扩展为 refs/heads/serverfix:refs/heads/serverfix，意为“取出我在本地的 serverfix 分支，推送到远程仓库的 serverfix 分支中去”。我们将在第九章进一步介绍refs/heads/ 部分的细节，不过一般使用的时候都可以省略它。也可以运行 git push origin serverfix:serferfix 来实现相同的效果，它的意思是“上传我本地的 serverfix 分支到远程仓库中去，仍旧称它为 serverfix 分支”。通过此语法，你可以把本地分支推送到某个命名不同的远程分支：若想把远程分支叫作awesomebranch，可以用 git push origin serverfix:awesomebranch 来推送数据。</p>
+
+<p>接下来，当你的协作者再次从服务器上获取数据时，他们将得到一个新的远程分支 origin/serverfix</p>
+
+<pre><code>$ git fetch origin remote: Counting objects: 20, done. remote: Compressing objects: 100% (14/14), done. remote: Total 15 (delta 5), reused 0 (delta 0) Unpacking objects: 100% (15/15), done. From git@github.com:schacon/simplegit * [new branch] serverfix -&gt; origin/serverfix
+</code></pre>
+
+<p>值得注意的是，在 fetch 操作下载好新的远程分支之后，你仍然无法在本地编辑该远程仓库中的分支。换句话说，在本例中，你不会有一个新的serverfix 分支，有的只是一个你无法移动的 origin/serverfix 指针。</p>
+
+<p>如果要把该内容合并到当前分支，可以运行 git merge origin/serverfix。如果想要一份自己的 serverfix 来开发，可以在远程分支的基础上分化出一个新的分支来：</p>
+
+<p>$ git checkout -b serverfix origin/serverfix Branch serverfix set up to track remote branch refs/remotes/origin/serverfix. Switched to a new branch &ldquo;serverfix&rdquo;</p>
+
+<p>这会切换到新建的 serverfix 本地分支，其内容同远程分支 origin/serverfix 一致，这样你就可以在里面继续开发了。</p>
+
+<ul>
+<li>跟踪远程分支</li>
+</ul>
+
+
+<p>从远程分支 checkout 出来的本地分支，称为<em>跟踪分支(tracking branch)</em>。跟踪分支是一种和远程分支有直接联系的本地分支。在跟踪分支里输入git push，Git 会自行推断应该向哪个服务器的哪个分支推送数据。反过来，在这些分支里运行 git pull 会获取所有远程索引，并把它们的数据都合并到本地分支中来。</p>
+
+<p>在克隆仓库时，Git 通常会自动创建一个名为 master 的分支来跟踪 origin/master。这正是git push 和 git pull 一开始就能正常工作的原因。当然，你可以随心所欲地设定为其它跟踪分支，比如origin 上除了 master 之外的其它分支。刚才我们已经看到了这样的一个例子：git checkout -b [分支名] [远程名]/[分支名]。如果你有 1.6.2 以上版本的 Git，还可以用&ndash;track 选项简化</p>
+
+<pre><code>$ git checkout --track origin/serverfix Branch serverfix set up to track remote branch refs/remotes/origin/serverfix. Switched to a new branch "serverfix"
+</code></pre>
+
+<p>要为本地分支设定不同于远程分支的名字，只需在前个版本的命令里换个名字：</p>
+
+<pre><code>$ git checkout -b sf origin/serverfix Branch sf set up to track remote branch refs/remotes/origin/serverfix. Switched to a new branch "sf"
+</code></pre>
+
+<p>现在你的本地分支 sf 会自动向 origin/serverfix 推送和抓取数据了。</p>
+
+<ul>
+<li>删除远程分支</li>
+</ul>
+
+
+<p>如果不再需要某个远程分支了，比如搞定了某个特性并把它合并进了远程的 master 分支（或任何其他存放稳定代码的地方），可以用这个非常无厘头的语法来删除它：git push [远程名] :[分支名]。如果想在服务器上删除serverfix 分支，运行下面的命令</p>
+
+<pre><code>$ git push origin :serverfix To git@github.com:schacon/simplegit.git - [deleted] serverfix
+</code></pre>
+
+<p><strong>咚！服务器上的分支没了。你最好特别留心这一页，因为你一定会用到那个命令，而且你很可能会忘掉它的语法。有种方便记忆这条命令的方法：记住我们不久前见过的 git push [远程名] [本地分支]:[远程分支] 语法，如果省略 [本地分支]，那就等于是在说“在这里提取空白然后把它变成[远程分支]”</strong></p>
+
+<blockquote><pre><code>  分支的衍合
+</code></pre></blockquote>
+
+<p>把一个分支整合到另一个分支的办法有两种：merge 和 rebase（译注：rebase 的翻译暂定为“衍合”，大家知道就可以了。）。在本章我们会学习什么是衍合，如何使用衍合，为什么衍合操作如此富有魅力，以及我们应该在什么情况下使用衍合。</p>
+
+<ul>
+<li>基本的衍合操作</li>
+</ul>
+
+
+<p>请回顾之前有关合并的一节（见图），你会看到开发进程分叉到两个不同分支，又各自提交了更新。
+<img src="http://yoursite.com/images/git-branch18.png" alt="alt text" /></p>
+
+<p>之前介绍过，最容易的整合分支的方法是 merge 命令，它会把两个分支最新的快照（C3 和 C4）以及二者最新的共同祖先（C2）进行三方合并，合并的结果是产生一个新的提交对象（C5）
+  <img src="http://yoursite.com/images/git-branch19.png" alt="alt text" /></p>
+
+<p>  其实，还有另外一个选择：你可以把在 C3 里产生的变化补丁在 C4 的基础上重新打一遍。在 Git 里，这种操作叫做<em>衍合（rebase）</em>。有了 rebase 命令，就可以把在一个分支里提交的改变移到另一个分支里重放一遍</p>
+
+<p>  在上面这个例子中，运行</p>
+
+<pre><code>    $ git checkout experiment $ git rebase master First, rewinding head to replay your work on top of it... Applying: added staged command
+</code></pre>
+
+<p> 它的原理是回到两个分支最近的共同祖先，根据当前分支（也就是要进行衍合的分支 experiment）后续的历次提交对象（这里只有一个 C3），生成一系列文件补丁，然后以基底分支（也就是主干分支master）最后一个提交对象（C4）为新的出发点，逐个应用之前准备好的补丁文件，最后会生成一个新的合并提交对象（C3’），从而改写 experiment 的提交历史，使它成为 master 分支的直接下游，</p>
+
+<p>  <img src="http://yoursite.com/images/git-branch20.png" alt="alt text" /></p>
+
+<p>  现在回到 master 分支，进行一次快进合并</p>
+
+<p>  <img src="http://yoursite.com/images/git-branch21.png" alt="alt text" /></p>
+
+<p>  现在的 C3’ 对应的快照，其实和普通的三方合并，即上个例子中的 C5 对应的快照内容一模一样了。虽然最后整合得到的结果没有任何区别，但衍合能产生一个更为整洁的提交历史。如果视察一个衍合过的分支的历史记录，看起来会更 清楚：仿佛所有修改都是在一根线上先后进行的，尽管实际上它们原本是同时并行发生的。</p>
+
+<p>一般我们使用衍合的目的，是想要得到一个能在远程分支上干净应用的补丁 — 比如某些项目你不是维护者，但想帮点忙的话，最好用衍合：先在自己的一个分支里进行开发，当准备向主项目提交补丁的时候，根据最新的origin/master 进行一次衍合操作然后再提交，这样维护者就不需要做任何整合工作（译注：实际上是把解决分支补丁同最新主干代码之间冲突的责任，化转为由提交补丁的人来解决。），只需根据你提供的仓库地址作一次快进合并，或者直接采纳你提交的补丁。</p>
+
+<p>请注意，合并结果中最后一次提交所指向的快照，无论是通过衍合，还是三方合并，都会得到相同的快照内容，只不过提交历史不同罢了。衍合是按照每行的修改次序重演一遍修改，而合并是把最终结果合在一起。</p>
+
+<ul>
+<li>有趣的衍合</li>
+</ul>
+
+
+<p>衍合也可以放到其他分支进行，并不一定非得根据分化之前的分支。下图 ，我们为了给服务器端代码添加一些功能而创建了特性分支 server，然后提交 C3 和 C4。然后又从 C3 的地方再增加一个client 分支来对客户端代码进行一些相应修改，所以提交了 C8 和 C9。最后，又回到 server 分支提交了 C10。</p>
+
+<p>  <img src="http://yoursite.com/images/git-branch22.png" alt="alt text" /></p>
+
+<p>  假设在接下来的一次软件发布中，我们决定先把客户端的修改并到主线中，而暂缓并入服务端软件的修改（因为还需要进一步测试）。这个时候，我们就可以把基于 server 分支而非 master 分支的改变（即 C8 和 C9），跳过 server 直接放到master 分支中重演一遍，但这需要用 git rebase 的 &ndash;onto 选项指定新的基底分支master：</p>
+
+<pre><code> $ git rebase --onto master server client
+
+ 这好比在说：“取出 client 分支，找出 client 分支和 server 分支的共同祖先之后的变化，然后把它们在master 上重演一遍”。是不是有点复杂？不过它的结果如图 所示，非常酷（译注：虽然 client 里的 C8, C9 在 C3 之后，但这仅表明时间上的先后，而非在 C3 修改的基础上进一步改动，因为server 和 client 这两个分支对应的代码应该是两套文件，虽然这么说不是很严格，但应理解为在 C3 时间点之后，对另外的文件所做的 C8，C9 修改，放到主干重演。
+</code></pre>
+
+<p>  <img src="http://yoursite.com/images/git-branch23.png" alt="alt text" /></p>
+
+<p>  现在可以快进 master 分支了：</p>
+
+<pre><code> $ git checkout master $ git merge client
+</code></pre>
+
+<p> <img src="http://yoursite.com/images/git-branch24.png" alt="alt text" /></p>
+
+<p> 现在我们决定把 server 分支的变化也包含进来。我们可以直接把 server 分支衍合到 master，而不用手工切换到 server 分支后再执行衍合操作 — git rebase [主分支] [特性分支] 命令会先取出特性分支server，然后在主分支 master 上重演</p>
+
+<p> $ git rebase master server</p>
+
+<p> 于是，server 的进度应用到 master 的基础上，如图</p>
+
+<p> <img src="http://yoursite.com/images/git-branch25.png" alt="alt text" /></p>
+
+<p>然后就可以快进主干分支 master 了：</p>
+
+<pre><code>$ git checkout master $ git merge server
+</code></pre>
+
+<p>现在 client 和 server 分支的变化都已经集成到主干分支来了，可以删掉它们了。最终我们的提交历史会变成图</p>
+
+<pre><code>$ git branch -d client $ git branch -d server
+</code></pre>
+
+<p> <img src="http://yoursite.com/images/git-branch26.png" alt="alt text" /></p>
+
+<ul>
+<li>衍合的风险</li>
+</ul>
+
+
+<p>呃，奇妙的衍合也并非完美无缺，要用它得遵守一条准则：</p>
+
+<p><strong>一旦分支中的提交对象发布到公共仓库，就千万不要对该分支进行衍合操作。</strong>
+如果你遵循这条金科玉律，就不会出差错。否则，人民群众会仇恨你，你的朋友和家人也会嘲笑你，唾弃你。</p>
+
+<p>在进行衍合的时候，实际上抛弃了一些现存的提交对象而创造了一些类似但不同的新的提交对象。如果你把原来分支中的提交对象发布出去，并且其他人更新下载后在其基础上开展工作，而稍后你又用git rebase 抛弃这些提交对象，把新的重演后的提交对象发布出去的话，你的合作者就不得不重新合并他们的工作，这样当你再次从他们那里获取内容时，提交历史就会变得一团糟。</p>
+
+<p>下面我们用一个实际例子来说明为什么公开的衍合会带来问题。假设你从一个中央服务器克隆然后在它的基础上搞了一些开发，提交历史类似图</p>
+
+<p> <img src="http://yoursite.com/images/git-branch27.png" alt="alt text" /></p>
+
+<p>现在，某人在 C1 的基础上做了些改变，并合并他自己的分支得到结果 C6，推送到中央服务器。当你抓取并合并这些数据到你本地的开发分支中后，会得到合并结果 C7，历史提交会变成图</p>
+
+<p> <img src="http://yoursite.com/images/git-branch28.png" alt="alt text" /></p>
+
+<p> 接下来，那个推送 C6 上来的人决定用衍合取代之前的合并操作；继而又用 git push &ndash;force 覆盖了服务器上的历史，得到 C4’。而之后当你再从服务器上下载最新提交后，会得到：</p>
+
+<p>  <img src="http://yoursite.com/images/git-branch29.png" alt="alt text" /></p>
+
+<p>  下载更新后需要合并，但此时衍合产生的提交对象 C4’ 的 SHA-1 校验值和之前 C4 完全不同，所以 Git 会把它们当作新的提交对象处理，而实际上此刻你的提交历史 C7 中早已经包含了 C4 的修改内容，于是合并操作会把 C7 和 C4’ 合并为 C8</p>
+
+<p>   <img src="http://yoursite.com/images/git-branch30.png" alt="alt text" /></p>
+
+<p>  C8 这一步的合并是迟早会发生的，因为只有这样你才能和其他协作者提交的内容保持同步。而在 C8 之后，你的提交历史里就会同时包含 C4 和 C4’，两者有着不同的 SHA-1 校验值，如果用git log 查看历史，会看到两个提交拥有相同的作者日期与说明，令人费解。而更糟的是，当你把这样的历史推送到服务器后，会再次把这些衍合后的提交引入到中央服务 器，进一步困扰其他人（译注：这个例子中，出问题的责任方是那个发布了 C6 后又用衍合发布 C4’ 的人，其他人会因此反馈双重历史到共享主干，从而混淆大家的视听。）。</p>
+
+<p>如果把衍合当成一种在推送之前清理提交历史的手段，而且仅仅衍合那些尚未公开的提交对象，就没问题。如果衍合那些已经公开的提交对象，并且已经有人基于这些提交对象开展了后续开发工作的话，就会出现叫人沮丧的麻烦。</p>
+
+<h3>服务器上的git</h3>
+
+<pre><code>省略
+</code></pre>
+
+<h3>git命令</h3>
+
+<pre><code>Git 提供了一个叫做 git config 的工具（译注：实际是 git-config 命令，只不过可以通过 git 加一个名字来呼叫此命令。），专门用来配置或读取相应的工作环境变量。而正是由这些环境变量，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以存放在以下三个不同的地方：
+
+/etc/gitconfig 文件：系统中对所有用户都普遍适用的配置。若使用 git config 时用--system 选项，读写的就是这个文件。
+~/.gitconfig 文件：用户目录下的配置文件只适用于该用户。若使用 git config 时用--global 选项，读写的就是这个文件。
+当前项目的 git 目录中的配置文件（也就是工作目录中的 .git/config 文件）：这里的配置仅仅针对当前项目有效。每一个级别的配置都会覆盖上层的相同配置，所以.git/config 里的配置会覆盖/etc/gitconfig 中的同名变量。
+</code></pre>
+
+<ul>
+<li>git config &ndash;list  要检查已有的配置信息</li>
+<li>git config &ndash;global user.name &ldquo;John Doe&rdquo;  配置用户名</li>
+<li>git config &ndash;global user.email <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x6a;&#111;&#104;&#x6e;&#x64;&#111;&#101;&#64;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#x6a;&#111;&#x68;&#110;&#x64;&#111;&#x65;&#64;&#101;&#x78;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#111;&#109;</a> 配置邮件</li>
+<li>git config &ndash;global core.editor emacs   文本编辑器</li>
+<li>git config &ndash;global merge.tool vimdiff  配置差异性分析工具（Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。）</li>
+<li>git config user.name   查看用户名</li>
+<li>git help  config  查看git config的文档</li>
+<li>git &ndash;help 查看git使用文档</li>
+<li>man git 查看git 文档</li>
+<li><p>git help 查看git使用文档</p></li>
+<li><p>git init  在工作目录中初始化新仓库（初始化后，在当前目录下会出现一个名为 .git 的目录）</p></li>
+<li>git add git add &lt;文件或者文件夹> 可以用它开始跟踪新文件，或者把已跟踪的文件放到暂存区，还能用于合并时把有冲突的文件标记为已解决状态等）潜台词就是把目标文件快照放入暂存区域）</li>
+<li>git commit -m &lsquo;initial project version&rsquo; 提交文件</li>
+<li>git clone git://github.com/schacon/grit.git 克隆文件到当前文件夹</li>
+<li>git clone git://github.com/schacon/grit.git mygrit  克隆文件到当前文件夹并将文件夹命名为 myfrit</li>
+<li>git status 检查当前文件状态</li>
+<li>cat .gitignore <em>.[oa] </em>~ 第一行告诉 Git 忽略所有以 .o 或 .a 结尾的文件。第二行告诉 Git 忽略所有以波浪符（~）结尾的文件   （<strong>可以添加多个忽略文件匹配，之间用空格空开</strong>）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>文件 .gitignore 的格式规范如下：
+</span><span class='line'>所有空行或者以注释符号 ＃ 开头的行都会被 Git 忽略。
+</span><span class='line'>可以使用标准的 glob 模式匹配。 * 匹配模式最后跟反斜杠（/）说明要忽略的是目录。 *    要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。
+</span><span class='line'>
+</span><span class='line'>所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。星号（*）匹配零个或多个任意字符；[abc] 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；问号（?）只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如[0-9] 表示匹配所有 0 到 9 的数字）。</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>git diff  查看尚未暂存的文件更新了哪些部分</li>
+<li><p>git diff &ndash;cached 已经暂存起来的文件和上次提交时的快照之间的差异</p>
+
+<p>  例如 vim read
+      git add read    ///这第一个新生产的问题提交到git 缓存区域了
+      vim read 打开read 输入文字abc
+      git add read   ///第二次保存快照
+      vim  read  再次打开read  输入文字efg （现在文字问abcdef）</p>
+
+<pre><code>  git diff  这时候输出的结果是
+  diff --git a/README b/README
+  index 40bae04..f74d0d3 100644
+  --- a/README
+  +++ b/README
+  @@ -1 +1 @@
+  -abc
+  +abcdef
+
+  比较的是未提交的文件与缓存区的文件比较（个人理解）
+
+  git diff --cached 这时候输出的结果是
+  diff --git a/README b/README
+  new file mode 100644
+  index 0000000..40bae04
+  --- /dev/null
+  +++ b/README
+  @@ -0,0 +1 @@
+  +abc
+
+  比较的是缓存区最后两次的比较 （个人理解）
+</code></pre></li>
+<li><p>git commit 将暂存文件提交</p>
+
+<pre><code> 可以看到，默认的提交消息包含最后一次运行 git status 的输出，放在注释行里，另外开头还有一空行，供你输入提交说明。你完全可以去掉这些注释行，不过留着也没关系，多少能帮你回想起这次更新的内容有哪些。退出编辑器时，Git 会丢掉注释行，将说明内容和本次更新提交到仓库。
+</code></pre></li>
+<li><p>git commit -m &ldquo;提交说明&rdquo; -m 参数后跟提交说明的方式，在一行命令中提交更新</p></li>
+<li>git commit -a  自动把所有已经跟踪过的文件暂存起来一并提交，从而跳过 git add 步骤</li>
+<li>git rm 从已跟踪文件清单中移除（确切地说，是从暂存区域移除），然后提交。</li>
+<li>git rm -f 删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项 -f（译注：即 force 的首字母），以防误删除文件后丢失修改的内容</li>
+<li>git rm &ndash;cached readme.txt  另外一种情况是，我们想把文件从 Git 仓库中删除（亦即从暂存区域移除），但仍然希望保留在当前工作目录中。换句话说，仅是从跟踪清单中删除。比如一些大型日志文件或者一堆.a 编译文件，不小心纳入仓库后，要移除跟踪但不删除文件，以便稍后在 .gitignore 文件中补上，用 &ndash;cached 选项即可</li>
+<li>git rm log/*.log  后面可以列出文件或者目录的名字，也可以使用 glob 模式</li>
+<li><p>git mv file_from file_to 移动文件</p>
+
+<pre><code> 其实，运行 git mv 就相当于运行了下面三条命令：
+ $ mv README.txt README $ git rm README.txt $ git add README
+</code></pre></li>
+<li><pre><code>git log  查看提交历史
+</code></pre></li>
+<li><pre><code>git log -p -2   -p 选项展开显示每次提交的内容差异，用 -2 则仅显示最近的两次更新
+</code></pre></li>
+<li><p>git commit &ndash;amend  有时候我们提交完了才发现漏掉了几个文件没有加，或者提交信息写错了。想要撤消刚才的提交操作，可以使用 &ndash;amend 选项重新提交（修改提交信息）</p></li>
+<li><p>git reset HEAD benchmarks.rb  取消已经暂存的文件</p></li>
+<li><p>git checkout &ndash; benchmarks.rb  取消对文件的修改</p></li>
+<li><p>git remote 查看当前的远程库</p></li>
+<li>git remote -v 查看当前的远程库,显示对应的克隆地址</li>
+</ul>
+
+
+<blockquote><p>远程操作</p></blockquote>
+
+<ul>
+<li>git remote add [shortname] [url]  要添加一个新的远程仓库，可以指定一个简单的名字，以便将来引用（在我看来，就是和远程仓库建立一个连接，给命名了一个别名。网上说的迷迷糊糊的）</li>
+<li><p>git fetch pb  到远程仓库中拉取所有你本地仓库中还没有的数据，运行完成后，你就可以在本地访问该远程仓库中的所有分支</p>
+
+<pre><code>如果是克隆了一个仓库，此命令会自动将远程仓库归于 origin 名下。所以，git fetch origin 会抓取从你上次克隆以来别人上传到此远程仓库中的所有更新（或是上次 fetch 以来别人提交的更新）。有一点很重要，需要记住，fetch 命令只是将远端的数据拉到本地仓库，并不自动合并到当前工作分支，只有当你确实准备好了，才能手工合并。
+
+如果设置了某个分支用于跟踪某个远端仓库的分支（参见下节及第三章的内容），可以使用 git pull 命令自动抓取数据下来，然后将远端分支自动合并到本地仓库中当前分支。在日常工作中我们经常这么用，既快且好。实际上，默认情况下git clone 命令本质上就是自动创建了本地的 master 分支用于跟踪远程仓库中的 master 分支（假设远程仓库确实有 master 分支）。所以一般我们运行git pull，目的都是要从原始克隆的远端仓库中抓取数据后，合并到工作目录中的当前分支。
+</code></pre></li>
+<li><p>git push [remote-name] [branch-name] 将本地仓库中的数据推送到远程仓库</p>
+
+<pre><code>  要把本地的 master 分支推送到origin 服务器上（再次说明下，克隆操作会自动使用默认的 master 和 origin 名字），可以运行下面的命令：
+
+  $ git push origin master
+
+  只有在所克隆的服务器上有写权限，或者同一时刻没有其他人在推数据，这条命令才会如期完成任务。如果在你推数据前，已经有其他人推送了若干更新，那 你的推送操作就会被驳回。你必须先把他们的更新抓取到本地，合并到自己的项目中，然后才可以再次推送。
+</code></pre></li>
+<li><pre><code>git remote show [remote-name] 查看某个远程仓库的详细信息
+</code></pre></li>
+<li><pre><code>git remote rename [pb] [paul] 对远程仓库的重命名 将pb重命名为paul
+</code></pre></li>
+<li><pre><code>git remote rm paul  删除paul远端仓库连接
+</code></pre></li>
+</ul>
+
+
+<blockquote><p>2.6  打标签  (这个我用的不多暂时不弄这个了)</p></blockquote>
+
+<ul>
+<li>git tag  列出现有标签</li>
+<li><p>git tag -a v1.4 -m &lsquo;my version 1.4&rsquo;  创建一个含附注类型的标签非常简单，用 -a 而 -m 选项则指定了对应的标签说明</p></li>
+<li><p>git branch testing 新建一个 testing 分支</p></li>
+<li>git checkout testing 切换testing分支</li>
+<li>git checkout -b iss53  新建并切换到iss53分支</li>
+<li>git merge hotfix 将hotfix分支merge到当前分支</li>
+<li>$ git branch -d iss53  删除分支</li>
+<li>git branch 查看分支</li>
+<li>git branch -v 若要查看各个分支最后一个提交对象的信息</li>
+<li>git branch &ndash;merged 筛选出已经与当前分支合并的分支</li>
+<li>git branch &ndash;no-merged 筛选出已经与当前分支未合并的分支</li>
+<li>git checkout &ndash;track  跟踪分支</li>
+<li>git push [远程名] :[分支名]  删除分支
+*git rebase master  将分支衍生到master上</li>
+</ul>
+
+
+<h4>参考链接：</h4>
+
+<ul>
+<li><a href="http://www.bootcss.com/p/git-guide/">git - 简易指南</a></li>
+<li><a href="http://my.oschina.net/sunchp/blog/346076">git - 原理比较清晰</a></li>
+</ul>
+
+
+<h5>延伸连接</h5>
+
+<ul>
+<li><a href="http://www.open-open.com/lib/view/open1328069609436.html">git详解之一</a></li>
+<li><a href="http://www.open-open.com/lib/view/open1328069733264.html">git详解之二</a></li>
+<li><a href="http://www.open-open.com/lib/view/open1328069889514.html">Git详解之三 Git分支</a></li>
+<li><a href="http://www.open-open.com/lib/view/open1328069988843.html">Git详解之四 服务器上的Git</a></li>
+<li><a href="http://www.open-open.com/lib/view/open1328070090108.html">Git详解之五 分布式Git </a></li>
+<li><a href="http://www.open-open.com/lib/view/open1328070367499.html">Git详解之六 Git工具 </a></li>
+<li><a href="http://www.open-open.com/lib/view/open1328070404827.html">Git详解之七 自定义Git</a></li>
+<li><a href="http://www.open-open.com/lib/view/open1328070454218.html">Git详解之八 Git与其他系统 </a></li>
+<li><a href="http://www.open-open.com/lib/view/open1328070620202.html">Git详解之九 Git内部原理</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rake在octopress中的使用命令介绍]]></title>
+    <link href="http://yoursite.com/blog/2015/08/04/rakezai-octopresszhong-de-shi-yong-ming-ling-jie-shao/"/>
+    <updated>2015-08-04T16:23:23+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/04/rakezai-octopresszhong-de-shi-yong-ming-ling-jie-shao</id>
+    <content type="html"><![CDATA[<p>刚开始接触octopress ，对rake命令使用的较少，特在此记录，记录每个命令的作用。</p>
+
+<h2>命令</h2>
+
+<ul>
+<li>rake generate 将 /octopress/source/_posts 目录下的 .markdown 文件 翻译成html网页</li>
+<li>rake preview 生成本地网页服务器，端口号4000   <a href="http://localhost:4000">http://localhost:4000</a></li>
+<li>rake deploy  将本地的_deploy 修改的文件提交到 github上面去。</li>
+<li>rake new_post[&lsquo;新的博客名字&rsquo;] 在 octopress/source/_posts 目录下创建博客，名字为《新的博客名字》</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Makedown的简单使用]]></title>
+    <link href="http://yoursite.com/blog/2015/08/03/markdown/"/>
+    <updated>2015-08-03T11:52:07+08:00</updated>
+    <id>http://yoursite.com/blog/2015/08/03/markdown</id>
+    <content type="html"><![CDATA[<h2>纪要</h2>
+
+<pre><code> 由于要用markdown写博客并进行排版，所以暂时先简单的学习使用下。
+</code></pre>
+
+<h2>编辑软件</h2>
+
+<p>   <a href="http://pan.baidu.com/s/1qW9RRBI">Mou link</a></p>
+
+<pre><code>markdown语言编辑软件.
+</code></pre>
+
+<h2>语法纪要</h2>
+
+<h4>段落、标题、区块代码</h4>
+
+<p>一个段落是由一个以上的连接的行句组成，而一个以上的空行则会划分出不同的段落（空行的定义是显示上看起来像是空行，就被视为空行，例如有一行只有空白和 tab，那该行也会被视为空行），一般的段落不需要用空白或换行缩进。</p>
+
+<p>Markdown 支持两种标题的语法，Setext 和 atx 形式。Setext 形式是用底线的形式，利用 = （最高阶标题）和 - （第二阶标题），Atx 形式在行首插入 1 到 6 个 # ，对应到标题 1 到 6 阶。</p>
+
+<p>区块引用则使用 email 形式的 &lsquo;>&rsquo; 角括号</p>
+
+<p>常用语法：
+    <table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>     <br/>
+    </tr>
+    <tr>
+        <td>H1  </td>
+        <td># Heading   </td>
+        <td>    </td>
+        <td>    </td>
+    </tr>
+      <tr>
+        <td>H2  </td>
+        <td>## Heading  </td>
+        <td>Ctrl/⌘ + H    </td>
+        <td>不好用   </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>H3  </td>
+        <td>### Heading </td>
+        <td>Ctrl/⌘ + H (x2)   </td>
+        <td>不好用   </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Blockquote</td>
+        <td>> quote</td>
+        <td>Ctrl + Q    </td>
+        <td>好用  </td>
+    </tr>
+     </tr>
+    </table></p>
+
+<p>Markdown 语法:</p>
+
+<pre><code>A First Level Header
+====================
+A Second Level Header
+---------------------
+
+Now is the time for all good men to come to the aid of their country. This is just a regular paragraph.
+
+The quick brown fox jumped over the lazy dog's back.
+### Header 3
+
+&gt; This is a blockquote.
+&gt; 
+&gt; This is the second paragraph in the blockquote.
+&gt;
+&gt; ## This is an H2 in a blockquote
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;h1&gt;A First Level Header&lt;/h1&gt;
+&lt;h2&gt;A Second Level Header&lt;/h2&gt;
+&lt;p&gt;Now is the time for all good men to come to the aid of their country. This is just a regular paragraph.&lt;/p&gt;
+&lt;p&gt;The quick brown fox jumped over the lazy dog's back.&lt;/p&gt;
+&lt;h3&gt;Header 3&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a blockquote.&lt;/p&gt;
+&lt;p&gt;This is the second paragraph in the blockquote.&lt;/p&gt;
+&lt;h2&gt;This is an H2 in a blockquote&lt;/h2&gt;
+&lt;/blockquote&gt;
+</code></pre>
+
+<p>注释：</p>
+
+<pre><code>如果你在项目之间插入空行，那项目的内容会用 &lt;p&gt; 包起来，你也可以在一个项目内放上多个段落，只要在它前面缩排 4 个空白或 1 个 tab 。
+如果要建立一个已经格式化好的代码区块，只要每行都缩进 4 个空格或是一个 tab 就可以了，而 &amp;、&lt; 和 &gt; 也一样会自动转成 HTML 实体
+</code></pre>
+
+<h4>修辞和强调</h4>
+
+<p>Markdown 使用星号和底线来标记需要强调的区段。</p>
+
+<p>  常用语法：
+    <table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>     <br/>
+    </tr>
+    <tr>
+        <td>Bold    </td>
+        <td><strong>text</strong>    </td>
+        <td>⌘ + B（mac）</td>
+        <td>好用  </td>     <br/>
+    </tr>
+      <tr>
+        <td>Emphasize   </td>
+        <td><em>text</em>  </td>
+        <td>⌘ + I（mac）    </td>
+        <td>好用  </td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Strike-through  </td>
+        <td>#<del>text</del>   </td>
+        <td>Ctrl + Alt + U</td>
+        <td>不好用</td>
+    </tr>
+     </tr>
+      <tr>
+        <td>Blockquote</td>
+        <td>> quote</td>
+        <td>Ctrl + Q    </td>
+    </tr>
+     </tr>
+    </table></p>
+
+<p>   Markdown 语法:</p>
+
+<pre><code>Some of these words *are emphasized*.
+Some of these words _are emphasized also_.
+Use two asterisks for **strong emphasis**.
+Or, if you prefer, __use two underscores instead__.
+</code></pre>
+
+<p>输出 HTML 为:</p>
+
+<pre><code>&lt;p&gt;Some of these words &lt;em&gt;are emphasized&lt;/em&gt;.
+Some of these words &lt;em&gt;are emphasized also&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Use two asterisks for &lt;strong&gt;strong emphasis&lt;/strong&gt;.
+Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;/p&gt;
+</code></pre>
+
+<h4>列表</h4>
+
+<p>无序列表使用星号、加号和减号来做为列表的项目标记，这些符号是都可以使用的.</p>
+
+<p>常用语法：</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>       
+    </tr>
+    <tr>
+        <td>List    </td>
+        <td>* item  </td>
+        <td>Ctrl + L</td>
+        <td>好用  </td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>+ item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>- item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td>List    </td>
+        <td>1 item  </td>
+        <td></td>
+        <td></td>
+    </tr>
+    </table>
+
+
+<p>星号</p>
+
+<pre><code>* Candy.
+* Gum.
+* Booze.    
+</code></pre>
+
+<p>加号</p>
+
+<pre><code>+ Candy.
++ Gum.
++ Booze.    
+</code></pre>
+
+<p>和减号</p>
+
+<pre><code>- Candy.
+- Gum.
+- Booze.
+</code></pre>
+
+<p>都会输出 HTML 为：</p>
+
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;Candy.&lt;/li&gt;
+    &lt;li&gt;Gum.&lt;/li&gt;
+    &lt;li&gt;Booze.&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<p>有序的列表则是使用一般的数字接着一个英文句点作为项目标记</p>
+
+<pre><code>1. Red
+2. Green
+3. Blue
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;ol&gt;
+&lt;li&gt;Red&lt;/li&gt;
+&lt;li&gt;Green&lt;/li&gt;
+&lt;li&gt;Blue&lt;/li&gt;
+&lt;/ol&gt;
+</code></pre>
+
+<h4>链接</h4>
+
+<p>Markdown 支援两种形式的链接语法： 行内 和 参考 两种形式，两种都是使用角括号来把文字转成连结。</p>
+
+<p>常用语法</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>       
+    </tr>
+    <tr>
+        <td>Link    </td>
+        <td>[title](http://)    </td>
+        <td></td>
+    <tr>
+    </table>
+
+
+<p>行内形式是直接在后面用括号直接接上链接：</p>
+
+<pre><code>This is an [example link](http://example.com/).
+</code></pre>
+
+<p>输出 HTML 为</p>
+
+<pre><code>&lt;p&gt;This is an &lt;a href="http://example.com/"&gt;example link&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+
+<p>你也可以选择性的加上 title 属性：</p>
+
+<pre><code>This is an [example link](http://example.com/ "With a Title").
+</code></pre>
+
+<p>输出 HTML 为</p>
+
+<pre><code>&lt;p&gt;This is an &lt;a href="http://example.com/" title="With a Title"&gt;example link&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+
+<p>参考形式的链接让你可以为链接定一个名称，之后你可以在文件的其他地方定义该链接的内容：</p>
+
+<pre><code>I get 10 times more traffic from [Google][1] than from[Yahoo][2] or [MSN][3].
+
+[1]: http://google.com/ "Google"
+[2]: http://search.yahoo.com/ "Yahoo Search"
+[3]: http://search.msn.com/ "MSN Search"
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;p&gt;I get 10 times more traffic from &lt;a href="http://google.com/"title="Google"&gt;Google&lt;/a&gt; than from &lt;a href="http://search.yahoo.com/"title="Yahoo Search"&gt;Yahoo&lt;/a&gt; or &lt;a href="http://search.msn.com/"title="MSN Search"&gt;MSN&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+
+<p>title 属性是选择性的，链接名称可以用字母、数字和空格，但是<strong>不分大小写</strong>：</p>
+
+<pre><code>I start my morning with a cup of coffee and [The New York Times][NY Times].
+
+[ny times]: http://www.nytimes.com/
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;p&gt;I start my morning with a cup of coffee and&lt;a href="http://www.nytimes.com/"&gt;The New York Times&lt;/a&gt;.&lt;/p&gt;
+</code></pre>
+
+<h4>代码</h4>
+
+<p>常用语法</p>
+
+<table border=4 width=400 align=center bordercolor=red>
+    <tr>
+        <td>输出后的效果  </td>
+        <td>Markdown    </td>
+        <td>快捷键   </td>
+        <td>是否好用    </td>               
+    </tr>
+    <tr>
+        <td>Inline Code     </td>
+        <td>`code`  </td>
+        <td>⌘ + K</td>
+        <td>好用</td>
+    <tr>
+    </table>
+
+
+<p>在一般的段落文字中，你可以使用反引号 ` 来标记代码区段，区段内的 &amp;、&lt; 和 > 都会被自动的转换成 HTML 实体，这项特性让你可以很容易的在代码区段内插入 HTML 码：</p>
+
+<pre><code>I strongly recommend against using any `&lt;blink&gt;` tags.I wish SmartyPants used named entities like `&amp;mdash;`instead of decimal-encoded entites like `&amp;#8212;`.
+</code></pre>
+
+<p>输出 HTML 为：</p>
+
+<pre><code>&lt;p&gt;I strongly recommend against using any&lt;code&gt;&amp;lt;blink&amp;gt;&lt;/code&gt; tags.&lt;/p&gt;&lt;p&gt;I wish SmartyPants used named entities like&lt;code&gt;&amp;amp;mdash;&lt;/code&gt; instead of decimal-encodedentites like &lt;code&gt;&amp;amp;#8212;&lt;/code&gt;.&lt;/p&gt;
+</code></pre>
+
+<h3>图片</h3>
+
+<blockquote><p>图片的语法和链接很像。</p></blockquote>
+
+<p>行内形式（title 是选择性的）：</p>
+
+<pre><code>![alt text](/images/email.png "Title")
+</code></pre>
+
+<p>结果</p>
+
+<p><img src="http://yoursite.com/images/email.png" title="Title" alt="alt text" /></p>
+
+<p>参考形式：</p>
+
+<pre><code>![alt text][id]
+[id]: /images/email.png "Title" 
+</code></pre>
+
+<p>结果</p>
+
+<p><img src="http://yoursite.com/images/email.png" title="Title" alt="alt text" /></p>
+
+<blockquote><p>  提示：github引用图片资源应该放在octopress/source/images/</p></blockquote>
+
+<h4>table</h4>
+
+<p>markdown 生成table 可以直接用html标签 相对比较麻烦 （github 不支持表格）</p>
+
+<pre><code>&lt;table border=4 width=250 align=center bordercolor=red&gt;
+&lt;tr&gt;
+    &lt;td&gt;北京  &lt;/td&gt;
+    &lt;td&gt;雾霾  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;深圳  &lt;/td&gt;
+    &lt;td&gt;暴雨  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+只有width 起作用
+</code></pre>
+
+<p>响应的效果</p>
+
+<table border=4 width=250 align=center bordercolor=red>
+    <tr>
+        <td>北京  </td>
+        <td>雾霾  </td>
+    </tr>
+    <tr>
+        <td>深圳  </td>
+        <td>暴雨  </td>
+    </tr>
+    </table>
+
+
+<h4>文本样式</h4>
+
+<ul>
+<li>链接 :<a href="URL">Title</a></li>
+<li>加粗 :<strong>Bold</strong></li>
+<li>斜体字 :<em>Italics</em></li>
+<li>删除线 :<del>text</del></li>
+<li>高亮 :==text==</li>
+<li>段落 : 段落之间空一行</li>
+<li>换行符 : 一行结束时输入两个空格</li>
+<li>列表 :* 添加星号成为一个新的列表项。</li>
+<li>引用 :> 引用内容</li>
+<li>内嵌代码 : <code>alert('Hello World');</code></li>
+<li>画水平线 (HR) :&mdash;&mdash;&ndash;</li>
+</ul>
+
+
+<h5>参考链接：</h5>
+
+<ul>
+<li><a href="http://wowubuntu.com/markdown/basic.html">http://wowubuntu.com/markdown/basic.html</a></li>
+<li><a href="http://baike.baidu.com/link?url=tyTi8BEbR9O32Af2md0WHPGdFwH_ZGSU0oVORrowucw1Nw8OWiuEJOoGeihjIcy5DH9tJCD-8s0RLPIaZKfeaa">markdown百度百科</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[博客的第一天]]></title>
+    <link href="http://yoursite.com/blog/2015/07/31/%E5%8D%9A%E5%AE%A2%E7%AC%AC%E4%B8%80%E5%A4%A9/"/>
+    <updated>2015-07-31T11:52:07+08:00</updated>
+    <id>http://yoursite.com/blog/2015/07/31/博客第一天</id>
+    <content type="html"><![CDATA[<h1>新的一天新的开始。只有不断的学习不断的积累才能强大自己。加油。</h1>
+]]></content>
+  </entry>
+  
+</feed>
