@@ -9,7 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="关于 core Image CoreImage是一个图像框架，它基于OpenGL顶层创建，底层则用着色器来处理图像，这意味着它利用了GPU基于硬件加速来处理图像。CoreImage中有很多滤镜，它们能够一次给予一张图像或者视频帧多种视觉效果。而且滤镜可以连接起来组成一个滤镜链， &hellip;">
+  <meta name="description" content="第一次学react-native ，边研究变写博客。哪些地方写的不好，请见谅。 环境搭建 我建议按照facebook 官方文档进行安装。 1 安装 Homebrew 打开终端 复制下面代码到命令行
+ruby -e "$(curl -fsSL https://raw. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://npopensource.github.io/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="温杰的博客" type="application/atom+xml">
@@ -50,7 +51,7 @@
   
 <form action="http://www.baidu.com" method="get">
   <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="yoursite.com">
+    <input type="hidden" name="sitesearch" value="npopensource.github.io">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -65,6 +66,184 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/24/react-native-ji-chu-xue-xi/">React-native 基础学习</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-24T17:02:53+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:02 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>第一次学react-native ，边研究变写博客。哪些地方写的不好，请见谅。</p>
+
+<h3>环境搭建</h3>
+
+<p>我建议按照facebook 官方文档进行安装。</p>
+
+<p>1 安装 <a href="http://brew.sh">Homebrew</a></p>
+
+<p>打开终端</p>
+
+<pre><code>复制下面代码到命令行
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></pre>
+
+<p>2 安装 <a href="https://github.com/creationix/nvm#installation">nvm</a></p>
+
+<pre><code>复制下面代码到命令行
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.1/install.sh | bash
+
+要是每次都要你重新开启nvm 
+进行下面操作
+cd ~
+
+ open ~/.bashrc 或者 open ~/.profile 或者 open ~/.zshrc 三个命令中的一个执行
+
+这时候会打开上面三个文件中的一个
+将下面命令复制到文件最后即可。
+
+. ~/.nvm/nvm.sh
+</code></pre>
+
+<p>3 安装 <a href="https://nodejs.org">node.js</a></p>
+
+<pre><code>可以用命令行。也可以打开官网下载好nodejs 安装
+这里先说明下，nodejs必须是4.0版本或者更好版本。
+
+我遇到的一个问题。由于我以前安装过node.js 这里又安装一个。导致我安装的react-native 不好使。 我的解决办法是把安装过的nodejs全删掉。特别是 用户目录下 隐藏目录 .rvm 目录中的 nodejs
+
+命令行安装 nvm install node &amp;&amp; nvm alias default node
+挺慢的
+</code></pre>
+
+<p>4 安装 <a href="https://facebook.github.io/watchman/docs/install.html">watchman</a></p>
+
+<pre><code>命令行 brew install watchman
+</code></pre>
+
+<p>5 安装 <a href="http://flowtype.org">flow</a></p>
+
+<pre><code>命令行 brew install flow
+</code></pre>
+
+<p>如果上面配置成功的话。下面就可以创建工程了</p>
+
+<pre><code>用终端命令行进入你想创建的命令行。
+
+eg: cd Desktop/testReact/
+
+接着输入终端命令
+    $ npm install -g react-native-cli
+    $ react-native init testReactIos
+</code></pre>
+
+<p>第一条命令显示结果
+<img src="/images/reactNative1.png" alt="image" /></p>
+
+<p>第二条命令显示最终结果
+<img src="/images/reactNative2.png" alt="image" /></p>
+
+<pre><code> 打开当前目录
+ $ open testReactIos/
+</code></pre>
+
+<p>你能看见你的项目文件目录是</p>
+
+<p><img src="/images/reactNative3.png" alt="image" /></p>
+
+<p>进入ios文件夹，打开工程 选择模拟器运行
+自动打开的终端命令的结果是</p>
+
+<p><img src="/images/reactNative4.png" alt="image" /></p>
+
+<p>模拟器的运行结果是</p>
+
+<p><img src="/images/reactNative5.png" alt="image" /></p>
+
+<p>到此环境搭建完毕。</p>
+
+<p>（环境搭建不保证一定成功，受以前按过插件影响）</p>
+
+<h3>react-native 开发工具</h3>
+
+<h5>NO1: sublime text 3</h5>
+
+<p>我们在开发 react-native 之前需要为sublime加载几个插件。</p>
+
+<p>1、<a href="https://packagecontrol.io/installation">package controller</a></p>
+
+<p>操作：使用快捷键  ctrl+`  或者是  View>Show Console  控制台，把下面的内容复制后回车，安装成功后重新启动sublime</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接下来我们按 快捷键 shift + commad + p 打开package controller</p>
+
+<p><img src="/images/reactNative6.png" alt="image" /></p>
+
+<p>输入package controller:install package 回车，然后输入我们要的插件就可以install下来了。非常方便。</p>
+
+<p>2、<a href="https://packagecontrol.io/packages/react-native-snippets">React-native-snippets</a></p>
+
+<p><img src="/images/reactNative7.png" alt="image" /></p>
+
+<p>这个插件快速搭建一个RN开发环境还有一些生命周期的语法。(具体操作请看<a href="https://packagecontrol.io/packages/react-native-snippets">https://packagecontrol.io/packages/react-native-snippets</a>)</p>
+
+<p>3、<a href="https://github.com/reactjs/sublime-react">sublime-react</a></p>
+
+<p>RN是基于React.js的，都是用JSX语法，sublime-react是用来显示语法颜色（你懂得，代码看起来漂亮）</p>
+
+<p>4、<a href="https://github.com/babel/babel-sublime">babel</a></p>
+
+<p>babel插件支持ES6语法和JSX语法，要比sublime-react添加更多关键字，看起来更舒服。出现问题也会提示。</p>
+
+<p><img src="/images/reactNative7.png" alt="image" /></p>
+
+<p>到这里react-native的开发工具环境就搭建完成啦！</p>
+
+<p><img src="/images/reactNative8.png" alt="image" /></p>
+
+<h5>NO2:<a href="https://atom.io">Atom</a></h5>
+
+<p><img src="/images/reactNative9.png" alt="image" /></p>
+
+<p>6月15日Atom1.0正式发布，3月份Facebook宣布为React和React-native开发并开源一款基于Atom的IDE&ndash;unclide ,很高兴，6月22日在nuclide.io 测试版发布。相信过不了多久，一款强大的RN编辑器就出来了。(RN狗福音!) （进过测试，Atom在install nuclide之后会变得很卡，目前不建议各位尝试!请耐心等待）</p>
+
+<p>Atom的操作流程跟sublime基本差不多。这里就不做说明！</p>
+
+<p>（目前不推荐使用，用起来不流畅，可以随时关注）</p>
+
+<h3>工程实例</h3>
+
+<h4>参考链接</h4>
+
+<p><a href="http://facebook.github.io/react-native/docs/getting-started.html#content">facebook 官方</a></p>
+
+<p><a href="http://wiki.jikexueyuan.com/project/react-native/tutorial.html">极客学院 翻译文档</a></p>
+
+<p><a href="http://www.jianshu.com/p/89771e8bcee5">sublime text 3 搭建环境</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2050,66 +2229,6 @@ CGSize size= CGSizeApplyAffineTransform(CGSizeMake(30, 30),transform);
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong/">记录unix命令的使用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-04T18:07:24+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:07 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>经常为在mac 终端操作，所以不得不学习一些终端命令并做下记录，方便以后查询。</p>
-
-<h2>命令查询</h2>
-
-<p>其实所有的命令参数都是可以通过man 来查询的。</p>
-
-<pre><code>eg：
-man cd
-man rm
-man ls
-man open
-</code></pre>
-
-<p>都有命令的详细使用情况</p>
-
-<h2>命令介绍</h2>
-
-<ul>
-<li>rm -rf xxx 删除文件夹xxx（包括里面的内容）</li>
-<li>mkdir xxx 新建xxx文件夹</li>
-<li>cd xxx 进入xxx文件夹，xxx可以是个路径</li>
-<li>open . 使用Finder打开当前目录</li>
-<li>open ./source 使用Finder打开当前目录下的source文件夹</li>
-<li>ls 查看当面文件夹中的目录列表</li>
-<li>cd .. 返回上已目录</li>
-<li>rm xxx 删除文件</li>
-<li>vi xxx 打开文件
-  进入vi文件之后，q键是功能切换
-                a键是插入操作
-                shift+q 进入退出模式。wq 写入并保存 q! 强制退出不保存</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2125,6 +2244,10 @@ man open
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/24/react-native-ji-chu-xue-xi/">React-native 基础学习</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/">coreImage.framework的学习</a>
       </li>
     
@@ -2138,10 +2261,6 @@ man open
     
       <li class="post">
         <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a>
       </li>
     
   </ul>

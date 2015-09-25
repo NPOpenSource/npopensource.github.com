@@ -9,8 +9,11 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="直接转兄弟的链接 GitPages + Octopress 搭建博客 我在创建中遇到的问题 主要问题是输入命令rake deploy 的时候报下面的错误 ## Pushing generated _deploy website
-To git@github.com:NPOpenSource/ &hellip;">
+  <meta name="description" content="经常为在mac 终端操作，所以不得不学习一些终端命令并做下记录，方便以后查询。 命令查询 其实所有的命令参数都是可以通过man 来查询的。 eg：
+man cd
+man rm
+man ls
+man open 都有命令的详细使用情况 命令介绍 rm -rf xxx 删除文件夹xxx（包括里面的内容 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +22,7 @@ To git@github.com:NPOpenSource/ &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://yoursite.com/posts/2/">
+  <link rel="canonical" href="http://npopensource.github.io/posts/2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="温杰的博客" type="application/atom+xml">
@@ -51,7 +54,7 @@ To git@github.com:NPOpenSource/ &hellip;">
   
 <form action="http://www.baidu.com" method="get">
   <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="yoursite.com">
+    <input type="hidden" name="sitesearch" value="npopensource.github.io">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -66,6 +69,66 @@ To git@github.com:NPOpenSource/ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/04/ji-lu-unixming-ling-de-shi-yong/">记录unix命令的使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-04T18:07:24+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:07 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>经常为在mac 终端操作，所以不得不学习一些终端命令并做下记录，方便以后查询。</p>
+
+<h2>命令查询</h2>
+
+<p>其实所有的命令参数都是可以通过man 来查询的。</p>
+
+<pre><code>eg：
+man cd
+man rm
+man ls
+man open
+</code></pre>
+
+<p>都有命令的详细使用情况</p>
+
+<h2>命令介绍</h2>
+
+<ul>
+<li>rm -rf xxx 删除文件夹xxx（包括里面的内容）</li>
+<li>mkdir xxx 新建xxx文件夹</li>
+<li>cd xxx 进入xxx文件夹，xxx可以是个路径</li>
+<li>open . 使用Finder打开当前目录</li>
+<li>open ./source 使用Finder打开当前目录下的source文件夹</li>
+<li>ls 查看当面文件夹中的目录列表</li>
+<li>cd .. 返回上已目录</li>
+<li>rm xxx 删除文件</li>
+<li>vi xxx 打开文件
+  进入vi文件之后，q键是功能切换
+                a键是插入操作
+                shift+q 进入退出模式。wq 写入并保存 q! 强制退出不保存</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1004,7 +1067,7 @@ please contact us at support@github.com
 <ul>
 <li>git config &ndash;list  要检查已有的配置信息</li>
 <li>git config &ndash;global user.name &ldquo;John Doe&rdquo;  配置用户名</li>
-<li>git config &ndash;global user.email <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x6a;&#111;&#104;&#x6e;&#x64;&#111;&#101;&#64;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#x6a;&#111;&#x68;&#110;&#x64;&#111;&#x65;&#64;&#101;&#x78;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#111;&#109;</a> 配置邮件</li>
+<li>git config &ndash;global user.email <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#106;&#111;&#104;&#x6e;&#x64;&#x6f;&#101;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;">&#x6a;&#x6f;&#104;&#x6e;&#100;&#x6f;&#101;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#111;&#x6d;</a> 配置邮件</li>
 <li>git config &ndash;global core.editor emacs   文本编辑器</li>
 <li>git config &ndash;global merge.tool vimdiff  配置差异性分析工具（Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。）</li>
 <li>git config user.name   查看用户名</li>
@@ -1697,6 +1760,10 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/24/react-native-ji-chu-xue-xi/">React-native 基础学习</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/11/coreimage-dot-frameworkde-xue-xi/">coreImage.framework的学习</a>
       </li>
     
@@ -1710,10 +1777,6 @@ Or, if you prefer, &lt;strong&gt;use two underscores instead&lt;/strong&gt;.&lt;
     
       <li class="post">
         <a href="/blog/2015/08/18/mu-qian-chang-yong-di-san-fang-cha-jian/">目前常用第三方插件</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/18/geng-gai-xcodesheng-cheng-mei-ge-wen-jian-tou-xin-xi/">更改xcode生成每个文件头信息</a>
       </li>
     
   </ul>
