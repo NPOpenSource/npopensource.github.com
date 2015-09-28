@@ -714,25 +714,336 @@ var facemashtab = React.createClass({
   }
 });</p>
 
-<p>```
-保存文件  重新run工程,模拟器结果是</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>保存文件  重新run工程,模拟器结果是
+</span><span class='line'>
+</span><span class='line'>![image](/images/reactNative10.png)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>你说这样不好吧，都在index.ios.js 相同目录，我想自己建造目录，没问题。只要你创建的目录在index.ios.js 目录之下就行了。
+</span><span class='line'>
+</span><span class='line'>  eg： 我在index.ios.js所在目录下创建test 文件夹，在test文件夹下面创建文件 FaceMash.js  
+</span><span class='line'>  
+</span><span class='line'>  那在index.ios.js 引用该文件就变成了
+</span><span class='line'>  
+</span><span class='line'>   var Facemashtab = require('./test/FaceMash');
+</span><span class='line'>   
+</span><span class='line'>上面就是文件链接。不要问为什么这样，我也没看源码。目前只想写怎么用。
+</span><span class='line'>
+</span><span class='line'>### react几个函数的简单学习
+</span><span class='line'>
+</span><span class='line'>（本来打算直接写控件的，但是像我这样从来没有接触过react的人看api实在是看不懂，没办法，只能硬着头皮学点react的皮毛了）
+</span><span class='line'>
+</span><span class='line'>&gt; React.createClass()  相关的函数和生命周期 
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>   1.ReactElement render()
+</span><span class='line'>  必须实现的函数   
+</span><span class='line'>  
+</span><span class='line'>  当call render的时候， 他会检测 this.props 和  this.state 返回一个 a single child element
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  2.object getInitialState()   
+</span><span class='line'>  部件没有渲染的时候调用这个函数。调用在 render之前，返回的object 作为 this.state 的值
+</span><span class='line'>  
+</span><span class='line'>  3.object getDefaultProps()
+</span><span class='line'>  类创建的时候，将object的值赋值给this.props
+</span><span class='line'>  
+</span><span class='line'>  4.object propTypes
+</span><span class='line'>  5.array mixins
+</span><span class='line'>  
+</span><span class='line'>  6.object statics 
+</span><span class='line'>  定义类的静态方法
+</span><span class='line'>  
+</span><span class='line'>  7.string displayName 
+</span><span class='line'>  用来debug的
+</span><span class='line'>  
+</span><span class='line'>  
+</span><span class='line'>下面是生命周期函数
+</span><span class='line'>
+</span><span class='line'>  
+</span><span class='line'>  8.componentWillMount()
+</span><span class='line'>  render 渲染之前 ，服务器和客户端只调用一次。你可以 在这个函数 setState ,render 只检测 state 一次。
+</span><span class='line'>  
+</span><span class='line'>  9.componentDidMount()
+</span><span class='line'>  当render 之后 只有客户端调用一次 该函数
+</span><span class='line'>  
+</span><span class='line'>  10.componentWillReceiveProps(
+</span><span class='line'>          object nextProps
+</span><span class='line'>  )
+</span><span class='line'>  当component 有新的props 该方法调用
+</span><span class='line'>  
+</span><span class='line'>  11.boolean shouldComponentUpdate(
+</span><span class='line'>          object nextProps, object nextState
+</span><span class='line'>  )
+</span><span class='line'>  
+</span><span class='line'>  当 render 之前  新的props 和 state 有了之后调用 这个函数不能用来初始化render 和 强制更新 返回的结果是false 就不更新了
+</span><span class='line'>  
+</span><span class='line'>  12.componentWillUpdate(
+</span><span class='line'>          object nextProps, object nextState
+</span><span class='line'>  )
+</span><span class='line'>  
+</span><span class='line'>  当新的props 和state 设置了，而render之前，这个函数被调用。不能用来init render 
+</span><span class='line'>
+</span><span class='line'>  13.componentDidUpdate(
+</span><span class='line'>          object prevProps, object prevState
+</span><span class='line'>  )
+</span><span class='line'>  当component 刷新了这个立即调用
+</span><span class='line'>  
+</span><span class='line'>  14.componentWillUnmount()
+</span><span class='line'>  当component 被卸载之前被调用
+</span><span class='line'>  
+</span><span class='line'>
+</span><span class='line'>以上就是大概的react 学习。
+</span><span class='line'>其实还应该学习react 的语法的，但是算了吧。比较简单。模仿别人写的工程直接干了。
+</span><span class='line'>
+</span><span class='line'>### react 语法（省略）
+</span><span class='line'>
+</span><span class='line'>###控件的学习
+</span><span class='line'>
+</span><span class='line'>#### UITableBarViewController
+</span><span class='line'>
+</span><span class='line'>运用tabbar  
+</span><span class='line'>1 首先启动Tabbar 控件  TabBarIOS 
+</span><span class='line'>2. 初始化tabbar启动选择tabbar 那一项。
+</span><span class='line'>
+</span><span class='line'> getInitialState() {
+</span><span class='line'>    return {
+</span><span class='line'>      selectedTab: 'faceMash',
+</span><span class='line'>
+</span><span class='line'>    }
+</span><span class='line'>  },
+</span><span class='line'>
+</span><span class='line'> 
+</span><span class='line'>3.render tabbar 下面实例有每个属性的用法，不具体介绍了
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>实例代码</span></code></pre></td></tr></table></div></figure>
 
-<p><img src="/images/reactNative10.png" alt="image" /></p>
 
-<p>你说这样不好吧，都在index.ios.js 相同目录，我想自己建造目录，没问题。只要你创建的目录在index.ios.js 目录之下就行了。</p>
+<p>注册启动TableBarViewContoller</p>
 
-<pre><code>eg： 我在index.ios.js所在目录下创建test 文件夹，在test文件夹下面创建文件 FaceMash.js  
+<p>/<em> @flow </em>/
+&lsquo;use strict&rsquo;;</p>
 
-那在index.ios.js 引用该文件就变成了
+<p>var React = require(&lsquo;react-native&rsquo;);
+var {
+  AppRegistry,
+  StyleSheet,
+  TabBarIOS,
+  View,
+  Text,
+} = React;</p>
 
- var Facemashtab = require('./test/FaceMash');
+<p>var testReactIos = React.createClass({
+ getInitialState() {
+    return {
+      selectedTab: &lsquo;faceMash&rsquo;,</p>
+
+<pre><code>}
 </code></pre>
 
-<p>上面就是文件链接。不要问为什么这样，我也没看源码。目前只想写怎么用。</p>
+<p>  },
+  render: function() {
+    return (</p>
 
-<h3>控件的学习</h3>
+<pre><code>  &lt;TabBarIOS&gt;
+    &lt;TabBarIOS.Item 
+    /// 题目 如果用系统的就忽略这个属性了 string
+        title="Message"
+      /// 图片   Image.propTypes.source
+        icon={ require('image!facemash') }
+        ///选中状态的icon
+        selectedIcon={ require('image!messages') }
+      ///角标 string ,number
+        badge ="1"
+        /// 判断是否选中该tab 
+       selected={ this.state.selectedTab === 'faceMash' }
+       ///点击tab 事件 没有不反应的
+       onPress={() =&gt; {
+        this.setState({
+          selectedTab: 'faceMash',
+        });
+      }}&gt;
+         &lt;View style={ styles.pageView }&gt;
+      &lt;/View&gt;
+
+
+    &lt;/TabBarIOS.Item&gt;
+    &lt;TabBarIOS.Item
+    /// ('bookmarks', 'contacts', 'downloads', 'favorites', 'featured', 'history', 'more', 'most-recent', 'most-viewed', 'recents', 'search', 'top-rated')
+    ///可以选择上面的值 但是tilte 和icon属性都不好用了
+    systemIcon="search"
+      title="Messages"
+      icon={ require('image!messages') }
+      selected={ this.state.selectedTab === 'messages' }
+                onPress={() =&gt; {
+        this.setState({
+          selectedTab: 'messages',
+        });
+      }}&gt;
+      &lt;View style={ styles.pageView }&gt;
+        &lt;Text&gt;Messages&lt;/Text&gt;
+      &lt;/View&gt;
+    &lt;/TabBarIOS.Item&gt;
+    &lt;TabBarIOS.Item
+      title="Settings"
+      icon={ require('image!settings') }
+       badge ="1"
+      selected={ this.state.selectedTab === 'settings' }
+       onPress={() =&gt; {
+        this.setState({
+          selectedTab: 'settings',
+        });
+      }}&gt;
+
+        &lt;View style={ styles.pageView }&gt;
+      &lt;/View&gt;
+    &lt;/TabBarIOS.Item&gt;
+  &lt;/TabBarIOS&gt;
+);
+</code></pre>
+
+<p>  }</p>
+
+<p>});</p>
+
+<p>var styles = StyleSheet.create({
+  pageView: {
+    backgroundColor: &lsquo;#fff&rsquo;,
+    flex: 1
+  }
+});</p>
+
+<p>AppRegistry.registerComponent(&lsquo;testReactIos&rsquo;, () => testReactIos);</p>
+
+<pre><code>
+#### UINavigatorViewController
+
+怎么生成navigatorViewController
+
+1. 首先启动React 控件 。要写两个 Navigator,
+  NavigatorIOS,
+
+ 2. render NavigatorIOS控件
+
+ 基础代码
+</code></pre>
+
+<p> ```</p>
+
+<h3>原生应用和 react-native 配合使用</h3>
 
 <h4>参考链接</h4>
+
+<p><a href="http://facebook.github.io/react/docs/component-specs.html">react 使用</a></p>
 
 <p><a href="http://facebook.github.io/react-native/docs/getting-started.html#content">facebook 官方</a></p>
 
